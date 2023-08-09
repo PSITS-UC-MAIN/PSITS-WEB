@@ -22,7 +22,7 @@ Yes! The project is open for collaboration from `Students of UC Main, other camp
 ### Project Overview
 ![img1](./.doc/_MERNSTACK3.png)
 
-This project will contain a `backend` and `front-end` folders. Each folders will contain a specific technology stacks that is used to build the system. As for the `database`, it will be hosted in MongoDB Atlas for a free tier.
+This project will contain a `backend` and `frontend` folders. Each folders will contain a specific technology stacks that is used to build the system. As for the `database`, it will be hosted in MongoDB Atlas for a free tier.
 
 ### MERN Stack [FULL STACK]
 - MongoDB   (Database)
