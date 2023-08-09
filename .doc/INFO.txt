@@ -1,0 +1,2 @@
+Windy IFrame
+<iframe width="650" height="450" src="https://embed.windy.com/embed2.html?lat=10.066&lon=123.868&detailLat=10.310&detailLon=123.890&width=650&height=450&zoom=9&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=true&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>
