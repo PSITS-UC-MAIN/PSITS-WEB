@@ -1,0 +1,51 @@
+GET http://localhost:3000/api/auth 
+user_id: 19000001
+password: test12345
+
+###
+
+GET http://localhost:3000/api/auth/validate
+AuthToken: 86ac42cc-e57c-4db8-b158-d6a84295f1f3
+
+###
+
+POST http://localhost:3000/api/user
+Content-Type: application/json
+
+{
+    "user_id": 19000001,
+    "rfid": "",
+    "firstname": "Jayharron Mar",
+    "lastname": "Abejar",
+    "email": "jay@testemail.com",
+    "password": "test12345",
+    "course": "BSIT",
+    "year": 4,
+    "graduated": true
+}
+
+###
+
+GET http://localhost:3000/api/user/19000001
+AuthToken: 6bb21892-335f-470d-97f0-1ef1dcef5381
+
+###
+PATCH  http://localhost:3000/api/user/19000001
+AuthToken: c77a765e-6ba6-4f45-889c-e0a5127f8f7b
+Content-Type: application/json
+
+{
+    "firstname": "Jayharron Mar",
+    "lastname": "Abejar",
+    "birthdate": "2000-09-21T00:00:00.000Z",
+    "email": "jay@testemail.com",
+    "password": "test12345",
+    "course": "BSIT",
+    "year": 4,
+    "graduated": true
+}
+
+###
+
+DELETE  http://localhost:3000/api/user/19000001
+AuthToken: c80c4097-4239-4a77-8195-d1415240def5

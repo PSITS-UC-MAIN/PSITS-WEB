@@ -1,22 +1,22 @@
 require('dotenv').config();
 const express = require('express');
 const compression = require('compression');
+const database = require('./src/MongoDB');
 const app = express();
 
-const mongoose = require('mongoose');
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-
-const db = mongoose.connection;
 let PORT = process.env.PORT??80;
 
-db.on('error', (error) => {console.log(error)});
-db.once('open', () => {console.log('Database Connected')});
+// run database
+database();
 
 // middlewares
 app.use(express.json()); // uses JSON as payload
 app.use(compression()); // compresses all routes
 
 // routes
+app.use('/', require('./src/routes/main'));
+app.use('/api/auth', require('./src/routes/auth'));
+app.use('/api/user', require('./src/routes/users'));
 
 // run the app
 const server = app.listen(PORT, () => {
