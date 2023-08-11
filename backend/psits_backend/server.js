@@ -8,7 +8,6 @@ let PORT = process.env.PORT??80;
 
 // run database
 database();
-
 // middlewares
 app.use(express.json()); // uses JSON as payload
 app.use(compression()); // compresses all routes
@@ -17,6 +16,10 @@ app.use(compression()); // compresses all routes
 app.use('/', require('./src/routes/main'));
 app.use('/api/auth', require('./src/routes/auth'));
 app.use('/api/user', require('./src/routes/users'));
+app.use('/api/announcement', require('./src/routes/announcement'));
+app.use('/api/event', require('./src/routes/events'));
+app.use('/api/merch', require('./src/routes/merchandise'));
+app.use('/api/order', require('./src/routes/orders'));
 
 // run the app
 const server = app.listen(PORT, () => {

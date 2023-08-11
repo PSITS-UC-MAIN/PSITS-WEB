@@ -1,0 +1,38 @@
+GET http://localhost:3000/api/auth 
+user_id: 19000001
+password: test12345
+
+###
+
+POST http://localhost:3000/api/announcement 
+AuthToken: 02450af2-8353-48e8-9cd7-977baabb057b
+Content-Type: application/json
+
+{
+    "title": "My Second Announcement",
+    "content": "Testing, second announcement! more progress",
+    "photo_img_links": [
+        "https://th.bing.com/th/id/R.238bb923941fda2d5b9d16cbb01fe45e?rik=faz94kYGXvRlng&riu=http%3a%2f%2fwww.geertarien.com%2fassets%2fimages%2fposts%2f2017-04-01-hello-world%2fhello-world.jpg&ehk=BNe47YP%2b5%2b%2fbZiUi90RZhqiHbkRPaBRay03eEWMMwpg%3d&risl=&pid=ImgRaw&r=0"
+    ]
+}
+
+
+### 
+
+GET http://localhost:3000/api/announcement
+
+###
+PATCH  http://localhost:3000/api/announcement/64d4bf4b5607c02fbf8514dc
+AuthToken: 97f60bce-88e3-4e1d-9c6d-66c281dde804
+Content-Type: application/json
+
+{
+    "title": "My Second Announcement [Updated]",
+    "content": "This is my second announcement",
+    "photo_img_links": [
+        "https://th.bing.com/th/id/R.238bb923941fda2d5b9d16cbb01fe45e?rik=faz94kYGXvRlng&riu=http%3a%2f%2fwww.geertarien.com%2fassets%2fimages%2fposts%2f2017-04-01-hello-world%2fhello-world.jpg&ehk=BNe47YP%2b5%2b%2fbZiUi90RZhqiHbkRPaBRay03eEWMMwpg%3d&risl=&pid=ImgRaw&r=0"
+    ]
+}
+###
+DELETE  http://localhost:3000/api/announcement/64d4bf4b5607c02fbf8514dc
+AuthToken: 751b76a0-6432-4d3c-885e-92fdd393cf06

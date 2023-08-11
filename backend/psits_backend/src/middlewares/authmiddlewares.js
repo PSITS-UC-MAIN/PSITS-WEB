@@ -1,5 +1,5 @@
 const {SHA512} = require('../utils/ServerUtils');
-const AuthToken = require('../classes/AuthToken');
+const AuthToken = require('../classesDTO/AuthToken');
 const User = require('../models/UserModel');
 
 const TOKENS = [];
@@ -91,7 +91,15 @@ async function GetAuthToken(req, res, next){
     const user = await User.findOne({user_id:res.issuer})
     //  get the user admin status
     res.isAdmin = user.isAdmin;
+    res.issuerObjectId = user._id;
 
+    next();
+}
+
+function VerifyAdmin(req, res, next){
+    if(!res.isAdmin)
+        return res.status(403).json({message: "AuthToken is not authorized to access administrator privilege", StatusCode: 403});
+    
     next();
 }
 
@@ -100,5 +108,6 @@ async function GetAuthToken(req, res, next){
 module.exports = {
     GetUserPassMiddleware: GetUserPassMiddleware,
     GenerateToken: GenerateToken,
-    GetAuthToken : GetAuthToken
+    GetAuthToken : GetAuthToken,
+    VerifyAdmin, 
 };

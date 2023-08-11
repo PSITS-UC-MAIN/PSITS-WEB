@@ -1,0 +1,43 @@
+GET http://localhost:3000/api/auth 
+user_id: 19000001
+password: test12345
+
+###
+
+POST http://localhost:3000/api/merch
+AuthToken: 7b51d764-c374-4adb-a5cd-5e60dcbf84bf
+Content-Type: application/json
+
+{
+    "title": "Roasted Chicken 2",
+    "information": "With an ingredient list just four items long (chicken, olive oil, salt, pepper), the genius of this bare-bones roast chicken is in its technique. To make it, thoroughly preheat a cast-iron skillet before sliding into it a seasoned bird, breast side up. In under an hour you’ll get a stunner of a chicken, with moist, tender white meat, crisp, salty chicken skin, and juicy dark meat all done to a turn. If you don’t already have a cast-iron skillet large enough to hold a whole chicken, this recipe is a good enough reason to invest in one.",
+    "price": 250,
+    "discount": 0,
+    "stock": 5,
+    "photo_img_links": [
+        "https://static01.nyt.com/images/2019/10/05/dining/mb-simplest-roast-chicken/mb-simplest-roast-chicken-master768.jpg?w=1280&q=75",
+        "https://static01.nyt.com/images/2012/05/03/dining/video-clarkchicken/video-clarkchicken-articleLarge.jpg?w=1280&q=75"
+    ],
+    "size": "regular",
+    "color": "N/A",
+    "showPublic": true
+}
+
+###
+
+GET http://localhost:3000/api/merch
+
+###
+
+PATCH  http://localhost:3000/api/merch/64d4e0e5aa0832371249a8da
+AuthToken: 582eb0ba-6622-4767-8f35-5c0d297a2c9f
+Content-Type: application/json
+
+{
+    "rating":5
+}
+
+###
+
+DELETE  http://localhost:3000/api/merch/64d4e79b8b1872e12dfd78d6
+AuthToken: 7b51d764-c374-4adb-a5cd-5e60dcbf84bf

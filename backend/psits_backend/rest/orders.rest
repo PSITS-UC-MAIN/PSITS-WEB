@@ -1,0 +1,18 @@
+GET http://localhost:3000/api/auth 
+user_id: 19000001
+password: test12345
+
+###
+
+POST http://localhost:3000/api/order
+AuthToken: 4f502f3c-b966-4527-a166-b0078664c4c3
+Content-Type: application/json
+
+{
+    "merch_id": "64d4e0e5aa0832371249a8da",
+    "information": "I need it fresh",
+    "size": "regular",
+    "color": "N/A",
+    "status": "ORDERED",
+    "quantity": 5
+}

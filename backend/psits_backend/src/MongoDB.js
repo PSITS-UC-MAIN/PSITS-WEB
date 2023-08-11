@@ -5,7 +5,7 @@ const database = () => {
     
     const db = mongoose.connection;
 
-    db.on('error', (error) => {console.log(error)});
+    db.on('error', (error) => {console.log(error);});
     db.once('open', () => {console.log('MongoDB - Database Connected')});
 }
 module.exports = database;
