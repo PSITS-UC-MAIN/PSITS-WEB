@@ -5,14 +5,43 @@ password: test12345
 ###
 
 POST http://localhost:3000/api/order
-AuthToken: 4f502f3c-b966-4527-a166-b0078664c4c3
+AuthToken: fa6a56c2-4fd5-4117-8661-8a23b820dec8
 Content-Type: application/json
 
 {
     "merch_id": "64d4e0e5aa0832371249a8da",
-    "information": "I need it fresh",
+    "information": "I order again haha!",
     "size": "regular",
     "color": "N/A",
     "status": "ORDERED",
-    "quantity": 5
+    "quantity": 2
 }
+
+
+###
+
+GET http://localhost:3000/api/order/64d4eedef177a10e5e6a5b71
+AuthToken: 7523fa05-0f4a-4e19-860b-df3e231d1f9d
+
+
+###
+
+GET http://localhost:3000/api/order
+AuthToken: 8bbb0c44-dacf-42ff-a849-6e028f2c2420
+
+###
+
+PATCH http://localhost:3000/api/order/PSITS_73191111Y2726TDZ
+AuthToken: cf08e8bc-1501-4a94-8d9f-15f4268cb085
+Content-Type: application/json
+
+{
+    "status": "REVIEWED",
+    "review": "Verry Good!",
+    "rating": 5
+}
+
+###
+
+DELETE http://localhost:3000/api/order/PSITS_16068431I3804GQV
+AuthToken: 8e72e65f-9faf-4767-bb30-fdc50169ef98

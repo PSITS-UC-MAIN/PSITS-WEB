@@ -1,6 +1,11 @@
 const express = require('express');
 const { GetAuthToken, VerifyAdmin } = require('../middlewares/authmiddlewares');
 const Merchandise = require('../models/MerchandiseModel');
+const UserOrderModel = require('../models/UserOrderModel');
+const OrderStatusCode = require('../utils/OrderStatusCode');
+const UserOrder = require('../classesDTO/UserOrder');
+const { EncapulateUser } = require('../utils/ServerUtils');
+const UserModel = require('../models/UserModel');
 const routes = express.Router();
 
 // create new merchandise
@@ -27,9 +32,30 @@ routes.post('/', GetAuthToken, VerifyAdmin, async (req, res)=> {
 });
 
 // get all merch
-routes.get('/', async(req, res)=> {
-    const merchandiseData = await Merchandise.find();
+routes.get('/', async (req, res)=> {
+    const RawMerchandiseData = await Merchandise.find();
+    const merchandiseData = [];
+    for(const merch of RawMerchandiseData){
+        const reviews = [];
+        // get all the reviews
+        const ordersWithReviewStatus = await UserOrderModel.find({status: OrderStatusCode.REVIEWED, merch_id: merch._id});
+        for(const review of ordersWithReviewStatus){
+            const user = await UserModel.findById(review.student_id);
+            if(user){
+                const userInfo = {
+                    firstname: user.firstname,
+                    lastname : user.lastname,
+                    profile_img_link: user.profile_img_link
+                };
+                reviews.push(new UserOrder(review, userInfo))
+            }
+                
+        }
 
+        let merchandise = {merch};
+        merchandise.reviews = reviews;
+        merchandiseData.push(merchandise);
+    }
     res.json({merchandiseData, Size: merchandiseData.length ,message: "Retrieved Merchandise info", StatusCode: 200});
 })
 

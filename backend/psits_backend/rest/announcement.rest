@@ -5,12 +5,12 @@ password: test12345
 ###
 
 POST http://localhost:3000/api/announcement 
-AuthToken: 02450af2-8353-48e8-9cd7-977baabb057b
+AuthToken: 649a4543-7627-4b50-a4d5-f8cc33d04621
 Content-Type: application/json
 
 {
-    "title": "My Second Announcement",
-    "content": "Testing, second announcement! more progress",
+    "title": "Very First Announcement",
+    "content": "Testing, First announcement! more progress",
     "photo_img_links": [
         "https://th.bing.com/th/id/R.238bb923941fda2d5b9d16cbb01fe45e?rik=faz94kYGXvRlng&riu=http%3a%2f%2fwww.geertarien.com%2fassets%2fimages%2fposts%2f2017-04-01-hello-world%2fhello-world.jpg&ehk=BNe47YP%2b5%2b%2fbZiUi90RZhqiHbkRPaBRay03eEWMMwpg%3d&risl=&pid=ImgRaw&r=0"
     ]

@@ -37,10 +37,15 @@ const UserOrderModel = new mongoose.Schema({
         required: false,
         default: "ORDERED",
     },
-    rating: {
+    review: {
         type: String,
         required: false,
         default: ""
+    },
+    rating: {
+        type: Number,
+        required: false,
+        default: 0
     },
     quantity: {
         type: Number,
