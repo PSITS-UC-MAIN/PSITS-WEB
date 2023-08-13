@@ -19,6 +19,7 @@ routes.post('/', GetAuthToken, VerifyAdmin, async (req, res)=> {
         photo_img_links: req.body.photo_img_links,
         size: req.body.size,
         color: req.body.color,
+        styles: req.body.styles,
         showPublic: req.body.showPublic
     });
 
@@ -76,7 +77,7 @@ routes.patch('/:merchid', GetAuthToken, VerifyAdmin, async (req, res) => {
         if(req.body.title)
             merch.title = req.body.title;
         if(req.body.information)
-            merch.title = req.body.information;
+            merch.information = req.body.information;
         if(req.body.price)
             merch.price = req.body.price;
         if(req.body.discount)
@@ -89,6 +90,8 @@ routes.patch('/:merchid', GetAuthToken, VerifyAdmin, async (req, res) => {
             merch.size = req.body.size;
         if(req.body.color)
             merch.color = req.body.color;
+        if(req.body.styles)
+            merch.styles = req.body.styles;
         if(req.body.rating)
             merch.rating = merch.rating>0?((merch.rating + req.body.rating)/2):req.body.rating;
         if(req.body.showPublic !== undefined)

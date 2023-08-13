@@ -18,7 +18,8 @@ routes.post('/', GetAuthToken, async (req, res)=> {
             size: req.body.size,
             color: req.body.color,
             status: OrderStatusCode.ORDERED,
-            quantity: req.body.quantity
+            quantity: req.body.quantity,
+            style: req.body.style
         });
 
         const merch = await Merchandise.findById(req.body.merch_id);
@@ -154,7 +155,7 @@ routes.patch('/:search', GetAuthToken, async (req, res)=> {
         // retrieve the merch info
         const merch = await Merchandise.findById(order.merch_id);
         
-        const {information, size, color, review, rating, quantity} = req.body;
+        const {information, size, color, review, rating, quantity, style} = req.body;
         const status = OrderStatusCode.getStatusCode(req.body.status)
         const old_status = OrderStatusCode.getStatusCode(order.status);
         const old_quantity = order.quantity;
@@ -170,6 +171,8 @@ routes.patch('/:search', GetAuthToken, async (req, res)=> {
             order.size = size;
         if(color)
             order.color = color;
+        if(style)
+            order.style = style;
         if(quantity)
             order.quantity = quantity;
 

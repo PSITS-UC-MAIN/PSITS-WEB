@@ -20,6 +20,10 @@ Content-Type: application/json
     ],
     "size": "regular",
     "color": "N/A",
+    "styles": [
+        "product_1",
+        "product_2"
+    ],
     "showPublic": true
 }
 

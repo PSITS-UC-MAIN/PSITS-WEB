@@ -38,6 +38,11 @@ const MerchandiseModel = new mongoose.Schema({
         required: false,
         default: "",
     },
+    styles:{
+        type: Array,
+        required: false,
+        default: new Array()
+    },
     rating: {
         type: Number,
         required: false,

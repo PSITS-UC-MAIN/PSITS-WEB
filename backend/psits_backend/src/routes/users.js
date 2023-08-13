@@ -80,6 +80,10 @@ router.patch('/:user_id', GetAuthToken, async (req, res) => {
     let user_id = req.params.user_id??0;
     user_id = Number.parseInt(user_id);
 
+    if(user_id !== res.issuer){
+        if(!res.isAdmin)
+            return res.status(403).json({message: "You are forbidden to update this user account. AuthToken must match with the issuer_id", StatusCode: 403});
+    }
     try{
         const user = await Users.findOne({user_id: user_id});
     

@@ -25,12 +25,17 @@ const UserOrderModel = new mongoose.Schema({
     size: {
         type: String,
         required: false,
-        default: ""
+        default: "N/A"
     },
     color: {
         type: String,
         required: false,
-        default: ""
+        default: "N/A"
+    },
+    style: {
+        type: String,
+        required: false,
+        default: "N/A"
     },
     status:{
         type: String,
