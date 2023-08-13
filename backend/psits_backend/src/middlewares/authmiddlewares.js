@@ -1,6 +1,7 @@
 const {SHA512} = require('../utils/ServerUtils');
 const AuthToken = require('../classesDTO/AuthToken');
 const User = require('../models/UserModel');
+const config = require('../utils/Config')
 
 const TOKENS = [];
 
@@ -45,6 +46,18 @@ function GenerateToken(req, res, next) {
     TOKENS.push(...filtered, token);
 
     res.AuthToken = token;
+    next();
+}
+
+function ValidateAPIKey(req, res, next){
+    const api_key = req.headers.api_key;
+
+    if(!api_key)
+        return res.status(403).json({message:"You are forbidden to proceed to your request without an api_key", StatusCode: 403});
+
+    if(!config.getAPI_KEYS().includes(api_key))
+        return res.status(401).json({message: "You have provided an invalid api_key, Unauthozired!", StatusCode: 401});
+
     next();
 }
 
@@ -109,5 +122,5 @@ module.exports = {
     GetUserPassMiddleware: GetUserPassMiddleware,
     GenerateToken: GenerateToken,
     GetAuthToken : GetAuthToken,
-    VerifyAdmin, 
+    VerifyAdmin, ValidateAPIKey
 };

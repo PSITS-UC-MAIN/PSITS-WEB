@@ -1,11 +1,10 @@
-require('dotenv').config();
+const config = require('./src/utils/Config')
 const express = require('express');
 const compression = require('compression');
 const database = require('./src/MongoDB');
 const app = express();
 
-let PORT = process.env.PORT??80;
-
+let PORT = config.PORT;
 // run database
 database();
 // middlewares

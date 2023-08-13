@@ -3,10 +3,10 @@ const router = express.Router();
 
 const { SHA512, EncapulateUser } = require('../utils/ServerUtils');
 const Users = require('../models/UserModel');
-const { GetAuthToken } = require('../middlewares/authmiddlewares');
+const { GetAuthToken, ValidateAPIKey } = require('../middlewares/authmiddlewares');
 
 // create new user
-router.post('/', async (req, res)=> {
+router.post('/', ValidateAPIKey, async (req, res)=> {
     // build the user object
     const user = new Users({
         user_id: req.body.user_id,
