@@ -595,7 +595,7 @@ const information = `
     [BODY]
     {
         "title": "PSITS Sticker Merch",
-        "information": "We the PSITS Org are selling \nSticker Merch!\n Grab yours now!\n\nP25 for 3pcs",
+        "information": "We the PSITS Org are selling \\nSticker Merch!\\n Grab yours now!\\n\\nP25 for 3pcs",
         "price": 25,
         "discount": 0,
         "stock": 10,
@@ -632,7 +632,7 @@ const information = `
                 "merch": {
                     "_id": "64d4e0e5aa0832371249a8da",
                     "title": "PSITS Sticker Merch",
-                    "information": "We the PSITS Org are selling \nSticker Merch!\n Grab yours now!\n\nP25 for 3pcs",
+                    "information": "We the PSITS Org are selling \\nSticker Merch!\\n Grab yours now!\\n\\nP25 for 3pcs",
                     "price": 25,
                     "discount": 0,
                     "stock": 10,
