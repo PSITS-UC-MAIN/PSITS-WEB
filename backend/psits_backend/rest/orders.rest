@@ -5,7 +5,7 @@ password: test12345
 ###
 
 POST http://localhost:3000/api/order
-AuthToken: fa6a56c2-4fd5-4117-8661-8a23b820dec8
+AuthToken: 5891209e-105d-4d1a-8917-854316bb77ed
 Content-Type: application/json
 
 {
@@ -20,14 +20,14 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/api/order/64d4eedef177a10e5e6a5b71
-AuthToken: 7523fa05-0f4a-4e19-860b-df3e231d1f9d
+GET http://localhost:3000/api/order/PSITS_73488738Y5016NVX
+AuthToken: 5891209e-105d-4d1a-8917-854316bb77ed
 
 
 ###
 
 GET http://localhost:3000/api/order
-AuthToken: 8bbb0c44-dacf-42ff-a849-6e028f2c2420
+AuthToken: 5891209e-105d-4d1a-8917-854316bb77ed
 
 ###
 

@@ -143,7 +143,7 @@ routes.patch('/:search', GetAuthToken, async (req, res)=> {
                     From ORDERED to CANCELLED -> merch.stock must be returned based on the
                         quantity of order.
                     
-                    From PAID to REVIEWED -> review and rating fields are accepted
+                    From CLAIMED to REVIEWED -> review and rating fields are accepted
 
                     For Admins: They can change everything except student_id, merch_id, review,
                         and rating.
@@ -178,6 +178,10 @@ routes.patch('/:search', GetAuthToken, async (req, res)=> {
 
         // check if the order status code is valid
         if(status !== OrderStatusCode.INVALID){
+            // make sure that PAID and CLAIMED status are issued by admins
+            if(status === OrderStatusCode.CLAIMED || status === OrderStatusCode.PAID)
+                if(!res.isAdmin)
+                    return res.status(403).json({message: "You are forbidden to update the status", StatusCode: 403});
             // update the order status
             order.status = status;
 
@@ -199,7 +203,7 @@ routes.patch('/:search', GetAuthToken, async (req, res)=> {
             if(res.issuerObjectId.toString() === order.student_id.toString()){
                 // make sure that the old status is not REVIEWED
                 if(status === OrderStatusCode.REVIEWED){
-                    if(old_status !== OrderStatusCode.REVIEWED){
+                    if(old_status === OrderStatusCode.CLAIMED){
 
                         // set the review, change the merch rating
                         if(rating){
@@ -210,7 +214,7 @@ routes.patch('/:search', GetAuthToken, async (req, res)=> {
                             order.review = review;
                         
                     }else{
-                        return res.status(403).json({message:"You are forbidden to update reviewed order", StatusCode: 403})
+                        return res.status(403).json({message:"You are forbidden to review the order", StatusCode: 403})
                     }
                 }
             }
