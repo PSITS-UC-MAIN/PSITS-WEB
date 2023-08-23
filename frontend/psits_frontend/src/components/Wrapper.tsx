@@ -6,9 +6,9 @@ const Wrapper = ({ children, title }: {children: React.ReactNode, title: string}
   }, [title]);
 
   return (
-    <>
-    {children}
-    </>
+    <section className='mx-20'>
+      {children}
+    </section>
   )
 }
 
