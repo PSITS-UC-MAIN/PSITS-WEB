@@ -35,6 +35,15 @@ const About = () => {
                 </div>
             </div>
         </div>
+        <div className="my-10 mx-20 rounded">
+            <Slide indicators>
+            {aboutBannerImages.map((slideImage)=> (
+                <div key={slideImage.name} className='flex justify-center rounded'>
+                <img src={slideImage.banner} className='rounded'/>
+                </div>
+            ))} 
+            </Slide>
+        </div>
     </Wrapper>
   )
 }
