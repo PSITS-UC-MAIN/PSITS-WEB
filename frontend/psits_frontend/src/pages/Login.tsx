@@ -29,7 +29,7 @@ const Login = () => {
 
   return (
     <Wrapper title="PSITS | Login">
-      <main className="mt-28 w-[80%] m-auto bg-white lg:w-[550px]">
+      <div className="mt-28 w-[80%] m-auto bg-white lg:w-[550px]">
         <form {...form}>
           <Card>
             <CardHeader className="space-y-1">
@@ -76,7 +76,7 @@ const Login = () => {
             </CardFooter>
           </Card>
         </form>
-      </main>
+      </div>
     </Wrapper>
   )
 }

@@ -52,55 +52,53 @@ const Home = () => {
 
   return (
     <Wrapper title='PSITS | Home'>
-      <section className='mx-20'>
-        <div className='my-10 rounded'>
-          <Slide indicators>
-            {homeBannerImages.map((slideImage)=> (
-              <div key={slideImage.name} className='flex justify-center rounded'>
-                <img src={slideImage.banner} className='rounded'/>
-              </div>
-            ))} 
-          </Slide>
+      <div className='my-10 rounded'>
+        <Slide indicators>
+          {homeBannerImages.map((slideImage)=> (
+            <div key={slideImage.name} className='flex justify-center rounded'>
+              <img src={slideImage.banner} className='rounded'/>
+            </div>
+          ))} 
+        </Slide>
+      </div>
+      <div className='my-10 flex justify-center gap-4'>
+        <div className='bg-[#e8eef1] p-4 rounded-lg'>
+          <h1 className='text-center font-bold text-2xl mb-4'>Upcoming Events</h1>
+          <Card className='w-[300px]'>
+            <CardHeader>
+              <CardTitle>Card Title</CardTitle>
+              <CardDescription>Card Description</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p>Card Content</p>
+            </CardContent>
+            <CardFooter>
+              <p>Card Footer</p>
+            </CardFooter>
+          </Card>
         </div>
-        <div className='my-10 flex justify-center gap-4'>
-          <div className='bg-[#e8eef1] p-4 rounded-lg'>
-            <h1 className='text-center font-bold text-2xl mb-4'>Upcoming Events</h1>
-            <Card className='w-[300px]'>
-              <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Card Content</p>
-              </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
-            </Card>
-          </div>
-          <div className='w-[60%] bg-[#d3e7f5] rounded p-4'>
-            <h1 className='text-center font-bold text-3xl mb-4'>Announcements</h1>
-            <div className='flex justify-center'>
-              {announcements.map(announcement => {
-                return (
-                  <Card className='w-[90%]' key={announcement.id}>
-                    <CardHeader>
-                      <CardTitle>{announcement.title}</CardTitle>
-                      <CardDescription>{announcement.author}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p>{announcement.content}</p>
-                    </CardContent>
-                    <CardFooter>
-                      <p>{announcement.creationDate.toISOString()}</p>
-                    </CardFooter>
-                  </Card>
-                )
-              })}
-              </div>
-          </div>
+        <div className='w-[60%] bg-[#d3e7f5] rounded p-4'>
+          <h1 className='text-center font-bold text-3xl mb-4'>Announcements</h1>
+          <div className='flex justify-center'>
+            {announcements.map(announcement => {
+              return (
+                <Card className='w-[90%]' key={announcement.id}>
+                  <CardHeader>
+                    <CardTitle>{announcement.title}</CardTitle>
+                    <CardDescription>{announcement.author}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p>{announcement.content}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <p>{announcement.creationDate.toISOString()}</p>
+                  </CardFooter>
+                </Card>
+              )
+            })}
+            </div>
         </div>
-      </section>
+      </div>
     </Wrapper>
   )
 }
