@@ -29,11 +29,11 @@ const Login = () => {
 
   return (
     <Wrapper title="PSITS | Login">
-      <div className="mt-28 w-[80%] m-auto bg-white lg:w-[550px]">
+      <div className="w-[80%] m-auto bg-white flex flex-col justify-center lg:w-[550px] min-h-screen">
         <form {...form}>
           <Card>
             <CardHeader className="space-y-1">
-              <CardTitle className="text-2xl text-center">Log in</CardTitle>
+              <CardTitle className="text-3xl mb-2 text-center">Log In</CardTitle>
               <CardDescription className="text-center">
                 Enter your id no. and password to login
               </CardDescription>
@@ -58,7 +58,7 @@ const Login = () => {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col">
-              <Button className="w-full bg-[#268EA7] hover:bg-[#3da7c2]">Login</Button>
+              <Button type="submit" className="w-full bg-[#268EA7] hover:bg-[#3da7c2]">Log In</Button>
               <Link to="/register">
                 <p className="mt-2 text-xs text-center text-gray-700">
                   {" "}
