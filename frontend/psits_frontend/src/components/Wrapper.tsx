@@ -6,7 +6,7 @@ const Wrapper = ({ children, title }: {children: React.ReactNode, title: string}
   }, [title]);
 
   return (
-    <section className='mx-20'>
+    <section className=''>
       {children}
     </section>
   )

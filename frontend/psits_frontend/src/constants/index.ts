@@ -14,3 +14,22 @@ export const homeBannerImages = [
     banner: psits_banner,
   },
 ];
+
+export const aboutBannerImages = [
+    {
+      name: "psits_banner",
+      banner: psits_banner,
+    },
+    {
+      name: "psits_banner2",
+      banner: psits_banner,
+    },
+    {
+      name: "psits_banner3",
+      banner: psits_banner,
+    },
+]
+
+export default {
+    homeBannerImages,aboutBannerImages
+}
