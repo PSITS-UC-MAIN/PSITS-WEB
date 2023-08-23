@@ -7,7 +7,7 @@ import psits_about_us from '../assets/aboutus.png'
 const About = () => {
   return (
     <Wrapper title='PSITS | About Us'>
-        <div className="my-10 mx-20 rounded">
+        <div className="mt-20 mx-20 rounded">
             <Slide indicators>
             {aboutBannerImages.map((slideImage)=> (
                 <div key={slideImage.name} className='flex justify-center rounded'>
@@ -16,7 +16,7 @@ const About = () => {
             ))} 
             </Slide>
         </div>
-        <div className="my-10 bg-[#074873] text-white">
+        <div className="mt-20 bg-[#074873] text-white">
             <div className="grid grid-cols-2 justify-items-center mx-40">
                 <div className="flex flex-col my-20">
                     <div className="text-2xl font-medium mb-8">
@@ -35,7 +35,7 @@ const About = () => {
                 </div>
             </div>
         </div>
-        <div className="my-10 mx-20 rounded">
+        <div className="my-20 mx-20 rounded">
             <Slide indicators>
             {aboutBannerImages.map((slideImage)=> (
                 <div key={slideImage.name} className='flex justify-center rounded'>

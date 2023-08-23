@@ -10,19 +10,19 @@ const Footer = () => {
                     CONTACT US
                 </div>
                 <div className="flex flex-row gap-x-2">
-                    <a href="https://www.facebook.com/PSITS.UCmain">
+                    <a href="https://www.facebook.com/PSITS.UCmain" target='_blank'>
                         <Facebook/>
                     </a>
                     <span>PSITS.UCmain</span>
                 </div>
                 <div className="flex flex-row gap-x-2">
-                    <a href="https://www.facebook.com/PSITS.UCmain">
+                    <a href="https://www.facebook.com/PSITS.UCmain" target='_blank'>
                         <Mail/>
                     </a>
                     <span>sampleemail@gmail.com</span>
                 </div>
                 <div className="flex flex-row gap-x-2">
-                    <a href="https://www.facebook.com/PSITS.UCmain">
+                    <a href="https://www.facebook.com/PSITS.UCmain" target='_blank'>
                         <Phone/>
                     </a>
                     <span>+636969696969</span>
