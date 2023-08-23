@@ -1,0 +1,9 @@
+export { default as Layout } from "./Layout";
+export { default as Home } from "./Home";
+export { default as About } from "./About";
+export { default as Events } from "./Events";
+export { default as Students } from "./Students";
+export { default as Merchandise } from "./Merchandise";
+export { default as Login } from "./Login";
+export { default as Register } from "./Register";
+export { default as Error } from "./Error";
