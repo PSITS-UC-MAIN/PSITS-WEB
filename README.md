@@ -49,6 +49,7 @@ Since the project is still `very cute`, we will be using a `free-tier` from each
 Contributors
 
 </p>
+
 <p align="left">
     <kbd><img width="64" height="64"  src="https://avatars.githubusercontent.com/u/91781090?s=100&v=4"></kbd>&nbsp;&nbsp;&nbsp;&nbsp;<b>Pia Abellana</b>&nbsp;&nbsp;(QA Tester)
 </p>
@@ -56,3 +57,12 @@ Contributors
 <p align="left">
     <kbd><img width="64" height="64"  src="https://github.com/jaymar921/PSITSWebApp/blob/master/PSITSweb/static/images/devs/ferrer.png"></kbd>&nbsp;&nbsp;&nbsp;&nbsp;<b>Mariella Ferrer</b>&nbsp;&nbsp;(UI Designer)
 </p>
+
+<p align="left">
+    <kbd><img width="64" height="64"  src="https://avatars.githubusercontent.com/u/62949724?v=4"></kbd>&nbsp;&nbsp;&nbsp;&nbsp;<b>Kean Jieden Villaflor</b>&nbsp;&nbsp;(Full Stack)
+</p>
+
+<p align="left">
+    <kbd><img width="64" height="64"  src="https://avatars.githubusercontent.com/u/71744890?v=4"></kbd>&nbsp;&nbsp;&nbsp;&nbsp;<b>Darelle Gochuico</b>&nbsp;&nbsp;(Full Stack)
+</p>
+
