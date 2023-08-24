@@ -1,25 +1,27 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import Wrapper from '@/components/Wrapper';
 
+import Wrapper from '@/components/Wrapper';
 import { homeBannerImages } from '@/constants';
+import Announcement from '@/components/Announcements/Announcement';
+import Event from '@/components/Events/Event';
 
 interface Announcements {
-  id: number;
+  id: string;
   title: string;
   creationDate: Date;
-  author: number;
+  author: string;
+  content: string;
+  photo_img_links: string;
+}
+
+interface Events {
+  id: string;
+  title: string;
+  creationDate: Date;
+  eventDate: Date;
   content: string;
   photo_img_links: string;
 }
@@ -27,10 +29,20 @@ interface Announcements {
 const Home = () => {
   const [announcements, setAnnouncements] = useState<Announcements[]>([
     {
-      id: 1234,
+      id: "1234",
       title: "Test",
       creationDate: new Date,
-      author: 1234,
+      author: "Dennis",
+      content: "hello sup",
+      photo_img_links: 'dennis'
+    }
+  ]);
+  const [events, setEvents] = useState<Events[]>([
+    {
+      id: "1234",
+      title: "Test",
+      creationDate: new Date,
+      eventDate: new Date,
       content: "hello sup",
       photo_img_links: 'dennis'
     }
@@ -45,59 +57,34 @@ const Home = () => {
   //       throw new Error(error)
   //     }
   //   };
+  //   const getEvents = async () => {
+  //     try {
+  //       const response = await axios.get('https://psits-uc-main-api.onrender.com/api/event')
+  //       console.log(response.data)   
+  //     } catch (error: any) {
+  //       throw new Error(error)
+  //     }
+  //   };
 
   //   getAnnouncements();
+  //   getEvents();
   // }, [])
 
 
   return (
     <Wrapper title='PSITS | Home'>
-      <div className='my-10 rounded'>
+      <div className='my-10 '>
         <Slide indicators>
           {homeBannerImages.map((slideImage)=> (
-            <div key={slideImage.name} className='flex justify-center rounded'>
-              <img src={slideImage.banner} className='rounded'/>
-            </div>
-          ))} 
+            <div key={slideImage.name} className='flex items-center justify-center rounded h-[600px] bg-cover bg-center' style={{'backgroundImage': `url(${slideImage.banner})`}} />
+            )
+          )} 
         </Slide>
       </div>
+
       <div className='my-10 flex justify-center gap-4'>
-        <div className='bg-[#e8eef1] p-4 rounded-lg'>
-          <h1 className='text-center font-bold text-2xl mb-4'>Upcoming Events</h1>
-          <Card className='w-[300px]'>
-            <CardHeader>
-              <CardTitle>Card Title</CardTitle>
-              <CardDescription>Card Description</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Card Content</p>
-            </CardContent>
-            <CardFooter>
-              <p>Card Footer</p>
-            </CardFooter>
-          </Card>
-        </div>
-        <div className='w-[60%] bg-[#d3e7f5] rounded p-4'>
-          <h1 className='text-center font-bold text-3xl mb-4'>Announcements</h1>
-          <div className='flex justify-center'>
-            {announcements.map(announcement => {
-              return (
-                <Card className='w-[90%]' key={announcement.id}>
-                  <CardHeader>
-                    <CardTitle>{announcement.title}</CardTitle>
-                    <CardDescription>{announcement.author}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{announcement.content}</p>
-                  </CardContent>
-                  <CardFooter>
-                    <p>{announcement.creationDate.toISOString()}</p>
-                  </CardFooter>
-                </Card>
-              )
-            })}
-            </div>
-        </div>
+        <Event events={events}/>
+        <Announcement announcements={announcements}/>
       </div>
     </Wrapper>
   )
