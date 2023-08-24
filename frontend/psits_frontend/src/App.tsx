@@ -5,6 +5,7 @@ import {Layout, Home, About, Events, Students, Merchandise, Login, Register, Res
 const router = createBrowserRouter([
   {
     element: <Layout />,
+    errorElement: <Error/>,
     children: [
       {
         path: "/",
