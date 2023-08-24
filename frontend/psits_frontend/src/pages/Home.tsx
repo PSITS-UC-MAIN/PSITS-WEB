@@ -5,8 +5,8 @@ import 'react-slideshow-image/dist/styles.css';
 
 import Wrapper from '@/components/Wrapper';
 import { homeBannerImages } from '@/constants';
-import Announcement from '@/components/Announcements/Announcement';
-import Event from '@/components/Events/Event';
+import Announcement from '@/components/announcements/Announcement';
+import Event from '@/components/events/Event';
 
 interface Announcements {
   id: string;
@@ -77,8 +77,7 @@ const Home = () => {
         <Slide indicators>
           {homeBannerImages.map((slideImage)=> (
             <div key={slideImage.name} className='flex items-center justify-center rounded h-[600px] bg-cover bg-center' style={{'backgroundImage': `url(${slideImage.banner})`}} />
-            )
-          )} 
+          ))} 
         </Slide>
       </div>
 
