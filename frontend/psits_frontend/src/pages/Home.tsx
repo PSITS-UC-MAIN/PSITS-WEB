@@ -5,8 +5,8 @@ import 'react-slideshow-image/dist/styles.css';
 
 import Wrapper from '@/components/Wrapper';
 import { homeBannerImages } from '@/constants';
-import Announcement from '@/components/announcements/Announcement';
-import Event from '@/components/events/Event';
+import Announcement from '@/components/Announcements/Announcement';
+import Event from '@/components/Events/Event';
 
 interface Announcements {
   id: string;
