@@ -1,4 +1,3 @@
-import React from "react";
 import Wrapper from "@/components/Wrapper";
 import { Slide } from "react-slideshow-image";
 import { homeBannerImages } from "@/constants";
@@ -99,10 +98,15 @@ const Events = () => {
               </CardHeader>
               <CardContent>
                 <h1 className="text-xl font-semibold uppercase mb-5">{item.title}</h1>
-                <p className="text-justify">{item.content}</p>
+                <p className="text-justify truncate">{item.content}</p>
               </CardContent>
               <CardFooter className="justify-center">
-                <p className="text-[#074873] font-medium">{item.eventDate}</p>
+                <div className="flex flex-col">
+                  <p className="text-[#074873] font-medium">{item.eventDate}</p>
+                  <a href="#" className="underline">
+                    View Full Context
+                  </a>
+                </div>
               </CardFooter>
             </Card>
           ))}
