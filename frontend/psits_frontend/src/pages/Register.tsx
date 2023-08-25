@@ -15,6 +15,7 @@ const RegisterSchema = z
     userId: z.string().min(8).max(15),
     firstname: z.string().min(2),
     lastname: z.string().min(2),
+    email: z.string().email(),
     course: z.string(),
     year: z.string(),
     password: z.string().min(6),
@@ -95,6 +96,21 @@ const Register = () => {
                 )}
                 <FormField
                   control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="email">Email</FormLabel>
+                      <FormControl>
+                        <Input id="email" type="email" placeholder="Email" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                {form.formState.errors.email && (
+                  <p className="text-red-400 text-sm font-light">{form.formState.errors.email.message}</p>
+                )}
+                <FormField
+                  control={form.control}
                   name="course"
                   render={({ field }) => (
                     <FormItem>
@@ -150,7 +166,6 @@ const Register = () => {
                       <FormLabel htmlFor="password">Password</FormLabel>
                       <FormControl>
                         <Input id="password" type="password" placeholder="Password" {...field} />
-                        {/* {form.userId && <p className="text-red-400 text-sm font-light">{errors.userId.message}</p>} */}
                       </FormControl>
                     </FormItem>
                   )}
