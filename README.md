@@ -40,6 +40,13 @@ Since the project is still `very cute`, we will be using a `free-tier` from each
 - GoogleAPI [EmailSMPT]
 - WindyAPI [WeatherReport]
 - JavaScript
+- Docker
+
+#### Run app with in docker
+You must have docker installed on your device. Run a cmd or a terminal at the project directory and do the following command:
+```
+> docker-compose up
+```
 
 ### The team 
 <b>Project Owner</b>
