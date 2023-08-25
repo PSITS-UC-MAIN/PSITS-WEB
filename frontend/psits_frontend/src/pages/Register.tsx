@@ -60,7 +60,9 @@ const Register = () => {
                     </FormItem>
                   )}
                 />
-                {form.formState.errors.userId && <p className="text-red-400 text-sm font-light">{form.formState.errors.userId.message}</p>}
+                {form.formState.errors.userId && (
+                  <p className="text-red-400 text-sm font-light">{form.formState.errors.userId.message}</p>
+                )}
                 <FormField
                   control={form.control}
                   name="firstname"
@@ -72,8 +74,10 @@ const Register = () => {
                       </FormControl>
                     </FormItem>
                   )}
-                  />
-                  {form.formState.errors.firstname && <p className="text-red-400 text-sm font-light">{form.formState.errors.firstname.message}</p>}
+                />
+                {form.formState.errors.firstname && (
+                  <p className="text-red-400 text-sm font-light">{form.formState.errors.firstname.message}</p>
+                )}
                 <FormField
                   control={form.control}
                   name="lastname"
@@ -86,16 +90,18 @@ const Register = () => {
                     </FormItem>
                   )}
                 />
-                {form.formState.errors.lastname && <p className="text-red-400 text-sm font-light">{form.formState.errors.lastname.message}</p>}
+                {form.formState.errors.lastname && (
+                  <p className="text-red-400 text-sm font-light">{form.formState.errors.lastname.message}</p>
+                )}
                 <FormField
                   control={form.control}
                   name="course"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Course</FormLabel>
+                      <FormLabel htmlFor="course">Course</FormLabel>
                       <FormControl>
                         <Select onValueChange={field.onChange}>
-                          <SelectTrigger>
+                          <SelectTrigger id="course">
                             <SelectValue placeholder="Select your course" />
                           </SelectTrigger>
                           <SelectContent>
@@ -108,16 +114,18 @@ const Register = () => {
                     </FormItem>
                   )}
                 />
-                {form.formState.errors.course && <p className="text-red-400 text-sm font-light">{form.formState.errors.course.message}</p>}
+                {form.formState.errors.course && (
+                  <p className="text-red-400 text-sm font-light">{form.formState.errors.course.message}</p>
+                )}
                 <FormField
                   control={form.control}
                   name="year"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Year</FormLabel>
+                      <FormLabel htmlFor="year">Year</FormLabel>
                       <FormControl>
                         <Select onValueChange={field.onChange}>
-                          <SelectTrigger>
+                          <SelectTrigger id="year">
                             <SelectValue placeholder="Select your current year" />
                           </SelectTrigger>
                           <SelectContent>
@@ -131,7 +139,9 @@ const Register = () => {
                     </FormItem>
                   )}
                 />
-                {form.formState.errors.year && <p className="text-red-400 text-sm font-light">{form.formState.errors.year.message}</p>}
+                {form.formState.errors.year && (
+                  <p className="text-red-400 text-sm font-light">{form.formState.errors.year.message}</p>
+                )}
                 <FormField
                   control={form.control}
                   name="password"
@@ -145,7 +155,9 @@ const Register = () => {
                     </FormItem>
                   )}
                 />
-                {form.formState.errors.password && <p className="text-red-400 text-sm font-light">{form.formState.errors.password.message}</p>}
+                {form.formState.errors.password && (
+                  <p className="text-red-400 text-sm font-light">{form.formState.errors.password.message}</p>
+                )}
                 <FormField
                   control={form.control}
                   name="confirmPassword"
@@ -158,7 +170,9 @@ const Register = () => {
                     </FormItem>
                   )}
                 />
-                {form.formState.errors.confirmPassword && <p className="text-red-400 text-sm font-light">{form.formState.errors.confirmPassword.message}</p>}
+                {form.formState.errors.confirmPassword && (
+                  <p className="text-red-400 text-sm font-light">{form.formState.errors.confirmPassword.message}</p>
+                )}
               </CardContent>
               <CardFooter className="flex flex-col">
                 <Button type="submit" className="w-full bg-[#268EA7] hover:bg-[#3da7c2]">
