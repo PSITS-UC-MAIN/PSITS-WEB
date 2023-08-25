@@ -1,5 +1,13 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 const Header = () => {
   return (
@@ -12,7 +20,7 @@ const Header = () => {
       </div> */}
       <nav className="bg-[#074873] w-full py-6 text-start">
         <div className="flex items-center justify-between text-white mx-[150px]">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 cursor-pointer">
             <img src="/logo/psits_logo.png" className="h-[60px]" />
             <h1 className="text-lg font-semibold ">
               Philippine Society of Information <br /> Technology Students
@@ -28,9 +36,32 @@ const Header = () => {
             <Button className="text-md" variant="ghost" asChild>
               <Link to="/events">Events</Link>
             </Button>
-            <Button className="text-md" variant="ghost" asChild>
-              <Link to="/students">Students</Link>
-            </Button>
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="bg-transparent text-md"> Students </NavigationMenuTrigger>
+                  <NavigationMenuContent className="flex flex-col gap-4 p-4 m-0 border bg-transparent w-[500px]">
+                    <NavigationMenuLink asChild>
+                      <Button variant="ghost" className="hover:bg-slate-200">
+                        <Link to="/students">All Students</Link>
+                      </Button>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Button variant="ghost" className="hover:bg-slate-200">
+                        <Link to="/students/officers">
+                          <p>PSITS Officers</p>
+                        </Link>
+                      </Button>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Button variant="ghost" className="hover:bg-slate-200">
+                        <Link to="/students/developers">Developers</Link>
+                      </Button>
+                    </NavigationMenuLink>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
             <Button className="text-md" variant="ghost" asChild>
               <Link to="/merchandise">Merchandise</Link>
             </Button>

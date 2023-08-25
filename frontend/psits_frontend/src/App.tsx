@@ -5,7 +5,10 @@ import {
   Home,
   About,
   Events,
+  StudentLayout,
   Students,
+  Officers,
+  Developers,
   Merchandise,
   AdminDashboard,
   AdminAccounts,
@@ -36,7 +39,21 @@ const router = createBrowserRouter([
       },
       {
         path: "students",
-        element: <Students />,
+        element: <StudentLayout />,
+        children: [
+          {
+            index: true,
+            element: <Students />,
+          },
+          {
+            path: "officers",
+            element: <Officers />,
+          },
+          {
+            path: "developers",
+            element: <Developers />,
+          },
+        ],
       },
       {
         path: "merchandise",
@@ -51,7 +68,7 @@ const router = createBrowserRouter([
             element: <AdminDashboard />,
           },
           {
-            path: "/admin/accounts",
+            path: "accounts",
             element: <AdminAccounts />,
           },
         ],
