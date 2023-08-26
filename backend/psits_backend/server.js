@@ -19,6 +19,7 @@ app.use('/api/announcement', require('./src/routes/announcement'));
 app.use('/api/event', require('./src/routes/events'));
 app.use('/api/merch', require('./src/routes/merchandise'));
 app.use('/api/order', require('./src/routes/orders'));
+app.use('/api/officelog', require('./src/routes/officelog'));
 
 // run the app
 const server = app.listen(PORT, () => {
