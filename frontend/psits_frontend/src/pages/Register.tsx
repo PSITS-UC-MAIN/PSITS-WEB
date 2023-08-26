@@ -12,7 +12,7 @@ import Wrapper from "@/components/Wrapper";
 
 const RegisterSchema = z
   .object({
-    userId: z.string().min(8).max(15),
+    userId: z.string().length(8),
     firstname: z.string().min(2),
     lastname: z.string().min(2),
     email: z.string().email(),

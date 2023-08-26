@@ -11,8 +11,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Wrapper from "@/components/Wrapper";
 
 const LoginSchema = z.object({
-  userId: z.string().min(8).max(15),
-  password: z.string().min(6).max(30),
+  userId: z.string().length(8),
+  password: z.string().min(6),
 });
 
 type LoginSchema = z.infer<typeof LoginSchema>;
