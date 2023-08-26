@@ -69,7 +69,7 @@ const dummyData = [
     isAdmin: true,
   },
   {
-    user_id: 12340,
+    user_id: 12341,
     firstname: "Kean Jieden",
     lastname: "Villaflor",
     email: "keanjieden@gmail.com",
@@ -78,7 +78,7 @@ const dummyData = [
     isAdmin: true,
   },
   {
-    user_id: 12340,
+    user_id: 12342,
     firstname: "Kean Jieden",
     lastname: "Villaflor",
     email: "keanjieden@gmail.com",
@@ -91,7 +91,7 @@ const dummyData = [
 const Students = () => {
   return (
     <Wrapper title="PSITS | Students">
-      <div className="min-h-screen mt-20">
+      <div className="min-h-screen mt-10">
         <div className="flex justify-end">
           <div className="flex gap-x-3 w-[50%]">
             <Input type="search" placeholder="Search for a student..." />
@@ -130,7 +130,7 @@ const Students = () => {
         <div className="flex justify-start my-5">
           <span className="font-bold text-2xl">Search Results</span>
         </div>
-        <div className="flex gap-4 flex-wrap justify-center">
+        <div className="flex gap-4 flex-wrap justify-center mb-10">
           {dummyData.map((item) => (
             <Card key={item.user_id} className="w-[300px] text-center">
               <CardHeader>
