@@ -15,6 +15,7 @@ import {
   AdminDashboard,
   AdminAccounts,
   AdminLayout,
+  Profile,
   Login,
   Register,
   ResetPassword,
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
             element: <AdminMerchandise />,
           },
         ],
+      },
+      {
+        path: "profile/:userId",
+        element: <Profile />,
       },
       {
         path: "login",
