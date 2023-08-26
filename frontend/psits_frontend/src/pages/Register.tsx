@@ -1,7 +1,7 @@
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigation, redirect } from "react-router-dom";
 
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -29,13 +29,25 @@ const RegisterSchema = z
 type RegisterSchema = z.infer<typeof RegisterSchema>;
 
 const Register = () => {
+  const navigation = useNavigation();
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(RegisterSchema),
+    defaultValues: {
+      userId: "",
+      firstname: "",
+      lastname: "",
+      email: "",
+      course: "",
+      year: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
 
   const onSubmit = (data: RegisterSchema) => {
     //TODO: Send data to the server
     console.log(data);
+    redirect("/login");
   };
 
   return (
@@ -87,6 +99,21 @@ const Register = () => {
                       <FormLabel htmlFor="lastname">Lastname</FormLabel>
                       <FormControl>
                         <Input id="lastname" type="text" placeholder="Lastname" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                {form.formState.errors.lastname && (
+                  <p className="text-red-400 text-sm font-light">{form.formState.errors.lastname.message}</p>
+                )}
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="email">Email</FormLabel>
+                      <FormControl>
+                        <Input id="email" type="email" placeholder="Email" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
