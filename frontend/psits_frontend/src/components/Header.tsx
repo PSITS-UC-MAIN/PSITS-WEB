@@ -22,7 +22,7 @@ const Header = () => {
         <div className="flex items-center justify-between text-white mx-[150px]">
           <div className="flex items-center gap-4 cursor-pointer">
             <img src="/logo/psits_logo.png" className="h-[60px]" />
-            <h1 className="text-lg font-semibold ">
+            <h1 className="text-lg font-semibold">
               Philippine Society of Information <br /> Technology Students
             </h1>
           </div>
