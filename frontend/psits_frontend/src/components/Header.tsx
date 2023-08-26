@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,7 +10,13 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 
+const ROUTE = ["/admin", "/admin/accounts", "/admin/events", "/admin/merchandise"];
+
 const Header = () => {
+  const { pathname } = useLocation();
+
+  if (ROUTE.includes(pathname)) return;
+
   return (
     <header className="sticky top-0 z-50">
       {/* <div className="px-20 my-4 flex items-center justify-between">

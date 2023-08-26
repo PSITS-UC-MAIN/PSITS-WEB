@@ -12,6 +12,7 @@ export { default as AdminDashboard } from "./admin/AdminDashboard";
 export { default as AdminAccounts } from "./admin/AdminAccounts";
 export { default as AdminEvents } from "./admin/AdminEvents";
 export { default as AdminMerchandise } from "./admin/AdminMerchandise";
+export { default as Profile } from "./Profile";
 export { default as Login } from "./Login";
 export { default as Register } from "./Register";
 export { default as Error } from "./Error";
