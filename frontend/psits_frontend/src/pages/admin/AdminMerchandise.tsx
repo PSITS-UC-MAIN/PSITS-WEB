@@ -1,7 +1,7 @@
-import React from "react";
+import Wrapper from "@/components/Wrapper";
 
 const AdminMerchandise = () => {
-  return <div>Merchandise</div>;
+  return <Wrapper title="PSITS Admin | Merchandise" noMargin>Merchandise</Wrapper>;
 };
 
 export default AdminMerchandise;

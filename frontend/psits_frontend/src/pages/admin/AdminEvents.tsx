@@ -1,7 +1,7 @@
-import React from "react";
+import Wrapper from "@/components/Wrapper";
 
 const AdminEvents = () => {
-  return <div>Events</div>;
+  return <Wrapper title="PSITS Admin | Events" noMargin>Events</Wrapper>;
 };
 
 export default AdminEvents;
