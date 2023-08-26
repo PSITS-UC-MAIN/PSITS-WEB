@@ -7,7 +7,7 @@ import { aboutBannerImages, alumniShoutoutBannerImages, aboutUs } from "@/consta
 const About = () => {
   return (
     <Wrapper noMargin title="PSITS | About Us">
-      <div className="mt-10 mx-20 rounded">
+      <div className="mt-10 mx-[150px] rounded">
         <Slide indicators>
           {aboutBannerImages.map((slideImage) => (
             <div
@@ -28,7 +28,7 @@ const About = () => {
         </div>
         <img src={trinitylogo} alt="PSITS Logo" />
       </div>
-      <div className="m-20 rounded">
+      <div className="my-20 mx-[150px] rounded">
         <h1 className="text-4xl font-medium mb-4 text-[#074873]">Students Alumni Shoutouts!</h1>
         <Slide indicators>
           {alumniShoutoutBannerImages.map((slideImage) => (
