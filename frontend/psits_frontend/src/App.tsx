@@ -10,6 +10,8 @@ import {
   Officers,
   Developers,
   Merchandise,
+  AdminEvents,
+  AdminMerchandise,
   AdminDashboard,
   AdminAccounts,
   AdminLayout,
@@ -70,6 +72,14 @@ const router = createBrowserRouter([
           {
             path: "accounts",
             element: <AdminAccounts />,
+          },
+          {
+            path: "events",
+            element: <AdminEvents />,
+          },
+          {
+            path: "merchandise",
+            element: <AdminMerchandise />,
           },
         ],
       },

@@ -1,6 +1,6 @@
 import { Sidebar, Menu, MenuItem, menuClasses } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
-import { GaugeCircle, User } from "lucide-react";
+import { GaugeCircle, User, CalendarDays, ShoppingBasket } from "lucide-react";
 
 const AdminSidebar = () => {
   const { pathname } = useLocation();
@@ -35,17 +35,31 @@ const AdminSidebar = () => {
           <p className=" font-medium text-sm">Main</p>
           <MenuItem
             active={pathname === "/admin" ? true : false}
-            icon={<GaugeCircle size={32} />}
+            icon={<GaugeCircle />}
             component={<Link to="/admin" />}
           >
             Dashboard
           </MenuItem>
           <MenuItem
             active={pathname === "/admin/accounts" ? true : false}
-            icon={<User size={32} />}
+            icon={<User />}
             component={<Link to="/admin/accounts" />}
           >
             Accounts
+          </MenuItem>
+          <MenuItem
+            active={pathname === "/admin/events" ? true : false}
+            icon={<CalendarDays />}
+            component={<Link to="/admin/events" />}
+          >
+            Events
+          </MenuItem>
+          <MenuItem
+            active={pathname === "/admin/merchandise" ? true : false}
+            icon={<ShoppingBasket />}
+            component={<Link to="/admin/merchandise" />}
+          >
+            Merchandise
           </MenuItem>
         </Menu>
       </div>

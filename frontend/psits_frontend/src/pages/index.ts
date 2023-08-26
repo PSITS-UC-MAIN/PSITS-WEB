@@ -10,6 +10,8 @@ export { default as Merchandise } from "./Merchandise";
 export { default as AdminLayout } from "./admin/AdminLayout";
 export { default as AdminDashboard } from "./admin/AdminDashboard";
 export { default as AdminAccounts } from "./admin/AdminAccounts";
+export { default as AdminEvents } from "./admin/AdminEvents";
+export { default as AdminMerchandise } from "./admin/AdminMerchandise";
 export { default as Login } from "./Login";
 export { default as Register } from "./Register";
 export { default as Error } from "./Error";
