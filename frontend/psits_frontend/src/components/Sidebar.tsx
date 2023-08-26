@@ -1,16 +1,18 @@
 import { Sidebar, Menu, MenuItem, menuClasses } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
-import { GaugeCircle, User, CalendarDays, ShoppingBasket } from "lucide-react";
+import { GaugeCircle, User, CalendarDays, ShoppingBasket, PanelLeft } from "lucide-react";
+
+import { Separator } from "@/components/ui/separator";
 
 const AdminSidebar = () => {
   const { pathname } = useLocation();
 
   return (
-    <Sidebar className="h-screen" width="300px">
+    <Sidebar width="300px">
       <div className="p-5">
-        <div className="flex flex-col items-center gap-2 mt-7 mb-12">
+        <div className="flex flex-col items-center gap-2 mb-12">
           <img src="/logo/psits_logo.png" className="w-[150px]" placeholder="logo" />
-          <h1 className="font-semibold text-2xl">Admin Page</h1>
+          <h1 className="font-bold text-[#252525] text-2xl">Admin Page</h1>
         </div>
         <Menu
           menuItemStyles={{
@@ -60,6 +62,10 @@ const AdminSidebar = () => {
             component={<Link to="/admin/merchandise" />}
           >
             Merchandise
+          </MenuItem>
+          <Separator className="my-4" />
+          <MenuItem icon={<PanelLeft />} component={<Link to="/" />}>
+            Exit
           </MenuItem>
         </Menu>
       </div>
