@@ -11,6 +11,14 @@ database();
 app.use(express.json()); // uses JSON as payload
 app.use(compression()); // compresses all routes
 
+// cors
+const cors = require('cors')
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+}
+app.use(cors(corsOptions));
+
 // routes
 app.use('/', require('./src/routes/main'));
 app.use('/api/auth', require('./src/routes/auth'));
@@ -19,6 +27,7 @@ app.use('/api/announcement', require('./src/routes/announcement'));
 app.use('/api/event', require('./src/routes/events'));
 app.use('/api/merch', require('./src/routes/merchandise'));
 app.use('/api/order', require('./src/routes/orders'));
+app.use('/api/officelog', require('./src/routes/officelog'));
 
 // run the app
 const server = app.listen(PORT, () => {
