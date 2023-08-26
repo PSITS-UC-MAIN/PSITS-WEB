@@ -11,6 +11,14 @@ database();
 app.use(express.json()); // uses JSON as payload
 app.use(compression()); // compresses all routes
 
+// cors
+const cors = require('cors')
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+}
+app.use(cors(corsOptions));
+
 // routes
 app.use('/', require('./src/routes/main'));
 app.use('/api/auth', require('./src/routes/auth'));
