@@ -1,0 +1,40 @@
+# docker-compose.yml
+# implemented by: Jayharron Mar Abejar
+services:
+
+  # backend
+  psits_backend_api_service:
+    container_name: psits_backend_api
+    build:
+      context: backend/psits_backend/
+      dockerfile: Dockerfile
+    ports:
+      - 5001:3000
+    environment:
+      - DATABASE_URL=mongodb://mongodb:27017/PSITS_DB
+      - PORT=3000
+      - PROFILE_IMG_DEFAULT='https://cdn-icons-png.flaticon.com/512/847/847969.png?w=826&t=st=1691641237~exp=1691641837~hmac=6371e3f2acfbe7c141349f0c1a8ea64a846ef79be69c39ab7cd6ba738f0ef556'
+      - API_KEYS=API_KEY_xxxxx
+    links: 
+      - mongodb
+    restart: on-failure
+
+  # frontend
+  psits_frontend_vite_and_react:
+    container_name: psits_frontend
+    build:
+      context: frontend/psits_frontend/
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5173
+    environment:
+      - name=value
+    depends_on:
+      - psits_backend_api_service
+
+  # mongodb
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - '27017:27017'

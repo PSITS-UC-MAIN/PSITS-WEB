@@ -91,24 +91,7 @@ const Register = () => {
                     </FormItem>
                   )}
                 />
-                {form.formState.errors.lastname && (
-                  <p className="text-red-400 text-sm font-light">{form.formState.errors.lastname.message}</p>
-                )}
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="email">Email</FormLabel>
-                      <FormControl>
-                        <Input id="email" type="email" placeholder="Email" {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                {form.formState.errors.email && (
-                  <p className="text-red-400 text-sm font-light">{form.formState.errors.email.message}</p>
-                )}
+                {form.formState.errors.lastname && <p className="text-red-400 text-sm font-light">{form.formState.errors.lastname.message}</p>}
                 <FormField
                   control={form.control}
                   name="course"
