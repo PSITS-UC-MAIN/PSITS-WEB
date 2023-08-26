@@ -211,6 +211,8 @@ const information = `
     [HEADERS]
     user_id:  00000001
     password: p@5zw0rD
+    // Optional Header [Alternative for UserID]
+    rfid: 00000001
 
     [RESPONSE]
     // On Success Authentication

@@ -8,17 +8,28 @@ const TOKENS = [];
 async function GetUserPassMiddleware(req, res, next) {
     // get the user_id and password from the header
     const user_id = req.headers.user_id;
+    const rfid = req.headers.rfid;
     const password = req.headers.password;
 
     // return bad-request if these fields are missing
-    if(!user_id)
-        return res.status(400).json({message: "User_ID must be present at the header of the request!", StatusCode: 400 });
+    if(!user_id){
+        if(!rfid)
+            return res.status(400).json({message: "User_ID must be present at the header of the request!", StatusCode: 400 });
+        else if(rfid === '')
+            return res.status(400).json({message: "RFID must be present at the header of the request!", StatusCode: 400 });
+    } 
     if(!password)
         return res.status(400).json({message: "Password must be present at the header of the request!", StatusCode: 400 });
 
     // database lookup
     try{
-        const user = await User.findOne({user_id, password: await SHA512(password)});
+        let args = user_id?'user_id':'rfid'
+        const credentials = {
+            [args]:user_id?user_id:rfid,
+            password: await SHA512(password)
+        }
+        
+        const user = await User.findOne(credentials);
 
         // return unauthorized when user is not found
         if(!user)
