@@ -3,7 +3,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import AnnoucementCard from "./AnnoucementCard";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
@@ -14,18 +15,18 @@ const dummyData = [
   {
     id: "1234",
     title: "Tidert Gaming",
-    creationDate: new Date(),
-    author: "kean",
-    content: "wassup mananap",
-    photo_img_links: "",
+    creationDate: new Date("August 27, 2023 09:37:00"),
+    author: "Kean Jieden Villaflor",
+    content: `The sky is **blue**. `,
+    photo_img_links: "https://source.unsplash.com/random",
   },
   {
     id: "12345",
     title: "Need maney",
-    creationDate: new Date(),
+    creationDate: new Date("August 25, 2023 12:37:00"),
     author: "darelle",
     content: "ayaw kol",
-    photo_img_links: "",
+    photo_img_links: "https://source.unsplash.com/random",
   },
 ];
 
@@ -74,7 +75,7 @@ const Announcement = ({ announcements }: { announcements: Announcement[] }) => {
   };
 
   return (
-    <div className="w-[70%]">
+    <div className="w-[90%] xl:max-w-[70%]">
       {announceState ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <Card className="w-full">
@@ -82,7 +83,6 @@ const Announcement = ({ announcements }: { announcements: Announcement[] }) => {
               <Input placeholder="Announcement Title" {...register("title")} />
               {errors.title && <p className="text-red-400 text-sm font-light">{errors.title.message}</p>}
             </CardHeader>
-
             <CardContent>
               <Textarea
                 rows={5}
@@ -123,24 +123,19 @@ const Announcement = ({ announcements }: { announcements: Announcement[] }) => {
           <h1 className="text-gray-500 text-sm">Announce something to the students</h1>
         </div>
       )}
-
-      <div className="border shadow rounded p-4">
+      <div className="border shadow rounded p-4 bg-[#F9F9F9]">
         <h1 className="text-center font-bold text-3xl mb-4">Announcements</h1>
         <div className="flex flex-col justify-center items-center gap-4">
           {dummyData.map((announcement) => {
             return (
-              <Card className="w-[90%]" key={announcement.id}>
-                <CardHeader>
-                  <CardTitle>{announcement.title}</CardTitle>
-                  <CardDescription>{announcement.author}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>{announcement.content}</p>
-                </CardContent>
-                <CardFooter>
-                  <p>{announcement.creationDate.toISOString()}</p>
-                </CardFooter>
-              </Card>
+              <AnnoucementCard
+                key={announcement.id}
+                title={announcement.title}
+                author={announcement.author}
+                creationDate={announcement.creationDate}
+                content={announcement.content}
+                photo_img_links={announcement.photo_img_links}
+              />
             );
           })}
         </div>
