@@ -27,26 +27,8 @@ interface Events {
 }
 
 const Home = () => {
-  const [announcements, setAnnouncements] = useState<Announcements[]>([
-    {
-      id: "1234",
-      title: "Test",
-      creationDate: new Date(),
-      author: "Dennis",
-      content: "hello sup",
-      photo_img_links: "dennis",
-    },
-  ]);
-  const [events, setEvents] = useState<Events[]>([
-    {
-      id: "1234",
-      title: "Test",
-      creationDate: new Date(),
-      eventDate: new Date(),
-      content: "hello sup",
-      photo_img_links: "dennis",
-    },
-  ]);
+  const [announcements, setAnnouncements] = useState<Announcements[]>([]);
+  const [events, setEvents] = useState<Events[]>([]);
 
   // useEffect(() => {
   //   const getAnnouncements = async () => {
