@@ -22,16 +22,14 @@ const EventCard = ({ title, creationDate, eventDate, content, photo_img_link }: 
         <span className=" text-[1rem] font-bold">{format(eventDate, "PPP")}</span>
       </div>
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="mb-2">
           <div className="flex gap-4 items-center">
             <PartyPopper size={28} />
             <h1 className="text-xl font-semibold uppercase">{title}!</h1>
           </div>
         </CardTitle>
-        <CardDescription>
-          <Separator className="mb-4" />
-          <p className="breakwords truncate">{content}</p>
-        </CardDescription>
+        <Separator />
+        <CardDescription className="breakwords truncate font-light text-gray-700">{content}</CardDescription>
       </CardHeader>
       <CardFooter>
         <Button className="w-full" variant="outline">
