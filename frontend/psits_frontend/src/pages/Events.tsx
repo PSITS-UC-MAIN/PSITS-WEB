@@ -88,7 +88,7 @@ const Events = () => {
         <div className="text-2xl font-medium text-center text-white bg-[#548BA1] py-5">
           COLLEGE OF COMPUTER STUDIES LIST OF EVENTS
         </div>
-        <div className="grid grid-flow-row auto-rows-auto grid-cols-5 gap-5 justify-items-center mx-[150px]">
+        <div className="flex flex-row flex-wrap gap-5 justify-center mx-[150px]">
           {dummyData.map((item) => (
             <Card key={item.id} className="w-[300px] text-center">
               <CardHeader>
