@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
 const OfficeLogModel = new mongoose.Schema({
     user:{
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+        type: Number,
         required: true
     },
     loginTime:{

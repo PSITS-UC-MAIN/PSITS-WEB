@@ -5,8 +5,9 @@ const router = express.Router();
 
 router.post('/', ValidateAPIKey, GetAuthToken, VerifyAdmin, async(req, res) => {
     const log = new OfficeLogModel({
-        user: res.issuerObjectId,
-        remarks: req.body.remarks
+        user: res.issuer,
+        remarks: req.body.remarks,
+        loginTime: new Date()
     })
 
     
@@ -17,7 +18,7 @@ router.post('/', ValidateAPIKey, GetAuthToken, VerifyAdmin, async(req, res) => {
         const min = new Date(new Date().setDate(new Date().getDate()-100)).toISOString();
 
         // check if there is a pending log exists, it must be logged off first
-        const foundLog = await OfficeLogModel.findOne({user: res.issuerObjectId,loginTime:{$gte:min, $lt:max}, logoutTime: null})
+        const foundLog = await OfficeLogModel.findOne({user: res.issuer,loginTime:{$gte:min, $lt:max}, logoutTime: null})
 
         if(foundLog)
             return res.status(403).json({foundLog, message: "Cannot override found log, you must log out first", StatusCode: 403})
@@ -34,7 +35,7 @@ router.patch('/', ValidateAPIKey, GetAuthToken, VerifyAdmin, async(req, res) => 
     // default min is 100 days ago
     const min = req.headers.minval??new Date(new Date().setDate(new Date().getDate()-100)).toISOString();
     try{
-        const foundLog = await OfficeLogModel.findOne({user: res.issuerObjectId,loginTime:{$gte:min, $lt:max}, logoutTime: null})
+        const foundLog = await OfficeLogModel.findOne({user: res.issuer,loginTime:{$gte:min, $lt:max}, logoutTime: null})
 
         if(!foundLog)
             return res.status(404).json({message: "No pending office log found, you have to log in first", StatusCode: 404});
@@ -48,7 +49,7 @@ router.patch('/', ValidateAPIKey, GetAuthToken, VerifyAdmin, async(req, res) => 
     }
 });
 
-router.get('/', ValidateAPIKey, GetAuthToken, VerifyAdmin,async (req, res)=> {
+router.get('/', ValidateAPIKey,async (req, res)=> {
     // get the option header value
     const option = req.headers.option;
     // default max is today's date

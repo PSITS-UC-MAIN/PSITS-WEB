@@ -10,6 +10,7 @@ async function GetUserPassMiddleware(req, res, next) {
     const user_id = req.headers.user_id;
     const rfid = req.headers.rfid;
     const password = req.headers.password;
+    const api_key = req.headers.api_key;
 
     // return bad-request if these fields are missing
     if(!user_id){
@@ -18,16 +19,26 @@ async function GetUserPassMiddleware(req, res, next) {
         else if(rfid === '')
             return res.status(400).json({message: "RFID must be present at the header of the request!", StatusCode: 400 });
     } 
-    if(!password)
-        return res.status(400).json({message: "Password must be present at the header of the request!", StatusCode: 400 });
+    if(!password){
+        if(!api_key)
+            return res.status(400).json({message: "Password must be present at the header of the request!", StatusCode: 400 });
+
+    }
+        
 
     // database lookup
     try{
         let args = user_id?'user_id':'rfid'
         const credentials = {
-            [args]:user_id?user_id:rfid,
-            password: await SHA512(password)
+            [args]:user_id?user_id:rfid
         }
+
+        if(password)
+            credentials.password = await SHA512(password)
+
+        if(api_key && !password)
+            if(!config.getAPI_KEYS().includes(api_key))
+                return res.status(401).json({message: "You have provided an invalid api_key, Unauthozired!", StatusCode: 401});
         
         const user = await User.findOne(credentials);
 
