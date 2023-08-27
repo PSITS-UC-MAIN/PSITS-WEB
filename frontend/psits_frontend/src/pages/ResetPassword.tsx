@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import Wrapper from "@/components/Wrapper";
 
 const ResetPasswordSchema = z.object({
-  userId: z.string().min(8),
+  userId: z.string().length(8),
 });
 
 type ResetPasswordSchema = z.infer<typeof ResetPasswordSchema>;
@@ -41,7 +41,7 @@ const ResetPassword = () => {
             <CardContent className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="userId">Student ID</Label>
-                <Input type="text" id="id" placeholder="I.D. No." {...register("userId")} />
+                <Input type="text" id="userId" placeholder="I.D. No." {...register("userId")} />
                 {errors.userId && <p className="text-red-400 text-sm font-light">{errors.userId.message}</p>}
               </div>
             </CardContent>

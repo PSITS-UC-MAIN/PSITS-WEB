@@ -58,6 +58,24 @@ router.get('/:user_id', GetAuthToken, async (req, res) => {
     }
 });
 
+// get one user info
+router.get('/api_key/:user_id', ValidateAPIKey, async (req, res) => {
+    let user_id = req.params.user_id??0;
+    user_id = Number.parseInt(user_id);
+    
+    try{
+        const user = await Users.findOne({user_id: user_id});
+    
+        if(!user)
+            return res.status(404).json({message: "Requested user information was not found!", StatusCode: 404});
+
+        res.status(200).json({UserData:EncapulateUser(user), message: "Retrieved user information", StatusCode: 200});
+        
+    }catch(e){
+        res.status(500).json({message:"Internal Server Error | Make sure that the parameter values are correct", StatusCode: 500});
+    }
+});
+
 
 // get all users
 router.get('/', GetAuthToken, async (req, res) => {
