@@ -34,7 +34,7 @@ const About = () => {
           {alumniShoutoutBannerImages.map((slideImage) => (
             <div
               key={slideImage.name}
-              className="flex items-center justify-center rounded h-[600px] bg-cover bg-center"
+              className="flex items-center justify-center rounded h-[500px] bg-cover bg-center"
               style={{ backgroundImage: `url(${slideImage.banner})` }}
             />
           ))}
