@@ -1,6 +1,6 @@
 import { Sidebar, Menu, MenuItem, menuClasses } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
-import { GaugeCircle, User, CalendarDays, ShoppingBasket, PanelLeft } from "lucide-react";
+import { User, CalendarDays, ShoppingBasket, PanelLeft, BarChartBig } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
 
@@ -37,7 +37,7 @@ const AdminSidebar = () => {
           <p className=" font-medium text-sm">Main</p>
           <MenuItem
             active={pathname === "/admin" ? true : false}
-            icon={<GaugeCircle />}
+            icon={<BarChartBig />}
             component={<Link to="/admin" />}
           >
             Dashboard
