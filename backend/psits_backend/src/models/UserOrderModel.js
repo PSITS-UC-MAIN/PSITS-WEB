@@ -13,6 +13,11 @@ const UserOrderModel = new mongoose.Schema({
         ref: "Merchandise",
         required: true
     },
+    price:{
+        type: Number,
+        required: false,
+        default: 0
+    },
     reference: {
         type: String,
         required: false,

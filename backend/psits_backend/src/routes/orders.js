@@ -35,6 +35,9 @@ routes.post('/', GetAuthToken, async (req, res)=> {
         }
 
         try{
+            // append price
+            order.price = merch.price;
+            
             let merchstock = merch.stock;
 
             if(order.quantity > merchstock)

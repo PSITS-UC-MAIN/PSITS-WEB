@@ -754,6 +754,8 @@ const information = `
         "placedOrder": {
           "student_id": "64d61f96a72f4f89f71850be",
           "merch_id": "64d4e0e5aa0832371249a8da",
+          // current merchandise price
+          "price": 25,
           // reference can be used by admins to update order status
           "reference": "PSITS_73488738Y5016NVX",
           "information": "I want to order a sticker merch, java sticker to be specific",
@@ -795,6 +797,7 @@ const information = `
             "_id": "64d88f274feb7fd24f8d9e06",
             "student_id": "64d61f96a72f4f89f71850be",
             "merch_id": "64d4e0e5aa0832371249a8da",
+            "price": 25,
             "reference": "PSITS_73488738Y5016NVX",
             "information": "I want to order a sticker merch, java sticker to be specific",
             "size": "N/A",
@@ -829,6 +832,7 @@ const information = `
                 "_id": "64d88f274feb7fd24f8d9e06",
                 "student_id": "64d61f96a72f4f89f71850be",
                 "merch_id": "64d4e0e5aa0832371249a8da",
+                "price": 25,
                 "reference": "PSITS_73488738Y5016NVX",
                 "information": "I want to order a sticker merch, java sticker to be specific",
                 "size": "N/A",
@@ -961,7 +965,7 @@ const information = `
     <br />
     <br />
     <p class="center">... End of documentation ...</p>
-    <p class="center">Last update: August 13 2023</p>
+    <p class="center">Last update: August 27 2023</p>
 
 
 
