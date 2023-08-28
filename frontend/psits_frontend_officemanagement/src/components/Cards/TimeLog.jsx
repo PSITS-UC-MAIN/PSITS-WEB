@@ -9,7 +9,7 @@ function TimeLog({className, handleLogRequest, officeLogs, currentDate}) {
     useEffect(()=>{
       function updateTime(){
         setTime(new Date().toLocaleString().split(',')[1]);
-      };
+      }
       setInterval(updateTime, 1000); 
     },[]);
     

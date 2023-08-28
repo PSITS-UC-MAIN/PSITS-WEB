@@ -33,7 +33,7 @@ export const ClearAppData = () => {
 
 export const Get5DaysBefore = async (dateNow = new Date()) =>{
     const dateNowCopy = dateNow;
-    const day1 = new Date(new Date(dateNowCopy.setHours(0,0,0,0))).toISOString();;
+    const day1 = new Date(new Date(dateNowCopy.setHours(0,0,0,0))).toISOString();
     const day2 = new Date(new Date(dateNowCopy).setHours(-24,0,0,0)).toISOString();
     const day3 = new Date(new Date(dateNowCopy).setHours(-48,0,0,0)).toISOString();
     const day4 = new Date(new Date(dateNowCopy).setHours(-72,0,0,0)).toISOString();

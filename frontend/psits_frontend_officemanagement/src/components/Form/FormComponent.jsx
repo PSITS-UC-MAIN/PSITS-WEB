@@ -14,6 +14,7 @@ function FormComponent({onSubmit}) {
     }
 
     function handleSubmit(e){
+        e.preventDefault();
         e.payload = {
             rfid, password
         }
@@ -35,7 +36,7 @@ function FormComponent({onSubmit}) {
                             <label>Password</label>
                             <input id='password' type="password" placeholder="Enter password" value={password} onInput={handleInput} />
                             </div>
-                            <button type="button" className="submit" onClick={handleSubmit}>
+                            <button type="submit" className="submit" onClick={handleSubmit}>
                                 Sign in
                             </button>
 
