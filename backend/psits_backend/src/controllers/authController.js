@@ -2,11 +2,18 @@ import { StatusCodes } from "http-status-codes";
 import User from "../models/UserModel.js";
 import { comparePassword, hashPassword } from "../utils/passwordUtils.js";
 import { createJWT } from "../utils/tokenUtils.js";
+import { BadRequestError } from "../errors/customErrors.js";
 
 export const register = async (req, res) => {
   //TODO: Validation for body data
+  const api_key = req.headers.api_key;
 
-  const existingUserId = await User.findOne({ user_id: req.body.user_id });
+  if (!api_key)
+    throw new BadRequestError(
+      "API_KEY must be provided in header, Unauthozired!"
+    );
+
+  const existingUserId = await User.findOne({ userId: req.body.userId });
   const existingMail = await User.findOne({ email: req.body.email });
 
   if (existingUserId) {
@@ -31,7 +38,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   //TODO: Validation for body data
 
-  const user = await User.findOne({ user_id: req.body.user_id });
+  const user = await User.findOne({ userId: req.body.userId });
 
   const isValidUser =
     user && (await comparePassword(req.body.password, user.password));
@@ -41,7 +48,7 @@ export const login = async (req, res) => {
       .status(StatusCodes.CONFLICT)
       .json({ message: "Invalid credentials." });
 
-  const token = createJWT({ userId: user.user_id, isAdmin: user.isAdmin });
+  const token = createJWT({ userId: user.userId, isAdmin: user.isAdmin });
 
   const oneDay = 1000 * 60 * 60 * 24;
 
