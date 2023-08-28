@@ -1,17 +1,17 @@
-import { psits_banner, psits_banner2 } from "@/assets";
+import { psits_banner, psits_banner2, ucDeanAnnouncementBanner } from "@/assets";
 
 export const homeBannerImages = [
   {
     name: "psits_banner",
-    banner: psits_banner,
+    banner: ucDeanAnnouncementBanner,
   },
   {
     name: "psits_banner2",
-    banner: psits_banner2,
+    banner: psits_banner,
   },
   {
     name: "psits_banner3",
-    banner: psits_banner,
+    banner: psits_banner2,
   },
 ];
 
