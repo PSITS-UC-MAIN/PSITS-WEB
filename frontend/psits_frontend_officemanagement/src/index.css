@@ -331,6 +331,42 @@
   padding-left: 10px;
 }
 
+.adminCard{
+  position: relative;
+  min-width: 300px;
+  width: 80%;
+  padding: 20px;
+}
+
+.adminCard .card{
+  position: relative;
+  height: fit-content;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+}
+
+.adminCard .card h1{
+  position: relative;
+  padding: 20px;
+  color: #6B7280;
+}
+
+.adminCard .card .flex .date-picker,
+.adminCard .card .flex label{
+  position: relative;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.adminCard .card .flex label{
+  font-weight: 600;
+}
+
+.adminCard .card .flex{
+  padding-left: 20px;
+}
+
+
 @media (max-width: 800px) {
   .flex-container {
     flex-direction: column;

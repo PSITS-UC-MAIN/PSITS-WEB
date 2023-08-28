@@ -42,13 +42,13 @@ export const CheckAuthTokenExpired = async (AuthToken) => {
     return !!IsExpired;
 }
 
-export const GetTimeLogs = async (min = new Date(new Date().setHours(0)).toISOString(), max = new Date().toISOString()) => {
+export const GetTimeLogs = async (min = new Date(new Date().setHours(0,0,0,0)).toISOString(), max = new Date().toISOString()) => {
     const res = await fetch(app_config.API_URL+"/officelog",{
         headers:{
             API_KEY: app_config.API_KEY,
             option: 'latest',
-            min,
-            max
+            minval: min,
+            maxval: max
         }
     })
 

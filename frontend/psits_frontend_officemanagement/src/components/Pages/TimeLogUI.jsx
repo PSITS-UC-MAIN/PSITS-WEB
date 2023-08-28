@@ -20,10 +20,12 @@ function TimeLogUI() {
         }
         loadLogs();
 
-        setInterval(()=>{
+        const loadId = setInterval(()=>{
             loadLogs();
             setCurrentDate(new Date().toDateString());
-        },10000);
+        },10_000);
+
+        return () => clearInterval(loadId);
     },[]);
 
     async function openModal(){

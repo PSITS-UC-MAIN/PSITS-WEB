@@ -33,7 +33,7 @@ function LoginUI() {
             
             <FormComponent onSubmit={handleSubmit} />
             <div className='bottom-left'>
-                <InfoPopup className={(showInfo?'':'hide') + (isError?'redBG':'')} message={infoMessage} onClose={closeInfo}/>
+                <InfoPopup className={(showInfo?'':'hidden ') + (isError?'redBG':'')} message={infoMessage} onClose={closeInfo}/>
             </div>
         </div>
     )

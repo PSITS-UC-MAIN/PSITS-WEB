@@ -4,6 +4,7 @@ import { AppData } from '../../utilities/server_utils'
 import { CheckAuthTokenExpired } from '../../database/api_service';
 import Profile from '../Cards/Profile';
 import Panel from '../Group/Panel';
+import AdminDashboard from '../Cards/AdminDashboard';
 
 function DashboardUI() {
     const [appData, setAppData] = useState(AppData())
@@ -29,7 +30,8 @@ function DashboardUI() {
         {
             appData?<>
                 <Panel className={'flex-container marginAuto'}>
-                    <Profile className={'marginAuto'} user={appData.user}/>
+                    <Profile className={'marginAutoExceptTop'} user={appData.user}/>
+                    <AdminDashboard className={'marginAutoExceptTop'}/>
                 </Panel>
             </>:""
         }

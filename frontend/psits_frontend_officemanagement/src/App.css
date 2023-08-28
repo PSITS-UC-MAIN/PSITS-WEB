@@ -80,6 +80,10 @@ body{
   margin: auto;
 }
 
+.marginAutoExceptTop{
+  margin: 0px auto;
+}
+
 /* modal styles */
 .modal{
   position: fixed;
@@ -194,12 +198,19 @@ button:hover{
 
 .hidden{
   display: none;
+  opacity: 0;
 }
 
 .button-general{
   position: relative;
   font-size: 1.2rem;
   padding: 5px 10px 5px 10px;
+}
+
+.button-blue{
+  background-color: #0d68a5;
+  border: none;
+  padding: 10px 20px 10px 20px;
 }
 
 .aqua{
