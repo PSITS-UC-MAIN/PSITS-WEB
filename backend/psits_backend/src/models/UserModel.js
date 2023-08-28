@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-const userModelSchema = new mongoose.Schema({
-  user_id: {
+const UserSchema = new mongoose.Schema({
+  userId: {
     type: Number,
     required: true,
   },
@@ -58,4 +58,11 @@ const userModelSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("User", userModelSchema);
+// Remove the password in data object when sending the user data
+UserSchema.methods.toJSON = function () {
+  let obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
+
+export default mongoose.model("User", UserSchema);

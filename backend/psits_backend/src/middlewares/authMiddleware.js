@@ -171,10 +171,10 @@ function VerifyAdmin(req, res, next) {
 //Kean code for api route v2 middleware
 export const authenticateUser = async (req, res, next) => {
   const { token } = req.cookies;
+
   try {
-    const { user_id, isAdmin } = verifyJWT(token);
-    req.user = { user_id, isAdmin };
-    console.log(payload);
+    const { userId, isAdmin } = verifyJWT(token);
+    req.user = { userId, isAdmin };
 
     next();
   } catch (error) {
