@@ -11,13 +11,13 @@ const About = () => {
     <div className="flex flex-col gap-y-20">
         <div className="mt-20 mx-[150px] rounded">
             <Slide indicators>
-            {aboutBannerImages.map((slideImage) => (
-                <div
-                key={slideImage.name}
-                className="flex items-center justify-center rounded h4-[500px] bg-contain bg-no-repeat bg-center"
-                style={{ backgroundImage: `url(${slideImage.banner})` }}
-                />
-            ))}
+                {aboutBannerImages.map((slideImage) => (
+                    <div
+                        key={slideImage.name}
+                        className="flex items-center justify-center rounded h-[500px] bg-contain bg-no-repeat bg-center"
+                        style={{ backgroundImage: `url(${slideImage.banner})` }}
+                    />
+                ))}
             </Slide>
         </div>
         <div className="flex items-center justify-evenly w-full bg-[#074873]">
@@ -118,13 +118,13 @@ const About = () => {
         <div className="mx-[150px] rounded mb-20">
             <h1 className="text-4xl font-medium mb-4 text-[#074873]">Students Alumni Shoutouts!</h1>
             <Slide indicators>
-            {alumniShoutoutBannerImages.map((slideImage) => (
-                <div
-                key={slideImage.name}
-                className="flex items-center justify-center rounded h-[500px] bg-cover bg-center"
-                style={{ backgroundImage: `url(${slideImage.banner})` }}
-                />
-            ))}
+                {alumniShoutoutBannerImages.map((slideImage) => (
+                    <div
+                    key={slideImage.name}
+                    className="flex items-center justify-center rounded h-[500px] bg-cover bg-center"
+                    style={{ backgroundImage: `url(${slideImage.banner})` }}
+                    />
+                ))}
             </Slide>
         </div>
     </div>
