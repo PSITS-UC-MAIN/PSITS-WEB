@@ -153,7 +153,7 @@ const Header = () => {
                   </div>
                   <ScrollArea className="h-[30em] w-full rounded-md">
                     {dummyData.map((item) => (
-                      <div className="grid grid-cols-4 bg-white rounded-md shadow-md p-5 items-center mb-5">
+                      <div key={item.id} className="grid grid-cols-4 bg-white rounded-md shadow-md p-5 items-center mb-5">
                         <div className="flex flex-cols gap-x-5 items-center">
                           <img
                             src={item.photo_img_link}
