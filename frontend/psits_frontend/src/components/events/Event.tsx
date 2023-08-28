@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { psits_banner2 } from "@/assets";
 import EventCard from "./EventCard";
-import { isBase64Image } from "@/lib/utils";
+// import { isBase64Image } from "@/lib/utils";
 
 interface Event {
   id: string;
@@ -91,8 +91,8 @@ const Event = ({ events }: { events: Event[] }) => {
   };
   const onSubmit = async (data: EventSchema) => {
     const blob = data.image;
-    const hasImageChanged = isBase64Image(blob);
-    console.log(hasImageChanged);
+    // const hasImageChanged = isBase64Image(blob);
+    // console.log(hasImageChanged);
     //TODO: Send data to the server
     console.log(data);
 
