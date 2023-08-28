@@ -1,13 +1,20 @@
-const mongoose = require('mongoose');
-const config = require('./utils/Config');
+import mongoose from "mongoose";
+import config from "./utils/Config.js";
 
 const database = () => {
-    console.log('Connecting to mongodb')
-    mongoose.connect(config.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-    
-    const db = mongoose.connection;
+  console.log("Connecting to mongodb");
+  mongoose.connect(config.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
-    db.on('error', (error) => {console.log(error);});
-    db.once('open', () => {console.log('MongoDB - Database Connected')});
-}
-module.exports = database;
+  const db = mongoose.connection;
+
+  db.on("error", (error) => {
+    console.log(error);
+  });
+  db.once("open", () => {
+    console.log("MongoDB - Database Connected");
+  });
+};
+export default database;

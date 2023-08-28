@@ -1,29 +1,29 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const SchoolEventModel = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    creationDate: {
-        type: Date,
-        required: false,
-        default: new Date(),
-    },
-    eventDate: {
-        type: Date,
-        required: true,
-        default: new Date(),
-    },
-    content: {
-        type: String,
-        required: true,
-    },
-    photo_img_links:{
-        type: Array,
-        required: false,
-        default: new Array()
-    }
-})
+  title: {
+    type: String,
+    required: true,
+  },
+  creationDate: {
+    type: Date,
+    required: false,
+    default: new Date(),
+  },
+  eventDate: {
+    type: Date,
+    required: true,
+    default: new Date(),
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  photo_img_links: {
+    type: Array,
+    required: false,
+    default: new Array(),
+  },
+});
 
-module.exports = mongoose.model('SchoolEvent', SchoolEventModel);
+export default mongoose.model("SchoolEvent", SchoolEventModel);
