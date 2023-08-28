@@ -9,6 +9,7 @@ import database from "./src/MongoDB.js";
 
 // routers
 import v2AuthRouter from "./src/routes/authRouter.js";
+import v2UserRouter from "./src/routes/userRouter.js";
 import homeRouter from "./src/routes/main.js";
 import authRouter from "./src/routes/auth.js";
 import userRouter from "./src/routes/users.js";
@@ -30,7 +31,7 @@ let PORT = config.PORT;
 database();
 
 // middlewares
-app.use(cookieParser());
+app.use(cookieParser()); // allow node to read cookies
 app.use(express.json()); // uses JSON as payload
 app.use(compression()); // compresses all routes
 
@@ -44,8 +45,9 @@ app.use(
 
 // routes
 app.use("/", homeRouter);
-app.use("/api/auth", authRouter);
 app.use("/api/authv2", v2AuthRouter);
+app.use("/api/userv2", authenticateUser, v2UserRouter);
+app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/announcement", annoucementRouter);
 app.use("/api/event", eventRouter);
@@ -53,11 +55,12 @@ app.use("/api/merch", merchandiseRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/officelog", officeLogRouter);
 
-// throw error in jason format if route does not exist
+// throw error in json format if route not exist
 app.use("*", (req, res) => {
   res.status(404).json({ msg: "Route not found!" });
 });
 
+// throw all error in json format to not to crash the server
 app.use(errorHandlerMiddleware);
 
 // run the app
