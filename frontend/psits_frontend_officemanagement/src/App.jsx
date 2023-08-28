@@ -9,9 +9,9 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/timelog' index element={<TimeLogUI />}/>
-          <Route path='/login' element={<LoginUI />}/>
-          <Route path='/' element={<DashboardUI />}/>
+          <Route path='/' index element={<DashboardUI />}/>
+          <Route path='timelog' element={<TimeLogUI />}/>
+          <Route path='login' element={<LoginUI />}/>
         </Routes>
       </BrowserRouter>
     </>
