@@ -46,7 +46,9 @@ export const updateUserbyId = async (req, res) => {
 
   if (!updatedUser) throw new NotFoundError("User not found!");
 
-  res.status(StatusCodes.OK).json({ msg: "User updated!", user: updatedUser });
+  res
+    .status(StatusCodes.OK)
+    .json({ message: "User updated!", user: updatedUser });
 };
 
 export const deleteUserbyId = async (req, res) => {
@@ -59,5 +61,5 @@ export const deleteUserbyId = async (req, res) => {
 
   if (!removedUser) throw new NotFoundError("User not found!");
 
-  res.status(StatusCodes.OK).json({ msg: "User deleted!", removedUser });
+  res.status(StatusCodes.OK).json({ message: "User deleted!", removedUser });
 };
