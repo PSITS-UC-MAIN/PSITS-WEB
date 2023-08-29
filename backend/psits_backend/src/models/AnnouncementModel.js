@@ -5,19 +5,19 @@ const AnnouncementSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  creationDate: {
-    type: Date,
-    required: false,
-    default: new Date(),
-  },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
+    required: false,
   },
   content: {
     type: String,
     required: true,
+  },
+  creationDate: {
+    type: Date,
+    required: false,
+    default: new Date(),
   },
   photo_img_links: {
     type: Array,
