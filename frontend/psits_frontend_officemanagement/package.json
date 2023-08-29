@@ -1,5 +1,6 @@
 {
   "name": "psits_frontend_officemanagement",
+  "homepage": "https://psits-uc-main.github.io/psits-officemanagement/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
