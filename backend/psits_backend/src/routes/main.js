@@ -1,12 +1,12 @@
-const express = require('express');
+import express from "express";
 const router = express.Router();
 
 // main Endpoint
-router.get('/', (req, res) => {
-    res.send(information)
-})
+router.get("/", (req, res) => {
+  res.send(information);
+});
 
-module.exports = router;
+export default router;
 
 const information = `
 <!DOCTYPE html>
@@ -1015,4 +1015,4 @@ const information = `
     </script>
 </body>
 </html>
-`
+`;
