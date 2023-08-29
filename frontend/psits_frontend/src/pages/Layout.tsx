@@ -7,13 +7,13 @@ import { ContextProvider } from "@/components/Context";
 const Layout = () => {
   return (
     <ContextProvider>
-    <div className="flex flex-col">
-      <Header />
-      <div className="min-h-screen">
-        <Outlet />
+      <div className="flex flex-col">
+        <Header />
+        <div className="min-h-screen">
+          <Outlet />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
     </ContextProvider>
   );
 };

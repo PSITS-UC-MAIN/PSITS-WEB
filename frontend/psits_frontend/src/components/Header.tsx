@@ -78,7 +78,8 @@ const Header = () => {
                   <ShoppingCart color="#fff" />
                   <span
                     className={
-                        Object.values(cartItems).length < 1 ? "absolute top-[-5px] end-[-5px] bg-red-600 text-white font-bold rounded-full p-1 text-[15px] px-3 hidden"
+                      Object.values(cartItems).length < 1
+                        ? "absolute top-[-5px] end-[-5px] bg-red-600 text-white font-bold rounded-full p-1 text-[15px] px-3 hidden"
                         : "absolute top-[-5px] end-[-5px] bg-red-600 text-white font-bold rounded-full p-1 text-[15px] px-3"
                     }
                   >
@@ -98,7 +99,10 @@ const Header = () => {
                   </div>
                   <ScrollArea className="h-[30em] w-full rounded-md">
                     {Object.values(cartItems).map((item) => (
-                      <div key={item.id} className="grid grid-cols-6 bg-white rounded-md shadow-md p-5 items-center mb-5">
+                      <div
+                        key={item.id}
+                        className="grid grid-cols-6 bg-white rounded-md shadow-md p-5 items-center mb-5"
+                      >
                         <div className="flex flex-cols gap-x-5 items-center">
                           <img
                             src={item.photo_img_link}
@@ -111,18 +115,18 @@ const Header = () => {
                         <span className="text-center">{item.color}</span>
                         <span className="text-center">&#8369;{item.price}</span>
                         <div className="grid grid-cols-3 items-center justify-items-center">
-                            <Button className="bg-[#268EA7] hover:bg-[#3da7c2]" onClick={() => decreaseQuantity(item.id)}>-</Button>
-                            <span className="text-center">{item.quantity}</span>
-                            <Button className="bg-[#268EA7] hover:bg-[#3da7c2]" onClick={() => increaseQuantity(item.id)}>+</Button>
-
+                          <Button className="bg-[#268EA7] hover:bg-[#3da7c2]" onClick={() => decreaseQuantity(item.id)}>
+                            -
+                          </Button>
+                          <span className="text-center">{item.quantity}</span>
+                          <Button className="bg-[#268EA7] hover:bg-[#3da7c2]" onClick={() => increaseQuantity(item.id)}>
+                            +
+                          </Button>
                         </div>
                         <div className="flex flex-row justify-center">
-                            <Button
-                                className="bg-red-600"
-                                onClick={() => removeFromCart(item.id)}
-                            >
-                                <Trash size={20} />
-                            </Button>
+                          <Button className="bg-red-600" onClick={() => removeFromCart(item.id)}>
+                            <Trash size={20} />
+                          </Button>
                         </div>
                       </div>
                     ))}

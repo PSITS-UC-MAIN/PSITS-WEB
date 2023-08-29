@@ -8,11 +8,11 @@ import AdminDashboard from '../Cards/AdminDashboard';
 
 function DashboardUI() {
     const [appData, setAppData] = useState(AppData())
-    
+
     useEffect(()=>{
         async function verify(app_Data){
             if(!app_Data){
-                window.location.href = "/login";
+                window.location.href = "/psits-officemanagement/login";
             }
             const res = await CheckAuthTokenExpired(app_Data.authToken.AuthToken)
             

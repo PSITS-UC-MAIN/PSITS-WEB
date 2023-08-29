@@ -99,7 +99,7 @@ const dummyData = [
 ];
 
 const Merchandise = () => {
-    const { addToCart } = useShoppingCart();
+  const { addToCart } = useShoppingCart();
 
   return (
     <Wrapper title="PSITS | Merchandise">
@@ -111,8 +111,8 @@ const Merchandise = () => {
               <CardHeader className="relative">
                 <div className="w-full h-[400px] bg-gray-200 rounded-lg shadow-lg"></div>
                 <Button
-                    className="bg-[#000] bg-opacity-100 hover:bg-[#000] hover:bg-opacity-75 py-[7.5%] absolute bottom-8 end-8 rounded-full"
-                    onClick={() => addToCart(item)}
+                  className="bg-[#000] bg-opacity-100 hover:bg-[#000] hover:bg-opacity-75 py-[7.5%] absolute bottom-8 end-8 rounded-full"
+                  onClick={() => addToCart(item)}
                 >
                   <ShoppingBag size={20} />
                 </Button>
