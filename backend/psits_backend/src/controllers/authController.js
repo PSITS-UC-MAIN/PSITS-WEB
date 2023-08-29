@@ -32,7 +32,7 @@ export const register = async (req, res) => {
   req.body.password = hashedPassword;
 
   const user = await User.create(req.body);
-  res.status(StatusCodes.CREATED).json({ msg: "User account created!" });
+  res.status(StatusCodes.CREATED).json({ message: "User account created!" });
 };
 
 export const login = async (req, res) => {
@@ -57,7 +57,7 @@ export const login = async (req, res) => {
     expires: new Date(Date.now() + oneDay),
     secure: process.env.NODE_ENV === "production",
   });
-  res.status(StatusCodes.OK).json({ msg: "User logged in!" });
+  res.status(StatusCodes.OK).json({ message: "User logged in!" });
 };
 
 export const logout = (req, res) => {
@@ -67,5 +67,5 @@ export const logout = (req, res) => {
     httpOnly: true,
     expires: new Date(Date.now()),
   });
-  res.status(StatusCodes.OK).json({ msg: "User logged out!" });
+  res.status(StatusCodes.OK).json({ message: "User logged out!" });
 };
