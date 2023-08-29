@@ -1,7 +1,7 @@
 import express from "express";
 import { GetAuthToken, VerifyAdmin } from "../middlewares/authMiddleware.js";
 import Merchandise from "../models/MerchandiseModel.js";
-import UserOrderModel from "../models/UserOrderModel.js";
+import UserOrderModel from "../models/OrderModel.js";
 import OrderStatusCode from "../utils/OrderStatusCode.js";
 import UserOrder from "../classesDTO/UserOrder.js";
 import { EncapulateUser } from "../utils/ServerUtils.js";

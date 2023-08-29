@@ -1,6 +1,6 @@
 import express from "express";
 import { GetAuthToken, VerifyAdmin } from "../middlewares/authMiddleware.js";
-import UserOrders from "../models/UserOrderModel.js";
+import UserOrders from "../models/OrderModel.js";
 import { GenerateReference } from "../utils/ServerUtils.js";
 import Merchandise from "../models/MerchandiseModel.js";
 import OrderStatusCode from "../utils/OrderStatusCode.js";
