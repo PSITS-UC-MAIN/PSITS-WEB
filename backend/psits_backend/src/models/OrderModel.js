@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { GenerateReference } from "../utils/ServerUtils.js";
 const Schema = mongoose.Schema;
 
-const UserOrderModel = new mongoose.Schema({
+const OrderModel = new mongoose.Schema({
   student_id: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -64,4 +64,4 @@ const UserOrderModel = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("UserOrder", UserOrderModel);
+export default mongoose.model("Order", OrderModel);
