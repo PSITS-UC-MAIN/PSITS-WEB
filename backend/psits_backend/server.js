@@ -10,6 +10,9 @@ import database from "./src/MongoDB.js";
 // routers
 import v2AuthRouter from "./src/routes/authRouter.js";
 import v2UserRouter from "./src/routes/userRouter.js";
+import v2AnnouncementRouter from "./src/routes/announcementRouter.js";
+import v2EventRouter from "./src/routes/eventRouter.js";
+
 import homeRouter from "./src/routes/main.js";
 import authRouter from "./src/routes/auth.js";
 import userRouter from "./src/routes/users.js";
@@ -38,15 +41,19 @@ app.use(compression()); // compresses all routes
 // cors
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
+    credentials: true,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   })
 );
 
 // routes
 app.use("/", homeRouter);
-app.use("/api/authv2", v2AuthRouter);
-app.use("/api/userv2", authenticateUser, v2UserRouter);
+app.use("/api/auth/v2", v2AuthRouter);
+app.use("/api/user/v2", authenticateUser, v2UserRouter);
+app.use("/api/announcement/v2", v2AnnouncementRouter);
+app.use("/api/event/v2", v2EventRouter);
+
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/announcement", annoucementRouter);
@@ -57,7 +64,7 @@ app.use("/api/officelog", officeLogRouter);
 
 // throw error in json format if route not exist
 app.use("*", (req, res) => {
-  res.status(404).json({ msg: "Route not found!" });
+  res.status(404).json({ message: "Route not found!" });
 });
 
 // throw all error in json format to not to crash the server
