@@ -1,8 +1,9 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const OfficeLogModel = new mongoose.Schema({
   user: {
-    type: Number,
+    type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
   loginTime: {
