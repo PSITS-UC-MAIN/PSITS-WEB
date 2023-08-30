@@ -17,7 +17,6 @@ export const getAllUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ users });
 };
 
-//TODO: Validation for params
 export const getUserbyId = async (req, res) => {
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
 
@@ -28,7 +27,6 @@ export const getUserbyId = async (req, res) => {
   res.status(StatusCodes.OK).json({ user });
 };
 
-//TODO: Validation for body data
 export const updateUserbyId = async (req, res) => {
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
 
@@ -54,7 +52,6 @@ export const updateUserbyId = async (req, res) => {
 export const deleteUserbyId = async (req, res) => {
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
 
-  //TODO: Validation for body data
   const removedUser = await User.findOneAndDelete({
     userId: req.params.userId,
   });

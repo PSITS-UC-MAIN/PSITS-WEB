@@ -4,7 +4,7 @@ import { login, logout, register } from "../controllers/authController.js";
 import {
   validateRegisterInput,
   validateLoginInput,
-} from "../middlewares/validationMiddleware.js";
+} from "../middlewares/validations/authValidation.js";
 
 router.post("/register", validateRegisterInput, register);
 router.post("/login", validateLoginInput, login);

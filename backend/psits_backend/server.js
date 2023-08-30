@@ -12,6 +12,7 @@ import v2AuthRouter from "./src/routes/authRouter.js";
 import v2UserRouter from "./src/routes/userRouter.js";
 import v2AnnouncementRouter from "./src/routes/announcementRouter.js";
 import v2EventRouter from "./src/routes/eventRouter.js";
+import v2MerchandiseRouter from "./src/routes/merchandiseRouter.js";
 
 import homeRouter from "./src/routes/main.js";
 import authRouter from "./src/routes/auth.js";
