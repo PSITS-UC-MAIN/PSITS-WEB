@@ -3,14 +3,15 @@ import Event from "../models/EventModel.js";
 import { NotFoundError, UnauthorizedError } from "../errors/customErrors.js";
 
 export const getAllEvents = async (req, res) => {
-  const events = await Event.find({});
+  const events = await Event.find({}).populate("author").exec();
 
   res.status(StatusCodes.OK).json({ events });
 };
 
 export const createEvent = async (req, res) => {
-  //TODO: Validation for body data
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
+
+  req.body.author = req.user.id;
 
   const event = await Event.create(req.body);
   res.status(StatusCodes.OK).json({ message: "Event created!" });

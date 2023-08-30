@@ -3,13 +3,15 @@ import Announcement from "../models/AnnouncementModel.js";
 import { NotFoundError, UnauthorizedError } from "../errors/customErrors.js";
 
 export const getAllAnnouncement = async (req, res) => {
-  const announcements = await Announcement.find({});
+  const announcements = await Announcement.find({}).populate("author").exec();
 
   res.status(StatusCodes.OK).json({ announcements });
 };
 
 export const createAnnouncement = async (req, res) => {
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
+
+  req.body.author = req.user.id;
 
   const announcement = await Announcement.create(req.body);
   res.status(StatusCodes.OK).json({ message: "Announcement created!" });
