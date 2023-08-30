@@ -1,13 +1,8 @@
 import { body, param, validationResult } from "express-validator";
-import {
-  BadRequestError,
-  NotFoundError,
-  UnauthorizedError,
-} from "../errors/customErrors.js";
-import mongoose from "mongoose";
+import { BadRequestError } from "../errors/customErrors.js";
 import User from "../models/UserModel.js";
 
-const withValidationErrors = (validateValues) => {
+export const withValidationErrors = (validateValues) => {
   return [
     validateValues,
     (req, res, next) => {
