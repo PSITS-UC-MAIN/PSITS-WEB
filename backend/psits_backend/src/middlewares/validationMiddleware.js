@@ -7,7 +7,7 @@ import {
 import mongoose from "mongoose";
 import User from "../models/UserModel.js";
 
-const withValidationErrors = (validateValues) => {
+export const withValidationErrors = (validateValues) => {
   return [
     validateValues,
     (req, res, next) => {
