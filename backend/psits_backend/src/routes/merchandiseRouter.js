@@ -11,7 +11,7 @@ import {
   validateMerchandiseItem,
   validateMerchandiseItemRevision,
   validateMerchandiseItemDeletion
-} from "../middlewares/merchandiseMiddleware.js";
+} from "../middlewares/validations/merchandiseValidation.js";
 
 router.route("/").get(getMerchandise).post(authenticateUser, validateMerchandiseItem, createMerchandiseItem);
 
