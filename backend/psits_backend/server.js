@@ -12,6 +12,7 @@ import v2AuthRouter from "./src/routes/authRouter.js";
 import v2UserRouter from "./src/routes/userRouter.js";
 import v2AnnouncementRouter from "./src/routes/announcementRouter.js";
 import v2EventRouter from "./src/routes/eventRouter.js";
+import v2MerchandiseRouter from "./src/routes/merchandiseRouter.js";
 
 import homeRouter from "./src/routes/main.js";
 import authRouter from "./src/routes/auth.js";
@@ -50,6 +51,7 @@ app.use("/api/auth/v2", v2AuthRouter);
 app.use("/api/user/v2", authenticateUser, v2UserRouter);
 app.use("/api/announcement/v2", v2AnnouncementRouter);
 app.use("/api/event/v2", v2EventRouter);
+app.use("/api/merch/v2", v2MerchandiseRouter);
 
 /*
   Note: API VERSION 1 WILL NOT WORK SINCE THE MODELS SCHEMA CHANGED
