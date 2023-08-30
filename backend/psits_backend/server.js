@@ -30,9 +30,6 @@ const app = express();
 
 let PORT = config.PORT;
 
-// run database
-database();
-
 // middlewares
 app.use(cookieParser()); // allow node to read cookies
 app.use(express.json()); // uses JSON as payload
@@ -54,6 +51,9 @@ app.use("/api/user/v2", authenticateUser, v2UserRouter);
 app.use("/api/announcement/v2", v2AnnouncementRouter);
 app.use("/api/event/v2", v2EventRouter);
 
+/*
+  Note: API VERSION 1 WILL NOT WORK SINCE THE MODELS SCHEMA CHANGED
+  */
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/announcement", annoucementRouter);
@@ -67,10 +67,13 @@ app.use("*", (req, res) => {
   res.status(404).json({ message: "Route not found!" });
 });
 
-// throw all error in json format to not to crash the server
+// throw all errors in json format to not to crash the server
 app.use(errorHandlerMiddleware);
 
-// run the app
+// run database
+database();
+
+// start the server
 const server = app.listen(PORT, () => {
   console.log(`Server has started, running on port: ${PORT}`);
 });
