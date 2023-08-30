@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 
@@ -7,50 +5,30 @@ import Wrapper from "@/components/Wrapper";
 import { homeBannerImages } from "@/constants";
 import Announcement from "@/components/announcements/Announcement";
 import Event from "@/components/events/Event";
-
-interface Announcements {
-  id: string;
-  title: string;
-  creationDate: Date;
-  author: string;
-  content: string;
-  photo_img_links: string;
-}
-
-interface Events {
-  id: string;
-  title: string;
-  creationDate: Date;
-  eventDate: Date;
-  content: string;
-  photo_img_links: string;
-}
+import { useQuery } from "@tanstack/react-query";
+import { getAllAnnouncement } from "@/api/announcement";
+import { getAllEvents } from "@/api/event";
 
 const Home = () => {
-  const [announcements, setAnnouncements] = useState<Announcements[]>([]);
-  const [events, setEvents] = useState<Events[]>([]);
+  const {
+    data: announcementData,
+    isLoading: announcementIsLoading,
+    isError: announcementIsError,
+  } = useQuery(["announcements"], getAllAnnouncement, {
+    select(announcementData) {
+      return announcementData.announcements;
+    },
+  });
 
-  // useEffect(() => {
-  //   const getAnnouncements = async () => {
-  //     try {
-  //       const response = await axios.get('https://psits-uc-main-api.onrender.com/api/announcement')
-  //       console.log(response.data)
-  //     } catch (error: any) {
-  //       throw new Error(error)
-  //     }
-  //   };
-  //   const getEvents = async () => {
-  //     try {
-  //       const response = await axios.get('https://psits-uc-main-api.onrender.com/api/event')
-  //       console.log(response.data)
-  //     } catch (error: any) {
-  //       throw new Error(error)
-  //     }
-  //   };
-
-  //   getAnnouncements();
-  //   getEvents();
-  // }, [])
+  const {
+    data: eventData,
+    isLoading: eventIsLoading,
+    isError: eventIsError,
+  } = useQuery(["events"], getAllEvents, {
+    select(eventData) {
+      return eventData.events;
+    },
+  });
 
   return (
     <Wrapper title="PSITS | Home" className="mt-10">
@@ -64,8 +42,12 @@ const Home = () => {
         ))}
       </Slide>
       <div className="my-10 flex justify-center gap-4">
-        <Event events={events} />
-        <Announcement announcements={announcements} />
+        <Event events={eventData} isLoading={eventIsLoading} isError={eventIsError} />
+        <Announcement
+          announcements={announcementData}
+          isLoading={announcementIsLoading}
+          isError={announcementIsError}
+        />
       </div>
     </Wrapper>
   );
