@@ -3,7 +3,10 @@ import Announcement from "../models/AnnouncementModel.js";
 import { NotFoundError, UnauthorizedError } from "../errors/customErrors.js";
 
 export const getAllAnnouncement = async (req, res) => {
-  const announcements = await Announcement.find({}).populate("author").exec();
+  const announcements = await Announcement.find({})
+    .sort({ creationDate: "desc" })
+    .populate("author")
+    .exec();
 
   res.status(StatusCodes.OK).json({ announcements });
 };

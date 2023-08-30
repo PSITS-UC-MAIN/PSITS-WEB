@@ -47,11 +47,10 @@ app.use(
 
 // routes
 app.use("/", homeRouter);
-app.use("/api/auth/v2", v2AuthRouter);
-app.use("/api/user/v2", authenticateUser, v2UserRouter);
-app.use("/api/announcement/v2", v2AnnouncementRouter);
-app.use("/api/event/v2", v2EventRouter);
-app.use("/api/merch/v2", v2MerchandiseRouter);
+app.use("/api/v2/auth", v2AuthRouter);
+app.use("/api/v2/user", authenticateUser, v2UserRouter);
+app.use("/api/v2/announcement", v2AnnouncementRouter);
+app.use("/api/v2/event", v2EventRouter);
 
 /*
   Note: API VERSION 1 WILL NOT WORK SINCE THE MODELS SCHEMA CHANGED

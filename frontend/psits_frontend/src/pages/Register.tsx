@@ -1,14 +1,20 @@
-import * as z from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link, useNavigation, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Loader2 } from "lucide-react";
 
+import { registerUser } from "@/api/auth";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import Wrapper from "@/components/Wrapper";
+import useStore from "@/store";
 
 const RegisterSchema = z
   .object({
@@ -26,10 +32,11 @@ const RegisterSchema = z
     message: "Password do not match",
   });
 
-type RegisterSchema = z.infer<typeof RegisterSchema>;
+export type RegisterSchema = z.infer<typeof RegisterSchema>;
 
 const Register = () => {
-  const navigation = useNavigation();
+  const navigate = useNavigate();
+  const store = useStore();
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -37,17 +44,35 @@ const Register = () => {
       firstname: "",
       lastname: "",
       email: "",
-      course: "",
-      year: "",
+      course: undefined,
+      year: undefined,
       password: "",
       confirmPassword: "",
     },
   });
 
-  const onSubmit = (data: RegisterSchema) => {
-    //TODO: Send data to the server
-    console.log(data);
-    redirect("/login");
+  const { mutate, isLoading } = useMutation({
+    mutationFn: registerUser,
+    onMutate() {
+      store.setRequestLoading(true);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      store.setRequestLoading(false);
+      toast.success(`${data.message}!`);
+      toast.info("You can now login!");
+      form.reset();
+      navigate("/login");
+    },
+    onError(error: any) {
+      store.setRequestLoading(false);
+      toast.error(error.response.data.message || error.message);
+    },
+  });
+
+  const onSubmit = (values: RegisterSchema) => {
+    //Send values to the server
+    mutate(values);
   };
 
   return (
@@ -66,9 +91,9 @@ const Register = () => {
                   name="userId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="userId">Student ID</FormLabel>
+                      <FormLabel htmlFor="user_id">Student ID</FormLabel>
                       <FormControl>
-                        <Input id="userId" type="text" placeholder="I.D. No." {...field} />
+                        <Input id="user_id" type="text" placeholder="I.D. No." {...field} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -202,8 +227,8 @@ const Register = () => {
                 )}
               </CardContent>
               <CardFooter className="flex flex-col">
-                <Button type="submit" className="w-full bg-[#268EA7] hover:bg-[#3da7c2]">
-                  Register
+                <Button type="submit" className="w-full bg-[#268EA7] hover:bg-[#3da7c2]" disabled={isLoading}>
+                  {isLoading ? <Loader2 className=" animate-spin" /> : "Register"}
                 </Button>
                 <Link to="/login">
                   <p className="mt-2 text-xs text-center text-gray-700">

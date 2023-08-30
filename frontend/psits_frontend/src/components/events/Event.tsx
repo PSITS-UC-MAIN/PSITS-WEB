@@ -3,9 +3,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { AlertCircle, Calendar as CalendarIcon, Loader2, Loader2Icon } from "lucide-react";
 
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -14,36 +14,20 @@ import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { psits_banner2 } from "@/assets";
 import EventCard from "./EventCard";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useStore from "@/store";
+import { toast } from "react-toastify";
+import { createEvent } from "@/api/event";
 
 interface Event {
-  id: string;
+  _id: string;
   title: string;
   creationDate: Date;
   eventDate: Date;
   content: string;
   photo_img_links: string;
 }
-
-const dummyData: Event[] = [
-  {
-    id: "1234",
-    title: "BONDING DAY",
-    creationDate: new Date("August 27, 2023 09:37:00"),
-    eventDate: new Date("August 27, 2023 09:37:00"),
-    content: "wassup mananap",
-    photo_img_links: psits_banner2,
-  },
-  {
-    id: "12345",
-    title: "SIR DD",
-    creationDate: new Date("August 27, 2023 09:37:00"),
-    eventDate: new Date("August 28, 2023 09:37:00"),
-    content: "ayaw kol",
-    photo_img_links: psits_banner2,
-  },
-];
 
 const EventSchema = z.object({
   title: z.string().min(4),
@@ -54,9 +38,11 @@ const EventSchema = z.object({
 
 type EventSchema = z.infer<typeof EventSchema>;
 
-const Event = ({ events }: { events: Event[] }) => {
+const Event = ({ events, isLoading, isError }: { events: Event[]; isLoading: boolean; isError: boolean }) => {
   const [eventState, setEventState] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
+  const store = useStore();
+  const queryClient = useQueryClient();
 
   const form = useForm<EventSchema>({
     resolver: zodResolver(EventSchema),
@@ -65,6 +51,24 @@ const Event = ({ events }: { events: Event[] }) => {
       content: "",
       eventDate: undefined,
       image: "",
+    },
+  });
+
+  const { mutate, isLoading: createIsLoading } = useMutation({
+    mutationFn: createEvent,
+    onMutate() {
+      store.setRequestLoading(true);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["events"]);
+      store.setRequestLoading(false);
+      toast.success(`${data.message}!`);
+      form.reset();
+      setEventState(false);
+    },
+    onError(error: any) {
+      store.setRequestLoading(false);
+      toast.error(error.response.data.message || error.message);
     },
   });
 
@@ -88,22 +92,11 @@ const Event = ({ events }: { events: Event[] }) => {
       console.log(files);
     }
   };
+
   const onSubmit = async (data: EventSchema) => {
     const blob = data.image;
-    //TODO: Send data to the server
     console.log(data);
-
-    const newData = {
-      id: (Math.random() * 1000).toString(),
-      title: data.title,
-      creationDate: new Date(),
-      eventDate: data.eventDate,
-      content: data.content,
-      photo_img_links: "",
-    };
-
-    dummyData.push(newData);
-    setEventState(false);
+    mutate(data);
   };
 
   return (
@@ -178,7 +171,6 @@ const Event = ({ events }: { events: Event[] }) => {
                     />
                   )}
                 />
-                {/* {form.formState.errors.image && <p className="text-red-400 text-sm font-light">{form.formState.errors.image.message}</p>} */}
                 <div className="flex items-center gap-4">
                   <Button
                     variant="ghost"
@@ -188,7 +180,9 @@ const Event = ({ events }: { events: Event[] }) => {
                   >
                     Cancel
                   </Button>
-                  <Button className="bg-[#268EA7] hover:bg-[#3da7c2]"> Post </Button>
+                  <Button className="bg-[#268EA7] hover:bg-[#3da7c2]" disabled={createIsLoading}>
+                    {createIsLoading ? <Loader2 className=" animate-spin" /> : "Post"}
+                  </Button>
                 </div>
               </CardFooter>
             </Card>
@@ -210,20 +204,30 @@ const Event = ({ events }: { events: Event[] }) => {
       )}
       <div className="mt-4 border shadow p-4 rounded bg-[#F9F9F9]">
         <h1 className="text-center font-bold text-2xl mb-4">Upcoming Events</h1>
-        <div className="flex flex-col gap-4 items-center">
-          {dummyData.map((announcement) => {
-            return (
-              <EventCard
-                key={announcement.id}
-                title={announcement.title}
-                eventDate={announcement.eventDate}
-                content={announcement.content}
-                photo_img_link={announcement.photo_img_links}
-                creationDate={announcement.creationDate}
-              />
-            );
-          })}
-        </div>
+        {isLoading ? (
+          <span className="text-center flex justify-center">
+            <Loader2Icon className="animate-spin" />
+          </span>
+        ) : isError ? (
+          <div className="flex items-center gap-2 text-red-500  justify-center">
+            <AlertCircle />
+            <p>Something went wrong!</p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4 items-center">
+            {events.map((event) => {
+              return (
+                <EventCard
+                  key={event._id.toString()}
+                  id={event._id}
+                  title={event.title}
+                  content={event.content}
+                  eventDate={event.eventDate}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
