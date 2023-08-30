@@ -5,29 +5,6 @@ import { createJWT } from "../utils/tokenUtils.js";
 import { BadRequestError } from "../errors/customErrors.js";
 
 export const register = async (req, res) => {
-  //TODO: Validation for body data
-  const api_key = req.headers.api_key;
-
-  if (!api_key)
-    throw new BadRequestError(
-      "API_KEY must be provided in header, Unauthozired!"
-    );
-
-  const existingUserId = await User.findOne({ userId: req.body.userId });
-  const existingMail = await User.findOne({ email: req.body.email });
-
-  if (existingUserId) {
-    return res.status(StatusCodes.CONFLICT).json({
-      message:
-        "Failed to created account, id is already exists in the database.",
-    });
-  } else if (existingMail) {
-    return res.status(StatusCodes.CONFLICT).json({
-      message:
-        "Failed to created account, email is already exists in the database.",
-    });
-  }
-
   const hashedPassword = await hashPassword(req.body.password);
   req.body.password = hashedPassword;
 
@@ -36,8 +13,6 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  //TODO: Validation for body data
-
   const user = await User.findOne({ userId: req.body.userId });
 
   const isValidUser =
@@ -48,7 +23,11 @@ export const login = async (req, res) => {
       .status(StatusCodes.CONFLICT)
       .json({ message: "Invalid credentials." });
 
-  const token = createJWT({ userId: user.userId, isAdmin: user.isAdmin });
+  const token = createJWT({
+    userId: user.userId,
+    isAdmin: user.isAdmin,
+    id: user._id,
+  });
 
   const oneDay = 1000 * 60 * 60 * 24;
 
@@ -61,8 +40,6 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  //TODO: Validation for body data
-
   res.cookie("token", "logout", {
     httpOnly: true,
     expires: new Date(Date.now()),
