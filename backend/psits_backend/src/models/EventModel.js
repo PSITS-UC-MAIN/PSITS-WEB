@@ -8,7 +8,7 @@ const EventModel = new mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: false,
+    required: true,
   },
   content: {
     type: String,
@@ -16,7 +16,7 @@ const EventModel = new mongoose.Schema({
   },
   creationDate: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
   eventDate: {
     type: Date,

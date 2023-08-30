@@ -8,7 +8,7 @@ const AnnouncementSchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: false,
+    required: true,
   },
   content: {
     type: String,
@@ -17,7 +17,7 @@ const AnnouncementSchema = new mongoose.Schema({
   creationDate: {
     type: Date,
     required: false,
-    default: new Date(),
+    default: Date.now,
   },
   photo_img_links: {
     type: Array,
