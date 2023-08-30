@@ -6,7 +6,7 @@ import {
   updateMerchandiseItemById,
   deleteMerchandiseItemById
 } from "../controllers/merchandiseController.js";
-import authenticateUser from "./authRouter.js"
+import { authenticateUser } from "../middlewares/authMiddleware.js";
 import {
   validateMerchandiseItem,
   validateMerchandiseItemRevision,
