@@ -2,36 +2,21 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { createAnnouncement } from "@/api/announcement";
 import AnnoucementCard from "./AnnoucementCard";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User } from "lucide-react";
+import { AlertCircle, Loader2, Loader2Icon, User } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-
-const dummyData = [
-  {
-    id: "1234",
-    title: "Tidert Gaming",
-    creationDate: new Date("August 27, 2023 09:37:00"),
-    author: "Kean Jieden Villaflor",
-    content: `The sky is **blue**. `,
-    photo_img_links: "https://source.unsplash.com/random",
-  },
-  {
-    id: "12345",
-    title: "Need maney",
-    creationDate: new Date("August 25, 2023 12:37:00"),
-    author: "darelle",
-    content: "ayaw kol",
-    photo_img_links: "https://source.unsplash.com/random",
-  },
-];
+import useStore from "@/store";
+import { toast } from "react-toastify";
 
 interface Announcement {
-  id: string;
+  _id: string;
   title: string;
   creationDate: Date;
   author: string;
@@ -47,31 +32,48 @@ const AnnouncementSchema = z.object({
 
 type AnnouncementSchema = z.infer<typeof AnnouncementSchema>;
 
-const Announcement = ({ announcements }: { announcements: Announcement[] }) => {
+const Announcement = ({
+  announcements,
+  isLoading,
+  isError,
+}: {
+  announcements: Announcement[];
+  isLoading: boolean;
+  isError: boolean;
+}) => {
   const [announceState, setAnnounceState] = useState(false);
+  const store = useStore();
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<AnnouncementSchema>({
     resolver: zodResolver(AnnouncementSchema),
   });
 
+  const { mutate, isLoading: createIsLoading } = useMutation({
+    mutationFn: createAnnouncement,
+    onMutate() {
+      store.setRequestLoading(true);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["announcements"]);
+      store.setRequestLoading(false);
+      toast.success(`${data.message}!`);
+      reset();
+      setAnnounceState(false);
+    },
+    onError(error: any) {
+      store.setRequestLoading(false);
+      toast.error(error.response.data.message || error.message);
+    },
+  });
+
   const onSubmit: SubmitHandler<AnnouncementSchema> = (data) => {
-    //TODO: Send data to the server
-    console.log(data);
-
-    const newData = {
-      id: (Math.random() * 1000).toString(),
-      title: data.title,
-      creationDate: new Date(),
-      author: "User",
-      content: data.content,
-      photo_img_links: "",
-    };
-
-    dummyData.push(newData);
-    setAnnounceState(false);
+    mutate(data);
   };
 
   return (
@@ -104,7 +106,9 @@ const Announcement = ({ announcements }: { announcements: Announcement[] }) => {
                 <Button variant="ghost" onClick={() => setAnnounceState(false)}>
                   Cancel
                 </Button>
-                <Button className="bg-[#268EA7] hover:bg-[#3da7c2]"> Post </Button>
+                <Button className="bg-[#268EA7] hover:bg-[#3da7c2]" disabled={createIsLoading}>
+                  {createIsLoading ? <Loader2 className=" animate-spin" /> : "Post"}
+                </Button>
               </div>
             </CardFooter>
           </Card>
@@ -125,20 +129,32 @@ const Announcement = ({ announcements }: { announcements: Announcement[] }) => {
       )}
       <div className="border shadow rounded p-4 bg-[#F9F9F9]">
         <h1 className="text-center font-bold text-3xl mb-4">Announcements</h1>
-        <div className="flex flex-col justify-center items-center gap-4">
-          {dummyData.map((announcement) => {
-            return (
-              <AnnoucementCard
-                key={announcement.id}
-                title={announcement.title}
-                author={announcement.author}
-                creationDate={announcement.creationDate}
-                content={announcement.content}
-                photo_img_links={announcement.photo_img_links}
-              />
-            );
-          })}
-        </div>
+        {isLoading ? (
+          <span className="text-center flex justify-center">
+            <Loader2Icon className="animate-spin" />
+          </span>
+        ) : isError ? (
+          <div className="flex items-center gap-2 text-red-500  justify-center">
+            <AlertCircle />
+            <p>Something went wrong!</p>
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center items-center gap-4">
+            {announcements.map((announcement: any) => {
+              return (
+                <AnnoucementCard
+                  key={announcement._id.toString()}
+                  id={announcement._id}
+                  title={announcement.title}
+                  author={`${announcement.author.firstname} ${announcement.author.lastname}`}
+                  creationDate={announcement.creationDate}
+                  content={announcement.content}
+                  photo_img_links={announcement.photo_img_links}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
