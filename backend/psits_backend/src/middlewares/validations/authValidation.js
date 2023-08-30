@@ -51,3 +51,16 @@ export const validateLoginInput = withValidationErrors([
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long"),
 ]);
+
+export const validateLoginRFIDInput = withValidationErrors([
+  body("rfid")
+    .notEmpty()
+    .withMessage("RFID is required")
+    .isLength({ min: 3 })
+    .withMessage("RFID must contain at least 3 characters"),
+  body("password")
+    .notEmpty()
+    .withMessage("Password is required")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters long"),
+]);
