@@ -1,8 +1,13 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "@/api/auth";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { Loader2 } from "lucide-react";
 
+import useStore from "@/store";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -18,17 +23,37 @@ const LoginSchema = z.object({
 type LoginSchema = z.infer<typeof LoginSchema>;
 
 const Login = () => {
+  const navigate = useNavigate();
+  const store = useStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<LoginSchema>({
     resolver: zodResolver(LoginSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginSchema> = (data) => {
-    //TODO: Send data to the server
-    console.log(data);
+  const { mutate, isLoading } = useMutation({
+    mutationFn: loginUser,
+    onMutate() {
+      store.setRequestLoading(true);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      store.setRequestLoading(false);
+      toast.success(`${data.message}!`);
+      reset();
+      navigate("/");
+    },
+    onError(error: any) {
+      store.setRequestLoading(false);
+      toast.error(error.response.data.message || error.message);
+    },
+  });
+
+  const onSubmit: SubmitHandler<LoginSchema> = (values) => {
+    mutate(values);
   };
 
   return (
@@ -68,8 +93,8 @@ const Login = () => {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col">
-              <Button type="submit" className="w-full bg-[#268EA7] hover:bg-[#3da7c2]">
-                Log In
+              <Button type="submit" className="w-full bg-[#268EA7] hover:bg-[#3da7c2]" disabled={isLoading}>
+                {isLoading ? <Loader2 className=" animate-spin" /> : "Login"}
               </Button>
               <Link to="/register">
                 <p className="mt-2 text-xs text-center text-gray-700">
