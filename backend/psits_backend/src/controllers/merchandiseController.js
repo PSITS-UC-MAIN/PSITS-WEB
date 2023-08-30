@@ -1,5 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import Merchandise from "../models/MerchandiseModel.js";
+import { UnauthorizedError } from "../errors/customErrors.js";
 
 export const getMerchandise = async (req, res) => {
   const merchandise = await Merchandise.find({});
@@ -8,11 +9,15 @@ export const getMerchandise = async (req, res) => {
 };
 
 export const createMerchandiseItem = async (req, res) => {
+  if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
+
   await Merchandise.create(req.body);
-  res.status(StatusCodes.CREATED).json({ msg: "Merchandise Item Created!" })
+  res.status(StatusCodes.OK).json({ msg: "Merchandise Item Created!" })
 }
 
 export const updateMerchandiseItemById = async (req, res) => {
+  if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
+
   const newObj = { ...req.body };
 
   const updatedMerchandiseItem = await Merchandise.findOneAndUpdate(
@@ -30,6 +35,8 @@ export const updateMerchandiseItemById = async (req, res) => {
 }
 
 export const deleteMerchandiseItemById = async (req, res) => {
+  if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
+
   const removedMerchandiseItem = await Merchandise.findOneAndDelete({
     _id: req.params.merchandiseItemId,
   });
