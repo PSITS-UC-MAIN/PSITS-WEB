@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -12,6 +13,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ShoppingCart, Trash } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useShoppingCart } from "./Context";
+import Profile from "./ProfileAvatar";
 
 const ROUTE = ["/admin", "/admin/accounts", "/admin/events", "/admin/merchandise"];
 
@@ -145,6 +147,9 @@ const Header = () => {
             <Button className="text-md" variant="ghost" asChild>
               <Link to="/admin">Admin</Link>
             </Button>
+
+            <Profile className="ml-4" />
+
             <Button className="text-md" variant="ghost" asChild>
               <Link to="/login">Login</Link>
             </Button>
