@@ -12,7 +12,7 @@ function DashboardUI() {
   useEffect(() => {
     async function verify(app_Data) {
       if (!app_Data) {
-        window.location.href = "/psits-officemanagement/login";
+        window.location.href = "/login";
       }
     }
     verify(appData);
