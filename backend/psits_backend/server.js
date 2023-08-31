@@ -40,7 +40,11 @@ app.use(compression()); // compresses all routes
 // cors
 app.use(
   cors({
-    origin: ["http://localhost:5173", ...config.getCorsOrigin()],
+    origin: [
+      "http://localhost:5173",
+      "https://psits-uc-main.github.io/",
+      ...config.getCorsOrigin(),
+    ],
     credentials: true,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   })
