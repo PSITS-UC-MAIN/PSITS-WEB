@@ -7,7 +7,7 @@ import useStore from "@/store";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { CalendarCheck2, FileEdit, PartyPopper, Trash2 } from "lucide-react";
+import { CalendarCheck2, PartyPopper, Trash2 } from "lucide-react";
 import { deleteEvent } from "@/api/event";
 
 interface EventCardProps {
@@ -23,7 +23,7 @@ const EventCard = ({ id, title, eventDate, content }: EventCardProps) => {
   const store = useStore();
   const queryClient = useQueryClient();
 
-  const { mutate, reset, isLoading } = useMutation({
+  const { mutate, reset } = useMutation({
     mutationFn: deleteEvent,
     onMutate() {
       store.setRequestLoading(true);
@@ -62,9 +62,11 @@ const EventCard = ({ id, title, eventDate, content }: EventCardProps) => {
         <Button className="w-full" variant="outline">
           <Link to="/events">View Full Context</Link>
         </Button>
-        <Button onClick={() => mutate(id)} variant="ghost">
-          <Trash2 color="#df2020" size={16} />
-        </Button>
+        {store.authUser?.isAdmin && (
+          <Button onClick={() => mutate(id)} variant="ghost">
+            <Trash2 color="#df2020" size={16} />
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
