@@ -32,29 +32,20 @@ const app = express();
 
 let PORT = config.PORT;
 
-// middlewares
-app.use(cookieParser()); // allow node to read cookies
-app.use(express.json()); // uses JSON as payload
-app.use(compression()); // compresses all routes
-
-console.log("Allowed origins -> ", [
-  "http://localhost:5173",
-  "https://psits-uc-main.github.io/",
-  ...config.getCorsOrigin(),
-]);
 // cors
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://psits-uc-main.github.io/",
-      ...config.getCorsOrigin(),
-    ],
+    origin: [...config.getCorsOrigin()],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   })
 );
+
+// middlewares
+app.use(cookieParser()); // allow node to read cookies
+app.use(express.json()); // uses JSON as payload
+app.use(compression()); // compresses all routes
 
 // routes
 app.use("/", homeRouter);
