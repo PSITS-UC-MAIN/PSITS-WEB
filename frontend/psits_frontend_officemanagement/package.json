@@ -1,6 +1,6 @@
 {
   "name": "psits_frontend_officemanagement",
-  "homepage": "https://psits-web.vercel.app/psits-officemanagement/",
+  "homepage": "https://psits-web-officemanagement.vercel.app/psits-officemanagement/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
