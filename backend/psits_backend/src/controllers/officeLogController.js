@@ -63,10 +63,13 @@ export const getAllOfficeLogs = async (req, res) => {
   const { option, maxval, minval } = req.headers;
 
   if (option === "latest") {
-    const latestLogs = await OfficeLogModel.find({
-      loginTime: { $gte: minval, $lt: maxval },
-    })
-      .populate("userId")
+    const latestLogs = await OfficeLogModel.find(
+      {
+        loginTime: { $gte: minval, $lt: maxval },
+      },
+      "-_id"
+    )
+      .populate("user", "-_id-isAdmin")
       .exec();
     return res.status(StatusCodes.OK).json({ officeLogs: latestLogs });
   }
