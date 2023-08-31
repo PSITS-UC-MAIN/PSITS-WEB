@@ -36,7 +36,6 @@ let PORT = config.PORT;
 app.use(
   cors({
     origin: [...config.getCorsOrigin()],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   })
