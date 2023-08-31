@@ -84,4 +84,4 @@ const server = app.listen(PORT, () => {
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
 
-export default server;
+export default app;
