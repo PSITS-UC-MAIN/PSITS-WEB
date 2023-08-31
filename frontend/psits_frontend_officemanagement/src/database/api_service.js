@@ -1,117 +1,113 @@
 import { OfficeLog } from "../models/officeLogs";
 import { User } from "../models/user";
-import { app_config } from "../utilities/config"
+import { app_config } from "../utilities/config";
 
-export const AuthenticateUser = async ({rfid, password, API_KEY}) => {
-    const arg1 = API_KEY?'API_KEY':'password'
-    const res = await fetch(app_config.API_URL+"/auth",{
-        method: 'GET',
-        headers: {
-            rfid:rfid??'-',
-            [arg1]:API_KEY?API_KEY:password
-        }
-    });
+export const AuthenticateUser = async ({ rfid, password, API_KEY }) => {
+  const res = await fetch(app_config.API_URL + "/auth/login/rfid", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      API_KEY,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      rfid: rfid,
+      password,
+    }),
+  });
 
-    const json = await res.json();
+  const status = res.status;
 
-    return json;
-}
+  return status;
+};
 
-export const GetUserData = async (AuthToken, UserID) => {
-    const res = await fetch(app_config.API_URL+"/user/"+UserID,{
-        method: 'GET',
-        headers: {
-            AuthToken
-        }
-    });
+export const LogoutUser = async () => {
+  const res = await fetch(app_config.API_URL + "/auth/logout");
 
-    const {UserData} = await res.json();
+  const status = res.status;
 
-    return new User(UserData);
-}
+  return status;
+};
+
+export const GetUserDataCurrent = async () => {
+  const res = await fetch(app_config.API_URL + "/user/current-user", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const { user } = await res.json();
+
+  return new User(user);
+};
+
+export const GetUserDataById = async (UserID) => {
+  const res = await fetch(app_config.API_URL + "/user/" + UserID, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const { user } = await res.json();
+
+  return new User(user);
+};
 
 export const CheckAuthTokenExpired = async (AuthToken) => {
-    const res = await fetch(app_config.API_URL+"/auth/validate",{
-        headers:{
-            AuthToken
-        }
-    })
-    const {IsExpired, StatusCode} = await res.json();
-    if(StatusCode === 403)
-        return true;
-    return !!IsExpired;
-}
+  const res = await fetch(app_config.API_URL + "/auth/validate", {
+    headers: {
+      AuthToken,
+    },
+  });
+  const { IsExpired, StatusCode } = await res.json();
+  if (StatusCode === 403) return true;
+  return !!IsExpired;
+};
 
-export const GetTimeLogs = async (min = new Date(new Date().setHours(0,0,0,0)).toISOString(), max = new Date().toISOString()) => {
-    const res = await fetch(app_config.API_URL+"/officelog",{
-        headers:{
-            API_KEY: app_config.API_KEY,
-            option: 'latest',
-            minval: min,
-            maxval: max
-        }
-    })
+export const GetTimeLogs = async (
+  min = new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
+  max = new Date().toISOString()
+) => {
+  const res = await fetch(app_config.API_URL + "/officelog", {
+    credentials: "include",
+    headers: {
+      option: "latest",
+      minval: min,
+      maxval: max,
+    },
+  });
+  const StatusCode = res.status;
+  const { officeLogs } = await res.json();
 
-    const {officeLogs, StatusCode} = await res.json();
-    const OfficeLogs = []
+  if (StatusCode === 401) return [];
 
-    if(StatusCode === 401)
-        return OfficeLogs;
+  officeLogs.sort((a, b) => {
+    return new Date(b.loginTime) - new Date(a.loginTime);
+  });
+  return officeLogs;
+};
 
-    
-    for(const log of officeLogs){
-        const user_res = await fetch(app_config.API_URL+"/user/api_key/"+log.user,{
-            headers:{
-                API_KEY: app_config.API_KEY
-            }
-        })
+export const OfficeLogOff = async () => {
+  const res = await fetch(app_config.API_URL + "/officelog", {
+    method: "PATCH",
+    credentials: "include",
+  });
 
-        const {UserData} = await user_res.json()
-        
-        OfficeLogs.push(new OfficeLog({
-            user_id: UserData.user_id,
-            fullname: `${UserData.firstname} ${UserData.lastname}`,
-            profile_img_link: UserData.profile_img_link,
-            loginTime: log.loginTime,
-            logoutTime: log.logoutTime,
-            remarks: log.remarks,
-            id: log._id
-        }));
-    }
+  const StatusCode = res.status;
+  return StatusCode;
+};
 
-    
-    OfficeLogs.sort((a,b)=> {
-        return new Date(b.loginTime) - new Date(a.loginTime);
-    })
-    return OfficeLogs;
-}
+export const OfficeLogIn = async (reason) => {
+  const res = await fetch(app_config.API_URL + "/officelog", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      API_KEY: app_config.API_KEY,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      remarks: reason,
+    }),
+  });
 
-export const OfficeLogOff = async (AuthToken) => {
-    const res = await fetch(app_config.API_URL+"/officelog",{
-        method: 'PATCH',
-        headers:{
-            AuthToken,
-            API_KEY: app_config.API_KEY
-        }
-    })
-
-    const {StatusCode} = await res.json();
-    return StatusCode
-}
-
-export const OfficeLogIn = async (AuthToken, reason) => {
-    const res = await fetch(app_config.API_URL+"/officelog",{
-        method: 'POST',
-        headers:{
-            AuthToken,
-            API_KEY: app_config.API_KEY,
-            'Content-Type': 'application/json'
-        },
-        body:JSON.stringify({
-            'remarks': reason
-        })
-    })
-
-    const {StatusCode} = await res.json();
-    return StatusCode
-}
+  const StatusCode = await res.status;
+  return StatusCode;
+};
