@@ -16,7 +16,7 @@ import {
 const Profile = () => {
   return (
     <Wrapper title="PSITS | Profile" noMargin>
-      <div className="flex flex-col mt-20 gap-y-10 mx-[30%]">
+      <div className="flex flex-col my-20 gap-y-10 mx-[30%]">
         <div className="flex justify-center">
           <span className="font-bold text-2xl">Edit Profile</span>
         </div>
