@@ -2,11 +2,11 @@
   "name": "psits_backend",
   "version": "1.0.0",
   "description": "PSITS WebApp Backend",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "devStart": "nodemon index.js",
-    "start": "node index.js"
+    "devStart": "nodemon server.js",
+    "start": "node server.js"
   },
   "author": "JayMar921",
   "license": "ISC",
@@ -27,6 +27,6 @@
     "nodemon": "^3.0.1"
   },
   "engines": {
-    "node": ">=16.17.1"
+    "node": "14.x"
   }
 }
