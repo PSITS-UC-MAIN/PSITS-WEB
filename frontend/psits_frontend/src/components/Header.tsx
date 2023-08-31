@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,26 +14,26 @@ import { ShoppingCart, Trash } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useShoppingCart } from "./Context";
 import Profile from "./ProfileAvatar";
+import HamburgerMenu from "./HamburgerMenu";
 
-const ROUTE = ["/admin", "/admin/accounts", "/admin/events", "/admin/merchandise"];
-
-const Header = () => {
+const Header = ({ data }: any) => {
   const { cartItems, getTotalPrice, removeFromCart, decreaseQuantity, increaseQuantity } = useShoppingCart();
-  const { pathname } = useLocation();
-
-  if (ROUTE.includes(pathname)) return;
 
   return (
     <header className="sticky top-0 z-50">
       <nav className="bg-[#074873] w-full py-6 text-start">
-        <div className="flex items-center justify-between text-white mx-[150px]">
-          <div className="flex items-center gap-4 cursor-pointer">
-            <img src="/logo/psits_logo.png" className="h-[60px]" />
-            <h1 className="text-lg font-semibold">
-              Philippine Society of Information <br /> Technology Students
-            </h1>
-          </div>
-          <div className="flex gap-4 items-center">
+        <div className="flex items-center justify-between text-white mx-10 xl:mx-[150px]">
+          <Link to="/">
+            <div className="flex items-center gap-4 cursor-pointer">
+              <div className="max-h-[60px] max-w-[60px]">
+                <img src="/logo/psits_logo.png" className="max-w-[60px] max-h-[60px]" />
+              </div>
+              <h1 className="hidden sm:block font-semibold text-sm md:text-lg">
+                Philippine Society of Information <br /> Technology Students
+              </h1>
+            </div>
+          </Link>
+          <div className="hidden gap-4 items-center lg:flex">
             <Button className="text-md" variant="ghost" asChild>
               <Link to="/">Home</Link>
             </Button>
@@ -144,15 +144,21 @@ const Header = () => {
                 </div>
               </DialogContent>
             </Dialog>
-            <Button className="text-md" variant="ghost" asChild>
-              <Link to="/admin">Admin</Link>
-            </Button>
-
-            <Profile className="ml-4" />
-
-            <Button className="text-md" variant="ghost" asChild>
-              <Link to="/login">Login</Link>
-            </Button>
+            {data && data?.isAdmin ? (
+              <>
+                <Button className="text-md" variant="ghost" asChild>
+                  <Link to="/admin">Admin</Link>
+                </Button>
+                <Profile className="ml-4" />
+              </>
+            ) : data ? (
+              <Profile className="ml-4" />
+            ) : (
+              <Button className="text-md" variant="ghost" asChild>
+                <Link to="/login">Login</Link>
+              </Button>
+            )}
+            <HamburgerMenu />
           </div>
         </div>
       </nav>

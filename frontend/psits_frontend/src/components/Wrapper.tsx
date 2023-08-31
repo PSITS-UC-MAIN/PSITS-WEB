@@ -16,7 +16,7 @@ const Wrapper = ({
     window.scrollTo(0, 0);
   }, [title]);
 
-  return <section className={`${className} ${noMargin ? "" : "md:mx-[150px]"}`}>{children}</section>;
+  return <section className={`${className} ${noMargin ? "" : "lg:mx-[150px]"}`}>{children}</section>;
 };
 
 export default Wrapper;
