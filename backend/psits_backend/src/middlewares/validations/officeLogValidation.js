@@ -4,17 +4,15 @@ import { withValidationErrors } from "../validationMiddleware.js";
 export const validateOfficeLogHeader = withValidationErrors([
   header("option").optional(),
   header("maxval")
-    .optional()
+    .default(new Date().toISOString())
     .isISO8601()
-    .withMessage("MaxVal must be of Date.ISO_String")
-    .default(new Date().toISOString()),
+    .withMessage("MaxVal must be of Date.ISO_String"),
   header("minval")
-    .optional()
-    .isISO8601()
-    .withMessage("MaxVal must be of Date.ISO_String")
     .default(
       new Date(new Date().setDate(new Date().getDate() - 2)).toISOString()
-    ),
+    )
+    .isISO8601()
+    .withMessage("MaxVal must be of Date.ISO_String"),
 ]);
 
 export const validateOfficeLogBody = withValidationErrors([
