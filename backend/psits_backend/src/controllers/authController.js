@@ -42,8 +42,11 @@ export const login = async (req, res) => {
 export const loginWithRFID = async (req, res) => {
   const user = await User.findOne({ rfid: req.body.rfid });
 
-  const isValidUser =
-    user && (await comparePassword(req.body.password, user.password));
+  let isValidUser = null;
+  if (req.body.password)
+    isValidUser =
+      user && (await comparePassword(req.body.password, user.password));
+  else isValidUser = user;
 
   if (!isValidUser)
     return res

@@ -1,7 +1,11 @@
-import { body } from "express-validator";
-import { BadRequestError } from "../../errors/customErrors.js";
+import { body, header } from "express-validator";
+import {
+  BadRequestError,
+  UnauthorizedError,
+} from "../../errors/customErrors.js";
 import User from "../../models/UserModel.js";
 import { withValidationErrors } from "../validationMiddleware.js";
+import config from "../../utils/Config.js";
 
 export const validateRegisterInput = withValidationErrors([
   body("userId")
@@ -59,8 +63,22 @@ export const validateLoginRFIDInput = withValidationErrors([
     .isLength({ min: 3 })
     .withMessage("RFID must contain at least 3 characters"),
   body("password")
+    .optional()
     .notEmpty()
     .withMessage("Password is required")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long"),
+  header("api_key").custom((api_key, { req }) => {
+    if (!req.body.password && !api_key) {
+      throw new BadRequestError(
+        "API KEY is required when password is not in the body"
+      );
+    } else if (
+      !config.getAPI_KEYS().includes(api_key) &&
+      api_key &&
+      !req.body.password
+    )
+      throw new UnauthorizedError("API KEY provided is not authorized");
+    return true;
+  }),
 ]);
