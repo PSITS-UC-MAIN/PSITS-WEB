@@ -1,15 +1,12 @@
-import './App.css'
-import DashboardUI from './components/Pages/DashboardUI'
-import LoginUI from './components/Pages/LoginUI'
-import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
-import TimeLogUI from './components/Pages/TimeLogUI'
+import "./App.css";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <>
       <Outlet />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
