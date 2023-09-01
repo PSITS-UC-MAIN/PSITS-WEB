@@ -8,23 +8,23 @@ import { Button } from "../ui/button";
 
 interface MerchandiseCardProps {
   item: {
-    _id: string,
-    title: string,
-    information: string,
-    price: number,
-    discount: number,
-    stock: number,
-    photo_img_links: string,
-    size: string,
-    color: string,
-    styles: [],
-    rating: number,
-    quantity: number,
-    showPublic: boolean
-  } 
+    _id: string;
+    title: string;
+    information: string;
+    price: number;
+    discount: number;
+    stock: number;
+    photo_img_links: string;
+    size: string;
+    color: string;
+    styles: [];
+    rating: number;
+    quantity: number;
+    showPublic: boolean;
+  };
 }
 
-const MerchandiseCard = ({ item }: MerchandiseCardProps ) => {
+const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
   const { addToCart } = useShoppingCart();
   const queryClient = useQueryClient();
 
@@ -36,14 +36,18 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps ) => {
       deleteReset();
     },
     onError(error: any) {
-      toast.error(error.response.merch.message || error.message)
-    }
-  })
+      toast.error(error.response.merch.message || error.message);
+    },
+  });
 
   return (
     <Card className="w-[350px] border-0 shadow-none">
       <CardHeader className="relative">
-        <img src={item.photo_img_links[0]} alt="Merch Item" className="w-full h-[400px] rounded-lg border-2 border-black" />
+        <img
+          src={item.photo_img_links[0]}
+          alt="Merch Item"
+          className="w-full h-[400px] rounded-lg border-2 border-black"
+        />
         <Button
           className="opacity-25 hover:opacity-100 bg-red-600 hover:bg-red-600 py-[7.5%] absolute top-[7%] end-[11%] rounded-full"
           onClick={() => deleteMutate(item._id)}
@@ -69,8 +73,8 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps ) => {
           <p className="text-lg font-light">₱{item.price}.00</p>
         </div>
       </CardContent>
-     </Card>
-  )
-}
+    </Card>
+  );
+};
 
 export default MerchandiseCard;

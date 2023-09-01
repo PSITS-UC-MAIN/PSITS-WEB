@@ -119,7 +119,7 @@ const Header = ({ data }: any) => {
               </Button>
             </div>
             <div className="flex gap-4 items-center">
-              <Cart/>
+              <Cart />
               {data && data?.isAdmin ? (
                 <>
                   <Button className="text-md" variant="ghost" asChild>

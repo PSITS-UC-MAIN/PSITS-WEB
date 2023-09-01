@@ -17,50 +17,47 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import MerchandiseCard from "@/components/merchandise/merchandiseCard";
 
 interface Merchandise {
-  _id: string,
-  title: string,
-  information: string,
-  price: number,
-  discount: number,
-  stock: number,
-  photo_img_links: string,
-  size: string,
-  color: string,
-  styles: [],
-  rating: number,
-  quantity: number,
-  showPublic: boolean
+  _id: string;
+  title: string;
+  information: string;
+  price: number;
+  discount: number;
+  stock: number;
+  photo_img_links: string;
+  size: string;
+  color: string;
+  styles: [];
+  rating: number;
+  quantity: number;
+  showPublic: boolean;
 }
 
-const MerchandiseSchema = z
-  .object({
-    title: z.string(),
-    information: z.string(),
-    price: z.number(),
-    discount: z.number(),
-    photo_img_links: z.any(),
-    color: z.string(),
-  })
+const MerchandiseSchema = z.object({
+  title: z.string(),
+  information: z.string(),
+  price: z.number(),
+  discount: z.number(),
+  photo_img_links: z.any(),
+  color: z.string(),
+});
 
 export type MerchandiseSchema = z.infer<typeof MerchandiseSchema>;
 
 const Merchandise = () => {
   const queryClient = useQueryClient();
 
-  const {
-    data: merch,
-  } = useQuery({
+  const { data: merch } = useQuery({
     queryKey: ["merch"],
-    queryFn: getMerchandise
-  })
+    queryFn: getMerchandise,
+  });
 
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<MerchandiseSchema>({
-    resolver: zodResolver(MerchandiseSchema)
-  })
+    resolver: zodResolver(MerchandiseSchema),
+  });
 
   const { mutate: createMutate, reset: createReset } = useMutation({
     mutationFn: createMerchandiseItem,
@@ -70,13 +67,13 @@ const Merchandise = () => {
       createReset();
     },
     onError(error: any) {
-      toast.error(error.response.merch.message || error.message)
-    }
-  })
+      toast.error(error.response.merch.message || error.message);
+    },
+  });
 
   const onSubmit: SubmitHandler<MerchandiseSchema> = (data) => {
     createMutate(data);
-  }
+  };
 
   return (
     <Wrapper title="PSITS | Merchandise">
@@ -116,7 +113,9 @@ const Merchandise = () => {
                         </div>
                         <div className="flex flex-row gap-x-5">
                           <div className="flex flex-col gap-y-3">
-                            <Label className="text-gray-500" htmlFor="itemName">Item Name</Label>
+                            <Label className="text-gray-500" htmlFor="itemName">
+                              Item Name
+                            </Label>
                             <Input
                               autoComplete="off"
                               id="itemName"
@@ -127,31 +126,39 @@ const Merchandise = () => {
                             {errors.title && <p className="text-red-400 text-sm font-light">{errors.title.message}</p>}
                           </div>
                           <div className="flex flex-col gap-y-3">
-                            <Label className="text-gray-500" htmlFor="itemPrice">Item Price</Label>
+                            <Label className="text-gray-500" htmlFor="itemPrice">
+                              Item Price
+                            </Label>
                             <Input
                               autoComplete="off"
                               id="itemPrice"
                               placeholder="Enter item price"
                               type="number"
-                              {...register("price",{ valueAsNumber: true })}
+                              {...register("price", { valueAsNumber: true })}
                             />
                             {errors.price && <p className="text-red-400 text-sm font-light">{errors.price.message}</p>}
                           </div>
                         </div>
                         <div className="flex flex-row gap-x-5">
                           <div className="flex flex-col gap-y-3">
-                            <Label className="text-gray-500" htmlFor="itemDiscount">Item Discount in %</Label>
+                            <Label className="text-gray-500" htmlFor="itemDiscount">
+                              Item Discount in %
+                            </Label>
                             <Input
                               autoComplete="off"
                               id="itemDiscount"
                               placeholder="Enter discount"
                               type="number"
-                              {...register("discount",{ valueAsNumber: true })}
+                              {...register("discount", { valueAsNumber: true })}
                             />
-                            {errors.discount && <p className="text-red-400 text-sm font-light">{errors.discount.message}</p>}
+                            {errors.discount && (
+                              <p className="text-red-400 text-sm font-light">{errors.discount.message}</p>
+                            )}
                           </div>
                           <div className="flex flex-col gap-y-3">
-                            <Label className="text-gray-500" htmlFor="itemColor">Item Color</Label>
+                            <Label className="text-gray-500" htmlFor="itemColor">
+                              Item Color
+                            </Label>
                             <Input
                               autoComplete="off"
                               id="itemColor"
@@ -162,13 +169,13 @@ const Merchandise = () => {
                         </div>
                         <div className="flex flex-row items-center gap-x-5">
                           <div className="flex flex-col gap-y-3">
-                            <Label className="text-gray-500" htmlFor="itemDesc">Item Description</Label>
-                            <Textarea
-                              className="w-full"
-                              id="itemDesc"
-                              {...register("information")}
-                            />
-                            {errors.information && <p className="text-red-400 text-sm font-light">{errors.information.message}</p>}
+                            <Label className="text-gray-500" htmlFor="itemDesc">
+                              Item Description
+                            </Label>
+                            <Textarea className="w-full" id="itemDesc" {...register("information")} />
+                            {errors.information && (
+                              <p className="text-red-400 text-sm font-light">{errors.information.message}</p>
+                            )}
                           </div>
                           <div className="flex flex-col">
                             <Button type="submit">Post</Button>
@@ -187,19 +194,14 @@ const Merchandise = () => {
             </CardContent>
           </Card>
           <div className="flex flex-row">
-            { merch?.merchandise?.map((item: any) => {
-                return (
-                  <MerchandiseCard
-                    key={item._id.toString()}
-                    item={item}
-                  />
-                );
+            {merch?.merchandise?.map((item: any) => {
+              return <MerchandiseCard key={item._id.toString()} item={item} />;
             })}
           </div>
         </div>
       </div>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default Merchandise;
