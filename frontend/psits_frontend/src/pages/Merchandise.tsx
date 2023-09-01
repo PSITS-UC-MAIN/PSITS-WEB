@@ -1,11 +1,10 @@
-import { Plus, ShoppingBag, Trash } from "lucide-react";
+import { Plus } from "lucide-react";
 import { z } from "zod";
 
 import Wrapper from "@/components/Wrapper";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { createMerchandiseItem, deleteMerchandiseItem, getMerchandise } from "@/api/merchandise";
-import useShoppingCart from "@/store/useShoppingCart";
+import { createMerchandiseItem, getMerchandise } from "@/api/merchandise";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -15,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import MerchandiseCard from "@/components/merchandise/merchandiseCard";
 
 interface Merchandise {
   _id: string,
@@ -23,41 +23,32 @@ interface Merchandise {
   price: number,
   discount: number,
   stock: number,
-  photo_img_links: [],
+  photo_img_links: string,
   size: string,
   color: string,
   styles: [],
   rating: number,
+  quantity: number,
   showPublic: boolean
 }
 
 const MerchandiseSchema = z
   .object({
-    _id: z.string(),
     title: z.string(),
     information: z.string(),
     price: z.number(),
     discount: z.number(),
-    stock: z.number(),
     photo_img_links: z.any(),
-    size: z.string(),
     color: z.string(),
-    rating: z.number(),
-    quantity: z.number(),
-    showPublic: z.boolean()
   })
 
 export type MerchandiseSchema = z.infer<typeof MerchandiseSchema>;
 
 const Merchandise = () => {
-  const { addToCart } = useShoppingCart();
   const queryClient = useQueryClient();
 
   const {
     data: merch,
-    isLoading,
-    isError,
-    error
   } = useQuery({
     queryKey: ["merch"],
     queryFn: getMerchandise
@@ -71,24 +62,12 @@ const Merchandise = () => {
     resolver: zodResolver(MerchandiseSchema)
   })
 
-  const { mutate: deleteMutate, reset: deleteReset } = useMutation({
-    mutationFn: deleteMerchandiseItem,
-    onSuccess: (merch) => {
-      queryClient.invalidateQueries(["merch"]);
-      toast.success(`${merch.message}`);
-      deleteReset();
-    },
-    onError(error: any) {
-      toast.error(error.response.merch.message || error.message)
-    }
-  })
-
   const { mutate: createMutate, reset: createReset } = useMutation({
     mutationFn: createMerchandiseItem,
     onSuccess: (data) => {
       queryClient.invalidateQueries(["merch"]);
       toast.success(`${data.message}`);
-      createReset()
+      createReset();
     },
     onError(error: any) {
       toast.error(error.response.merch.message || error.message)
@@ -98,7 +77,7 @@ const Merchandise = () => {
   const onSubmit: SubmitHandler<MerchandiseSchema> = (data) => {
     createMutate(data);
   }
-  
+
   return (
     <Wrapper title="PSITS | Merchandise">
       <div className="min-h-screen my-20">
@@ -134,11 +113,10 @@ const Merchandise = () => {
                             id="img"
                             {...register("photo_img_links")}
                           />
-                          {/* {errors.photo_img_links && <p className="text-red-400 text-sm font-light">{errors.photo_img_links.message}</p>} */}
                         </div>
                         <div className="flex flex-row gap-x-5">
                           <div className="flex flex-col gap-y-3">
-                            <Label className="text-gray-500">Item Name</Label>
+                            <Label className="text-gray-500" htmlFor="itemName">Item Name</Label>
                             <Input
                               autoComplete="off"
                               id="itemName"
@@ -149,32 +127,34 @@ const Merchandise = () => {
                             {errors.title && <p className="text-red-400 text-sm font-light">{errors.title.message}</p>}
                           </div>
                           <div className="flex flex-col gap-y-3">
-                            <Label className="text-gray-500">Item Price</Label>
+                            <Label className="text-gray-500" htmlFor="itemPrice">Item Price</Label>
                             <Input
                               autoComplete="off"
                               id="itemPrice"
                               placeholder="Enter item price"
                               type="number"
-                              {...register("price")}
+                              {...register("price",{ valueAsNumber: true })}
                             />
                             {errors.price && <p className="text-red-400 text-sm font-light">{errors.price.message}</p>}
                           </div>
                         </div>
                         <div className="flex flex-row gap-x-5">
                           <div className="flex flex-col gap-y-3">
-                            <Label className="text-gray-500">Item Discount in %</Label>
+                            <Label className="text-gray-500" htmlFor="itemDiscount">Item Discount in %</Label>
                             <Input
                               autoComplete="off"
                               id="itemDiscount"
                               placeholder="Enter discount"
-                              {...register("discount")}
+                              type="number"
+                              {...register("discount",{ valueAsNumber: true })}
                             />
+                            {errors.discount && <p className="text-red-400 text-sm font-light">{errors.discount.message}</p>}
                           </div>
                           <div className="flex flex-col gap-y-3">
-                            <Label className="text-gray-500">Item Color</Label>
+                            <Label className="text-gray-500" htmlFor="itemColor">Item Color</Label>
                             <Input
                               autoComplete="off"
-                              id="email"
+                              id="itemColor"
                               placeholder="Enter item color"
                               {...register("color")}
                             />
@@ -182,12 +162,13 @@ const Merchandise = () => {
                         </div>
                         <div className="flex flex-row items-center gap-x-5">
                           <div className="flex flex-col gap-y-3">
-                            <Label className="text-gray-500">Item Description</Label>
+                            <Label className="text-gray-500" htmlFor="itemDesc">Item Description</Label>
                             <Textarea
                               className="w-full"
+                              id="itemDesc"
                               {...register("information")}
-                              {...errors.information && <p className="text-red-400 text-sm font-light">{errors.information.message}</p>}
                             />
+                            {errors.information && <p className="text-red-400 text-sm font-light">{errors.information.message}</p>}
                           </div>
                           <div className="flex flex-col">
                             <Button type="submit">Post</Button>
@@ -205,31 +186,16 @@ const Merchandise = () => {
               </div>
             </CardContent>
           </Card>
-          {merch?.merchandise?.map((item: any) => (
-            <Card key={item._id} className="w-[350px] border-0 shadow-none">
-              <CardHeader className="relative">
-                <img src={item.photo_img_links[0]} alt="Merch Item" className="w-full h-[400px] rounded-lg border-2 border-black" />
-                <Button
-                  className="bg-[#000] bg-opacity-100 hover:bg-[#353535] py-[7.5%] absolute bottom-8 end-8 rounded-full"
-                  onClick={() => addToCart(item)}
-                >
-                  <ShoppingBag size={20} />
-                </Button>
-                <Button
-                  className="bg-red-600 bg-opacity-100 hover:bg-red-500 py-[7.5%] absolute top-7 end-8 rounded-full"
-                  onClick={() => deleteMutate(item._id)}
-                >
-                  <Trash size={20} />
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-row justify-between">
-                  <h1 className="text-lg font-semibold">{item.title}</h1>
-                  <p className="text-lg font-light">₱{item.price}.00</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+          <div className="flex flex-row">
+            { merch?.merchandise?.map((item: any) => {
+                return (
+                  <MerchandiseCard
+                    key={item._id.toString()}
+                    item={item}
+                  />
+                );
+            })}
+          </div>
         </div>
       </div>
     </Wrapper>
