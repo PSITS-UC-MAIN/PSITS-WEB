@@ -1,6 +1,6 @@
 import { format, parseISO } from "date-fns";
 import ReackMarkDown from "react-markdown";
-import { useQueryClient, useMutation, QueryClient } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 import { deleteAnnouncement } from "@/api/announcement";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
