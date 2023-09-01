@@ -1,8 +1,6 @@
 import Wrapper from "@/components/Wrapper";
-import { Slide } from "react-slideshow-image";
-import { homeBannerImages } from "@/constants";
 import { psits_banner2 } from "@/assets";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 const dummyData = [
   {
