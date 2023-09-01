@@ -35,6 +35,7 @@ export const login = async (req, res) => {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
     secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
   });
   res.status(StatusCodes.OK).json({ message: "User logged in!" });
 };
@@ -65,7 +66,7 @@ export const loginWithRFID = async (req, res) => {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: "lax",
   });
   res.status(StatusCodes.OK).json({ message: "User logged in!" });
 };
