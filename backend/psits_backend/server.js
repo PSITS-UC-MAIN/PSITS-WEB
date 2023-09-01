@@ -53,6 +53,7 @@ app.use("/api/v2/user", authenticateUser, v2UserRouter);
 app.use("/api/v2/announcement", v2AnnouncementRouter);
 app.use("/api/v2/event", v2EventRouter);
 app.use("/api/v2/officelog", authenticateUser, v2OfficeLogRouter);
+app.use("/api/v2/merch", v2MerchandiseRouter)
 
 /*
   Note: API VERSION 1 WILL NOT WORK SINCE THE MODELS SCHEMA CHANGED
