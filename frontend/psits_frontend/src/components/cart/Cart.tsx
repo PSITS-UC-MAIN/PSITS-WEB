@@ -5,11 +5,7 @@ import { ShoppingCart, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Cart = () => {
-  const {
-    cartItems,
-    totalPrice,
-    removeFromCart
-  } = useShoppingCart()
+  const { cartItems, totalPrice, removeFromCart } = useShoppingCart();
 
   return (
     <Dialog>
@@ -39,16 +35,9 @@ const Cart = () => {
           </div>
           <ScrollArea className="h-[30em] w-full rounded-md">
             {cartItems.map((item: any) => (
-              <div
-                key={item._id}
-                className="grid grid-cols-6 bg-white rounded-md shadow-md p-5 items-center mb-5"
-              >
+              <div key={item._id} className="grid grid-cols-6 bg-white rounded-md shadow-md p-5 items-center mb-5">
                 <div className="flex flex-cols gap-x-5 items-center">
-                  <img
-                    src={item.photo_img_links[0]}
-                    alt="Product Image"
-                    className="w-[100px] h-[100px] rounded-md"
-                  />
+                  <img src={item.photo_img_links[0]} alt="Product Image" className="w-[100px] h-[100px] rounded-md" />
                   <span>{item.title}</span>
                 </div>
                 <span className="text-center">{item.size === "" ? "Not Specified" : item.size}</span>
@@ -64,9 +53,7 @@ const Cart = () => {
             ))}
           </ScrollArea>
           <div className="flex flex-row justify-end items-center gap-x-10 p-5">
-            <span className="bg-white rounded-md py-2 px-5 shadow-md">
-              Order Total:&emsp;&#8369;{totalPrice}
-            </span>
+            <span className="bg-white rounded-md py-2 px-5 shadow-md">Order Total:&emsp;&#8369;{totalPrice}</span>
             <Button type="submit" className="bg-[#268EA7] hover:bg-[#3da7c2]">
               Checkout
             </Button>
@@ -74,7 +61,7 @@ const Cart = () => {
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
 export default Cart;

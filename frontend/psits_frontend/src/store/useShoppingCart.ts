@@ -17,10 +17,10 @@ const useShoppingCart = create<ShoppingCart>((set) => ({
   totalPrice: 0,
   addToCart: (item) => {
     set((state) => {
-      const existingItemIndex = state.cartItems.findIndex(cartItem => cartItem._id === item._id);
+      const existingItemIndex = state.cartItems.findIndex((cartItem) => cartItem._id === item._id);
 
-      const totalPrice = state.totalPrice + item.price
-      
+      const totalPrice = state.totalPrice + item.price;
+
       if (existingItemIndex !== -1) {
         const updatedItems = [...state.cartItems];
         updatedItems[existingItemIndex].quantity += 1;
@@ -32,14 +32,15 @@ const useShoppingCart = create<ShoppingCart>((set) => ({
   },
   removeFromCart: (item) => {
     set((state) => {
-      const totalPrice = state.totalPrice - (item.price * item.quantity);
-      return { cartItems: state.cartItems.filter(cartItem => item._id !== cartItem._id), totalPrice }
-    })
+      const totalPrice = state.totalPrice - item.price * item.quantity;
+      return { cartItems: state.cartItems.filter((cartItem) => item._id !== cartItem._id), totalPrice };
+    });
   },
   setRequestLoading: (isLoading) => set((state) => ({ ...state, requestLoading: isLoading })),
-  calculateTotalPrice: () => set((state) => ({
-    totalPrice: state.cartItems.reduce((total,value) => total += value.price * value.quantity, 0)
-  }))
+  calculateTotalPrice: () =>
+    set((state) => ({
+      totalPrice: state.cartItems.reduce((total, value) => (total += value.price * value.quantity), 0),
+    })),
 }));
 
 export default useShoppingCart;
