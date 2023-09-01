@@ -73,17 +73,6 @@ const dummyData = [
 const Events = () => {
   return (
     <Wrapper title="PSITS | Events" noMargin>
-      <div className="my-10 mx-[150px]">
-        <Slide indicators>
-          {homeBannerImages.map((slideImage) => (
-            <div
-              key={slideImage.name}
-              className="flex items-center justify-center rounded h-[500px] bg-contain bg-no-repeat bg-center"
-              style={{ backgroundImage: `url(${slideImage.banner})` }}
-            />
-          ))}
-        </Slide>
-      </div>
       <div className="flex flex-col gap-y-10 mb-20">
         <div className="text-2xl font-medium text-center text-white bg-[#548BA1] py-5">
           COLLEGE OF COMPUTER STUDIES LIST OF EVENTS
@@ -91,13 +80,9 @@ const Events = () => {
         <div className="flex flex-row flex-wrap gap-5 justify-center mx-[150px]">
           {dummyData.map((item) => (
             <Card key={item.id} className="w-[300px] text-center">
-              <CardHeader>
-                <CardTitle>
-                  <img src={item.photo_img_link} alt="Event Image" className="rounded-md" />
-                </CardTitle>
-              </CardHeader>
+              <img src={item.photo_img_link} alt="Event Image" className="rounded-md" />
               <CardContent>
-                <h1 className="text-xl font-semibold uppercase mb-5">{item.title}</h1>
+                <h1 className="text-xl font-semibold uppercase my-5">{item.title}</h1>
                 <p className="text-justify truncate">{item.content}</p>
               </CardContent>
               <CardFooter className="justify-center">
