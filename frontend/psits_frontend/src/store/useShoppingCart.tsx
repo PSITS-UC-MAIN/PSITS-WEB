@@ -1,4 +1,4 @@
-import { MerchandiseSchema } from "@/components/merchandise/Merchandise";
+import { MerchandiseSchema } from "@/pages/Merchandise";
 import { create } from "zustand";
 
 type ShoppingCart = {
