@@ -78,54 +78,58 @@ const Announcement = ({
 
   return (
     <div className="w-[90%] xl:max-w-[70%]">
-      {announceState ? (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Card className="w-full">
-            <CardHeader>
-              <Input placeholder="Announcement Title" {...register("title")} />
-              {errors.title && <p className="text-red-400 text-sm font-light">{errors.title.message}</p>}
-            </CardHeader>
-            <CardContent>
-              <Textarea
-                rows={5}
-                className="bg-[#fafafa]"
-                placeholder="Announce something to the students"
-                {...register("content")}
-              />
-              {errors.content && <p className="text-red-400 text-sm font-light">{errors.content.message}</p>}
-            </CardContent>
-            <CardFooter className="w-full flex items-center justify-between">
-              <Input
-                type="file"
-                accept="image/*"
-                placeholder="Upload a photo"
-                className="w-auto"
-                {...register("image")}
-              />
-              <div className="flex items-center gap-4">
-                <Button variant="ghost" onClick={() => setAnnounceState(false)}>
-                  Cancel
-                </Button>
-                <Button className="bg-[#268EA7] hover:bg-[#3da7c2]" disabled={createIsLoading}>
-                  {createIsLoading ? <Loader2 className=" animate-spin" /> : "Post"}
-                </Button>
-              </div>
-            </CardFooter>
-          </Card>
-        </form>
-      ) : (
-        <div
-          onClick={() => setAnnounceState(true)}
-          className="mb-4 w-full border rounded shadow p-6 cursor-pointer flex items-center gap-4"
-        >
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>
-              <User />
-            </AvatarFallback>
-          </Avatar>
-          <h1 className="text-gray-500 text-sm">Announce something to the students</h1>
-        </div>
+      {store.authUser?.isAdmin && (
+        <>
+          {announceState ? (
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Card className="w-full">
+                <CardHeader>
+                  <Input placeholder="Announcement Title" {...register("title")} />
+                  {errors.title && <p className="text-red-400 text-sm font-light">{errors.title.message}</p>}
+                </CardHeader>
+                <CardContent>
+                  <Textarea
+                    rows={5}
+                    className="bg-[#fafafa]"
+                    placeholder="Announce something to the students"
+                    {...register("content")}
+                  />
+                  {errors.content && <p className="text-red-400 text-sm font-light">{errors.content.message}</p>}
+                </CardContent>
+                <CardFooter className="w-full flex items-center justify-between">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    placeholder="Upload a photo"
+                    className="w-auto"
+                    {...register("image")}
+                  />
+                  <div className="flex items-center gap-4">
+                    <Button variant="ghost" onClick={() => setAnnounceState(false)}>
+                      Cancel
+                    </Button>
+                    <Button className="bg-[#268EA7] hover:bg-[#3da7c2]" disabled={createIsLoading}>
+                      {createIsLoading ? <Loader2 className=" animate-spin" /> : "Post"}
+                    </Button>
+                  </div>
+                </CardFooter>
+              </Card>
+            </form>
+          ) : (
+            <div
+              onClick={() => setAnnounceState(true)}
+              className="mb-4 w-full border rounded shadow p-6 cursor-pointer flex items-center gap-4"
+            >
+              <Avatar>
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>
+                  <User />
+                </AvatarFallback>
+              </Avatar>
+              <h1 className="text-gray-500 text-sm">Announce something to the students</h1>
+            </div>
+          )}
+        </>
       )}
       <div className="border shadow rounded p-4 bg-[#F9F9F9]">
         <h1 className="text-center font-bold text-3xl mb-4">Announcements</h1>

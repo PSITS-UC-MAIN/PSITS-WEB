@@ -1,11 +1,18 @@
 import { create } from "zustand";
 
-import { RegisterSchema } from "@/pages/Register";
-
+interface Register {
+  userId: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  isAdmin: string;
+  course: string;
+  year: string;
+}
 type Store = {
-  authUser: RegisterSchema | null;
+  authUser: Register | null;
   requestLoading: boolean;
-  setAuthUser: (user: RegisterSchema | null) => void;
+  setAuthUser: (user: Register | null) => void;
   setRequestLoading: (isLoading: boolean) => void;
 };
 

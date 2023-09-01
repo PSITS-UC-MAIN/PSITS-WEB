@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LogOut, User } from "lucide-react";
 
 import {
@@ -10,42 +10,67 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { logoutUser } from "@/api/auth";
+import useStore from "@/store";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
-const Profile = () => {
+const Profile = ({ className }: { className?: string }) => {
+  const navigate = useNavigate();
+  const store = useStore();
+
+  const { refetch } = useQuery(["getCurrentUser"], logoutUser, {
+    enabled: false,
+    onSuccess(data: any) {
+      store.setAuthUser(null);
+      toast.success(data.message);
+      store.setRequestLoading(false);
+      navigate("/");
+    },
+    onError(error: any) {
+      store.setRequestLoading(false);
+      toast.error(error.message);
+      console.log(error);
+    },
+  });
+
+  const logoutHandler = () => {
+    refetch();
+  };
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div className="cursor-pointer ">
-          <Avatar>
-            <AvatarImage
-              src="https://github.com/shadcn.png"
-              alt="@shadcn"
-              className="h-[50px] rounded-full hover:border-2 transition"
-            />
-            <AvatarFallback>
-              <User />
-            </AvatarFallback>
-          </Avatar>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Link to="/profile/6969" className="flex items-center">
-            <User className="mr-4 h-6 w-4" />
-            <span>Profile</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Link to="/" className="flex items-center">
+    <div className={className}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <div className="cursor-pointer h-[50px] w-[50px]">
+            <Avatar>
+              <AvatarImage
+                src="https://github.com/shadcn.png"
+                alt="@shadcn"
+                className="rounded-full hover:border-2 transition"
+              />
+              <AvatarFallback>
+                <User />
+              </AvatarFallback>
+            </Avatar>
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-40">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Link to="/profile/6969" className="flex items-center">
+              <User className="mr-4 h-6 w-4" />
+              <span>Profile</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={logoutHandler} className="flex items-center">
             <LogOut className=" mr-4 h-6 w-4" />
             <span>Logout</span>
-          </Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 };
 
