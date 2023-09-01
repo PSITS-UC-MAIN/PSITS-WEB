@@ -26,11 +26,7 @@ const AnnoucementCard = ({ id, title, author, content, creationDate, photo_img_l
   const parseDate = creationDate.toLocaleString();
   const formattedDate = format(parseISO(parseDate), "PPP | pp");
 
-  const {
-    mutate,
-    reset,
-    isLoading: createIsLoading,
-  } = useMutation({
+  const { mutate, reset } = useMutation({
     mutationFn: deleteAnnouncement,
     onMutate() {
       store.setRequestLoading(true);
@@ -64,14 +60,16 @@ const AnnoucementCard = ({ id, title, author, content, creationDate, photo_img_l
               <span className="font-light text-sm">{formattedDate}</span>
             </div>
           </div>
-          <div className="flex items-center">
-            <Button variant="ghost">
-              <FileEdit size={16} />
-            </Button>
-            <Button onClick={() => mutate(id)} variant="ghost">
-              <Trash2 color="#df2020" size={16} />
-            </Button>
-          </div>
+          {store.authUser?.isAdmin && (
+            <div className="flex items-center">
+              <Button variant="ghost">
+                <FileEdit size={16} />
+              </Button>
+              <Button onClick={() => mutate(id)} variant="ghost">
+                <Trash2 color="#df2020" size={16} />
+              </Button>
+            </div>
+          )}
         </div>
       </CardHeader>
       <CardContent className="break-words">

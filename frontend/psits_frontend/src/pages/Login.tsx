@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "@/api/auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
 
@@ -25,6 +25,8 @@ type LoginSchema = z.infer<typeof LoginSchema>;
 const Login = () => {
   const navigate = useNavigate();
   const store = useStore();
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -40,7 +42,7 @@ const Login = () => {
       store.setRequestLoading(true);
     },
     onSuccess: (data) => {
-      console.log(data);
+      queryClient.invalidateQueries(["getCurrentUser"]);
       store.setRequestLoading(false);
       toast.success(`${data.message}!`);
       reset();
