@@ -14,7 +14,7 @@ export async function updateMerchandiseItem(merchandiseItemId: string, data: any
   return response.data;
 }
 
-export async function deleteAnnouncement(merchandiseItemId: string) {
+export async function deleteMerchandiseItem(merchandiseItemId: string) {
   const response = await axios.delete(`merch/${merchandiseItemId}`);
   return response.data;
 }
