@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import compression from "compression";
 import cookieParser from "cookie-parser";
+import { v2 as cloudinary } from "cloudinary";
 
 import config from "./src/utils/Config.js";
 import database from "./src/MongoDB.js";
@@ -16,21 +17,28 @@ import v2MerchandiseRouter from "./src/routes/merchandiseRouter.js";
 import v2OfficeLogRouter from "./src/routes/officelogRouter.js";
 
 import homeRouter from "./src/routes/main.js";
-import authRouter from "./src/routes/auth.js";
-import userRouter from "./src/routes/users.js";
-import annoucementRouter from "./src/routes/announcement.js";
-import eventRouter from "./src/routes/events.js";
-import merchandiseRouter from "./src/routes/merchandise.js";
-import orderRouter from "./src/routes/orders.js";
-import officeLogRouter from "./src/routes/officelog.js";
+
+// public
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
 
 // middleware
 import { authenticateUser } from "./src/middlewares/authMiddleware.js";
 import errorHandlerMiddleware from "./src/middlewares/errorHandlerMiddleware.js";
 
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
 const app = express();
 
 let PORT = config.PORT;
+
+// temporarily store images in the public folder to utilize file upload
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use(express.static(path.resolve(__dirname, "./public")));
 
 // cors
 app.use(
@@ -52,26 +60,15 @@ app.use("/api/v2/auth", v2AuthRouter);
 app.use("/api/v2/user", authenticateUser, v2UserRouter);
 app.use("/api/v2/announcement", v2AnnouncementRouter);
 app.use("/api/v2/event", v2EventRouter);
+app.use("/api/v2/merch", v2MerchandiseRouter);
 app.use("/api/v2/officelog", authenticateUser, v2OfficeLogRouter);
-app.use("/api/v2/merch", v2MerchandiseRouter)
-
-/*
-  Note: API VERSION 1 WILL NOT WORK SINCE THE MODELS SCHEMA CHANGED
-  */
-app.use("/api/auth", authRouter);
-app.use("/api/user", userRouter);
-app.use("/api/announcement", annoucementRouter);
-app.use("/api/event", eventRouter);
-app.use("/api/merch", merchandiseRouter);
-app.use("/api/order", orderRouter);
-app.use("/api/officelog", officeLogRouter);
 
 // throw error in json format if route not exist
 app.use("*", (req, res) => {
   res.status(404).json({ message: "Route not found!" });
 });
 
-// throw all errors in json format to not to crash the server
+// throw all errors in json format and not break the server
 app.use(errorHandlerMiddleware);
 
 // run database
