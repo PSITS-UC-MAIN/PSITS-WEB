@@ -1,9 +1,12 @@
 import { create } from "zustand";
 
 interface Register {
+  avatar: any;
   userId: string;
+  rfid: string;
   firstname: string;
   lastname: string;
+  birthdate: Date;
   email: string;
   isAdmin: string;
   course: string;
