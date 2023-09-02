@@ -2,6 +2,7 @@ import { Router } from "express";
 const router = Router();
 import {
   getCurrentUser,
+  updateCurrentUser,
   getAllUser,
   getUserbyId,
   updateUserbyId,
@@ -11,9 +12,15 @@ import {
   validateUserBodyPatch,
   validateUserParam,
 } from "../middlewares/validations/userValidation.js";
+import upload from "../middlewares/multerMiddleware.js";
 
-router.route("/current-user").get(getCurrentUser);
+router
+  .route("/current-user")
+  .get(getCurrentUser)
+  .patch(upload.single("avatar"), updateCurrentUser);
+
 router.route("/").get(getAllUser);
+
 router
   .route("/:userId")
   .get(validateUserParam, getUserbyId)

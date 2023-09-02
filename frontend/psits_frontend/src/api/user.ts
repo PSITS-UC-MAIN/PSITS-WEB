@@ -5,6 +5,11 @@ export async function getCurrentUser() {
   return response.data.user;
 }
 
+export async function updateCurrentUser(data: any) {
+  const response = await axios.patch(`user/current-user`, data);
+  return response.data;
+}
+
 export async function getAllUser() {
   const response = await axios.get(`user`);
   return response.data.users;
@@ -15,8 +20,8 @@ export async function getUserbyId(userId: string) {
   return response.data;
 }
 
-export async function updateUserbyId(userId: string, data: any) {
-  const response = await axios.post(`user/${userId}`, data);
+export async function updateUserbyId({ userId, data }: { userId: string; data: any }) {
+  const response = await axios.patch(`user/${userId}`, data);
   return response.data;
 }
 

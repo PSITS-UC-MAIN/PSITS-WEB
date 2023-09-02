@@ -1,12 +1,40 @@
 import { StatusCodes } from "http-status-codes";
 import User from "../models/UserModel.js";
 import { NotFoundError, UnauthorizedError } from "../errors/customErrors.js";
+import { v2 as cloudinary } from "cloudinary";
+import { promises as fs } from "fs";
 
 export const getCurrentUser = async (req, res) => {
   const user = await User.findOne({ userId: req.user.userId });
   const userWithoutPassword = user.toJSON();
 
   res.status(StatusCodes.OK).json({ user: userWithoutPassword });
+};
+
+export const updateCurrentUser = async (req, res) => {
+  let newUser = { ...req.body };
+  delete newUser.password;
+  delete newUser.avatar;
+
+  if (req.file) {
+    newUser = JSON.parse(req.body.user);
+
+    const response = await cloudinary.uploader.upload(req.file.path);
+    await fs.unlink(req.file.path);
+    newUser.avatar = response.secure_url;
+    newUser.avatarPublicId = response.public_id;
+  }
+
+  const updatedUser = await User.findOneAndUpdate(
+    { userId: req.user.userId },
+    newUser
+  );
+
+  if (req.file && updatedUser.avatarPublicId) {
+    await cloudinary.uploader.destroy(updatedUser.avatarPublicId);
+  }
+
+  res.status(StatusCodes.OK).json({ message: "Profile updated!" });
 };
 
 export const getAllUser = async (req, res) => {

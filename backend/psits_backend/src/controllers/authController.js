@@ -2,7 +2,6 @@ import { StatusCodes } from "http-status-codes";
 import User from "../models/UserModel.js";
 import { comparePassword, hashPassword } from "../utils/passwordUtils.js";
 import { createJWT } from "../utils/tokenUtils.js";
-import { BadRequestError } from "../errors/customErrors.js";
 
 export const register = async (req, res) => {
   const hashedPassword = await hashPassword(req.body.password);
@@ -78,3 +77,5 @@ export const logout = (req, res) => {
   });
   res.status(StatusCodes.OK).json({ message: "User logged out!" });
 };
+
+export const resetPassword = () => {};
