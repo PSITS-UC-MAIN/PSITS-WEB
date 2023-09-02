@@ -13,11 +13,14 @@ import {
 import Profile from "./ProfileAvatar";
 import HamburgerMenu from "./HamburgerMenu";
 import Cart from "./cart/Cart";
+import { Store } from "lucide-react";
+import useStore from "@/store";
 
 const ROUTE = ["/admin", "/admin/accounts", "/admin/events", "/admin/merchandise"];
 
 const Header = ({ data }: any) => {
   const { pathname } = useLocation();
+  const store = useStore();
 
   // hides the header in admin pages
   if (ROUTE.includes(pathname)) return;
@@ -119,7 +122,7 @@ const Header = ({ data }: any) => {
               </Button>
             </div>
             <div className="flex gap-4 items-center">
-              <Cart />
+              { store.authUser != null && <Cart /> }
               {data && data?.isAdmin ? (
                 <>
                   <Button className="text-md" variant="ghost" asChild>
