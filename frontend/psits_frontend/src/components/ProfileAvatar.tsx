@@ -58,7 +58,7 @@ const Profile = ({ className }: { className?: string }) => {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link to="/profile/6969" className="flex items-center">
+            <Link to={`/profile/${store.authUser?.userId}`} className="flex items-center">
               <User className="mr-4 h-6 w-4" />
               <span>Profile</span>
             </Link>
