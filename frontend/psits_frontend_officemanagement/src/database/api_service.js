@@ -3,7 +3,7 @@ import { User } from "../models/user";
 import { app_config } from "../utilities/config";
 
 export const AuthenticateUser = async ({ rfid, password, API_KEY }) => {
-  const res = await fetch(app_config.API_URL + "auth/login/rfid", {
+  const res = await fetch(app_config.API_URL + "/auth/login/rfid", {
     method: "POST",
     credentials: "include",
     headers: {
