@@ -6,4 +6,13 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   base: "/",
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://psits-web-api.vercel.app/api/v2",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
 });
