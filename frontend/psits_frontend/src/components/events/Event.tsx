@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -26,21 +26,19 @@ interface Event {
   creationDate: Date;
   eventDate: Date;
   content: string;
-  photo_img_links: string;
+  image: string;
 }
 
 const EventSchema = z.object({
   title: z.string().min(4),
   content: z.string().min(4),
   eventDate: z.date(),
-  image: z.any(),
 });
 
 type EventSchema = z.infer<typeof EventSchema>;
 
 const Event = ({ events, isLoading, isError }: { events: Event[]; isLoading: boolean; isError: boolean }) => {
   const [eventState, setEventState] = useState(false);
-  const [files, setFiles] = useState<File[]>([]);
   const store = useStore();
   const queryClient = useQueryClient();
 
@@ -50,7 +48,6 @@ const Event = ({ events, isLoading, isError }: { events: Event[]; isLoading: boo
       title: "",
       content: "",
       eventDate: undefined,
-      image: "",
     },
   });
 
@@ -72,30 +69,7 @@ const Event = ({ events, isLoading, isError }: { events: Event[]; isLoading: boo
     },
   });
 
-  const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
-    e.preventDefault();
-
-    const fileReader = new FileReader();
-
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-
-      setFiles(Array.from(e.target.files));
-
-      if (!file.type.includes("image")) return;
-
-      fileReader.onload = async (event) => {
-        const imageDataUrl = event.target?.result?.toString() || "";
-        fieldChange(imageDataUrl);
-      };
-      fileReader.readAsDataURL(file);
-      console.log(files);
-    }
-  };
-
   const onSubmit = async (data: EventSchema) => {
-    const blob = data.image;
-    console.log(data);
     mutate(data);
   };
 
@@ -163,18 +137,6 @@ const Event = ({ events, isLoading, isError }: { events: Event[]; isLoading: boo
                     )}
                   </CardContent>
                   <CardFooter className="flex flex-col items-end gap-4">
-                    <FormField
-                      control={form.control}
-                      name="image"
-                      render={({ field }) => (
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          placeholder="Upload a photo"
-                          onChange={(e) => handleImage(e, field.onChange)}
-                        />
-                      )}
-                    />
                     <div className="flex items-center gap-4">
                       <Button
                         variant="ghost"
@@ -229,6 +191,7 @@ const Event = ({ events, isLoading, isError }: { events: Event[]; isLoading: boo
                   title={event.title}
                   content={event.content}
                   eventDate={event.eventDate}
+                  image={event.image}
                 />
               );
             })}

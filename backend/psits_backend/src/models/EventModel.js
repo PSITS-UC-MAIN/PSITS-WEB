@@ -22,11 +22,6 @@ const EventModel = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  photo_img_links: {
-    type: Array,
-    required: false,
-    default: new Array(),
-  },
 });
 
 export default mongoose.model("Event", EventModel);
