@@ -14,6 +14,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useStore from "@/store";
+import { useState } from "react";
 
 interface MerchandiseCardProps {
   item: {
@@ -48,6 +49,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
   const { addToCart } = useShoppingCart();
   const queryClient = useQueryClient();
   const store = useStore();
+  const [file, setFile] = useState('');
 
   const { mutate: deleteMutate, reset: deleteReset } = useMutation({
     mutationFn: deleteMerchandiseItem,
@@ -117,7 +119,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex flex-col mt-10 gap-y-10 items-center mx-5">
                       <div className="max-h-[300px] max-w-[50%] border-black relative col-span-2">
-                        <img src={item.photo_img_links[0]} alt="" className="h-[300px] shadow-lg rounded-lg" />
+                        <img src={file !== '' ? file : item.photo_img_links} alt="" className="h-[300px] shadow-lg rounded-lg" />
                         <Label htmlFor="img">
                           <Plus
                             className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-3 p-2"
@@ -130,7 +132,12 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                           accept="image/*"
                           className="hidden"
                           id="img"
-                          {...register("photo_img_links")}
+                          {...register("photo_img_links", {
+                            onChange: (event) => {
+                              const fileURL = URL.createObjectURL(event.target.files[0]);
+                              setFile(() => fileURL);
+                            }
+                          })}
                         />
                       </div>
                       <div className="flex flex-row gap-x-5">
