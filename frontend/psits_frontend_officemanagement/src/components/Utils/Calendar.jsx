@@ -71,7 +71,7 @@ function Calendar({ calendarData }) {
                 loginTime={log.loginTime}
                 logoutTime={log.logoutTime}
                 purpose={log.remarks}
-                imageSource={log.user.profile_img_link}
+                imageSource={log.user.avatar}
               />
             ))}
           </div>
@@ -88,7 +88,7 @@ function Calendar({ calendarData }) {
                 loginTime={log.loginTime}
                 logoutTime={log.logoutTime}
                 purpose={log.remarks}
-                imageSource={log.user.profile_img_link}
+                imageSource={log.user.avatar}
               />
             ))}
           </div>
@@ -105,7 +105,7 @@ function Calendar({ calendarData }) {
                 loginTime={log.loginTime}
                 logoutTime={log.logoutTime}
                 purpose={log.remarks}
-                imageSource={log.user.profile_img_link}
+                imageSource={log.user.avatar}
               />
             ))}
           </div>
@@ -122,7 +122,7 @@ function Calendar({ calendarData }) {
                 loginTime={log.loginTime}
                 logoutTime={log.logoutTime}
                 purpose={log.remarks}
-                imageSource={log.user.profile_img_link}
+                imageSource={log.user.avatar}
               />
             ))}
           </div>
@@ -139,7 +139,7 @@ function Calendar({ calendarData }) {
                 loginTime={log.loginTime}
                 logoutTime={log.logoutTime}
                 purpose={log.remarks}
-                imageSource={log.user.profile_img_link}
+                imageSource={log.user.avatar}
               />
             ))}
           </div>

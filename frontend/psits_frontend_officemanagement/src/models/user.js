@@ -6,7 +6,7 @@ export class User {
     lastname,
     birthdate,
     email,
-    profile_img_link,
+    avatar,
     course,
     year,
     graduated,
@@ -17,7 +17,7 @@ export class User {
     this.lastname = lastname;
     this.birthdate = birthdate;
     this.email = email;
-    this.profile_img_link = profile_img_link;
+    this.avatar = avatar;
     this.course = course;
     this.year = year;
     this.graduated = graduated;
