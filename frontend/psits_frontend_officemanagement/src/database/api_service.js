@@ -3,7 +3,7 @@ import { User } from "../models/user";
 import { app_config } from "../utilities/config";
 
 export const AuthenticateUser = async ({ rfid, password, API_KEY }) => {
-  const res = await fetch("/api/auth/login/rfid", {
+  const res = await fetch("/api/v2/auth/login/rfid", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -22,7 +22,7 @@ export const AuthenticateUser = async ({ rfid, password, API_KEY }) => {
 };
 
 export const LogoutUser = async () => {
-  const res = await fetch("/api/auth/logout");
+  const res = await fetch("/api/v2/auth/logout");
 
   const status = res.status;
 
@@ -30,7 +30,7 @@ export const LogoutUser = async () => {
 };
 
 export const GetUserDataCurrent = async () => {
-  const res = await fetch("/api/user/current-user", {
+  const res = await fetch("/api/v2/user/current-user", {
     method: "GET",
     credentials: "include",
   });
@@ -66,7 +66,7 @@ export const GetTimeLogs = async (
   min = new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
   max = new Date().toISOString()
 ) => {
-  const res = await fetch("/api/officelog", {
+  const res = await fetch("/api/v2/officelog", {
     credentials: "include",
     headers: {
       option: "latest",
@@ -86,7 +86,7 @@ export const GetTimeLogs = async (
 };
 
 export const OfficeLogOff = async () => {
-  const res = await fetch("/api/officelog", {
+  const res = await fetch("/api/v2/officelog", {
     method: "PATCH",
     credentials: "include",
   });
@@ -96,7 +96,7 @@ export const OfficeLogOff = async () => {
 };
 
 export const OfficeLogIn = async (reason) => {
-  const res = await fetch("/officelog", {
+  const res = await fetch("/api/v2/officelog", {
     method: "POST",
     credentials: "include",
     headers: {
