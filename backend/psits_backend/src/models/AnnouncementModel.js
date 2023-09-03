@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
 const AnnouncementSchema = new mongoose.Schema({
+  image: String,
+  imagePublicId: String,
   title: {
     type: String,
     required: true,
@@ -18,11 +20,6 @@ const AnnouncementSchema = new mongoose.Schema({
     type: Date,
     required: false,
     default: Date.now,
-  },
-  photo_img_links: {
-    type: Array,
-    required: false,
-    default: new Array(),
   },
 });
 

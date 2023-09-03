@@ -17,10 +17,10 @@ interface AnnouncementCardProps {
   creationDate: Date;
   author: string;
   content: string;
-  photo_img_links: string;
+  image: string;
 }
 
-const AnnoucementCard = ({ id, title, author, content, creationDate, photo_img_links }: AnnouncementCardProps) => {
+const AnnoucementCard = ({ id, title, author, content, creationDate, image }: AnnouncementCardProps) => {
   const store = useStore();
   const queryClient = useQueryClient();
   const parseDate = creationDate.toLocaleString();
@@ -83,7 +83,7 @@ const AnnoucementCard = ({ id, title, author, content, creationDate, photo_img_l
           allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]}
         />
         <div className="flex justify-center max-h-[600px]">
-          <img src={photo_img_links} className="h-full" />
+          <img src={image} className="h-full" />
         </div>
       </CardContent>
     </Card>
