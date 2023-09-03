@@ -16,6 +16,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import MerchandiseCard from "@/components/merchandise/merchandiseCard";
 import useStore from "@/store";
+import { useState } from "react";
 
 interface Merchandise {
   _id: string;
@@ -82,10 +83,12 @@ const Merchandise = () => {
     createMutate(data);
   };
 
+  const [file, setFile] = useState('')
+
   return (
     <Wrapper title="PSITS | Merchandise">
       <div className="min-h-screen my-20">
-        <h1 className="text-7xl text-center font-bold text-[#1A1A1A] mb-20">Merchandise</h1>
+        <h1 className="text-2xl sm:text-7xl text-center font-bold text-[#1A1A1A] mb-20">Merchandise</h1>
         <div className="flex flex-row flex-wrap justify-center">
           {store.authUser?.isAdmin && (
             <Card className="w-[350px] border-0 shadow-none">
@@ -103,6 +106,31 @@ const Merchandise = () => {
                     <ScrollArea>
                       <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col mt-10 gap-y-10 items-center mx-5">
+                        {
+                          file != '' ?
+                          <div className="flex justify-center relative">
+                            <img src={file} className="rounded-lg shadow-lg h-[300px] w-[500px] max-w-[50%]" />
+                            <Label htmlFor="img">
+                              <Plus
+                                className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-[28%] p-2"
+                                color="#fff"
+                                size={40}
+                              />
+                            </Label>
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              id="img"
+                              {...register("photo_img_links", {
+                                onChange: (event) => {
+                                  const fileURL = URL.createObjectURL(event.target.files[0]);
+                                  setFile(() => fileURL);
+                                }
+                              })}
+                            />
+                          </div>
+                          : 
                           <div className="bg-gray-200 h-[300px] w-[50%] rounded-lg shadow-lg relative col-span-2">
                             <Label htmlFor="img">
                               <Plus
@@ -116,9 +144,15 @@ const Merchandise = () => {
                               accept="image/*"
                               className="hidden"
                               id="img"
-                              {...register("photo_img_links")}
+                              {...register("photo_img_links", {
+                                onChange: (event) => {
+                                  const fileURL = URL.createObjectURL(event.target.files[0]);
+                                  setFile(() => fileURL);
+                                }
+                              })}
                             />
                           </div>
+                        }
                           <div className="flex flex-row gap-x-5">
                             <div className="flex flex-col gap-y-3">
                               <Label className="text-gray-500" htmlFor="itemName">
