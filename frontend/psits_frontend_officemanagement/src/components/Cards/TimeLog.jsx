@@ -31,7 +31,7 @@ function TimeLog({ className, handleLogRequest, officeLogs, currentDate }) {
               loginTime={log.loginTime}
               logoutTime={log.logoutTime}
               purpose={log.remarks}
-              imageSource={log.user.profile_img_link}
+              imageSource={log.user.avatar}
             />
           ))}
           {officeLogs.length === 0 ? (
