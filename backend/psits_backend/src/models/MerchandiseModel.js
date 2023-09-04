@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const MerchandiseModel = new mongoose.Schema({
-  title: {
+  name: {
     type: String,
     required: true,
   },
-  information: {
+  description: {
     type: String,
     required: true,
   },
@@ -15,43 +15,36 @@ const MerchandiseModel = new mongoose.Schema({
   },
   discount: {
     type: Number,
-    required: false,
     default: 0,
   },
-  stock: {
+  stocks: {
     type: Number,
-    required: false,
     default: 0,
   },
-  photo_img_links: {
-    type: Array,
-    required: true,
-    default: new Array(),
-  },
+  images: [
+    {
+      imageId: {
+        type: String,
+        required: true,
+      },
+      imagePublicId: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   size: {
     type: String,
-    required: false,
-    default: "",
+    enum: ["small", "medium", "large", "extra-large"],
+    default: "small",
   },
-  color: {
-    type: String,
-    required: false,
-    default: "",
-  },
-  styles: {
-    type: Array,
-    required: false,
-    default: new Array(),
-  },
-  rating: {
+  color: String,
+  ratings: {
     type: Number,
-    required: false,
     default: 0,
   },
   showPublic: {
     type: Boolean,
-    required: false,
-    default: false,
   },
 });
 
