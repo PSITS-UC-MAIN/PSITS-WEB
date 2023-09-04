@@ -21,7 +21,7 @@ interface Announcement {
   creationDate: Date;
   author: string;
   content: string;
-  photo_img_links: string;
+  image: string;
 }
 
 const AnnouncementSchema = z.object({
@@ -73,7 +73,17 @@ const Announcement = ({
   });
 
   const onSubmit: SubmitHandler<AnnouncementSchema> = (data) => {
-    mutate(data);
+    // check if there's an image uploaded
+    if (data.image.length > 0) {
+      const formData = new FormData();
+      formData.append("image", data.image[0]);
+      data.image = "";
+      formData.append("announcement", JSON.stringify(data));
+      mutate(formData);
+    } else {
+      data.image = "";
+      mutate(data);
+    }
   };
 
   return (
@@ -82,7 +92,7 @@ const Announcement = ({
         <>
           {announceState ? (
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Card className="w-full">
+              <Card className="mb-4 w-full">
                 <CardHeader>
                   <Input placeholder="Announcement Title" {...register("title")} />
                   {errors.title && <p className="text-red-400 text-sm font-light">{errors.title.message}</p>}
@@ -153,7 +163,7 @@ const Announcement = ({
                   author={`${announcement.author.firstname} ${announcement.author.lastname}`}
                   creationDate={announcement.creationDate}
                   content={announcement.content}
-                  photo_img_links={announcement.photo_img_links}
+                  image={announcement.image}
                 />
               );
             })}

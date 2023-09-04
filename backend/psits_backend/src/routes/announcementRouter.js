@@ -11,11 +11,14 @@ import {
   validateAnnouncementBody,
   validateAnnouncementId,
 } from "../middlewares/validations/announcementValidation.js";
+import upload from "../middlewares/multerMiddleware.js";
 
-router
-  .route("/")
-  .get(getAllAnnouncement)
-  .post(authenticateUser, validateAnnouncementBody, createAnnouncement);
+router.route("/").get(getAllAnnouncement).post(
+  authenticateUser,
+  // validateAnnouncementBody,
+  upload.single("image"),
+  createAnnouncement
+);
 
 router
   .route("/:announcementId")
