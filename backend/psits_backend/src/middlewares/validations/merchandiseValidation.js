@@ -8,17 +8,17 @@ import Merchandise from '../../models/MerchandiseModel.js'
 import { withValidationErrors } from "../validationMiddleware.js";
 
 export const validateMerchandiseItem = withValidationErrors([
-  body("title").notEmpty().withMessage("Title is required"),
-  body("information").notEmpty().withMessage("Information is required"),
+  body("name").notEmpty().withMessage("Item name is required"),
+  body("description").notEmpty().withMessage("Description is required"),
   body("price").notEmpty().withMessage("Price is required"),
-  body("photo_img_links").notEmpty().withMessage("Images are required")
+  body("images").notEmpty().withMessage("Images are required")
 ]);
 
 export const validateMerchandiseItemRevision = withValidationErrors([
-  body("title").notEmpty().withMessage("Title is required"),
-  body("information").notEmpty().withMessage("Information is required"),
+  body("name").notEmpty().withMessage("Item name is required"),
+  body("description").notEmpty().withMessage("Description is required"),
   body("price").notEmpty().withMessage("Price is required"),
-  body("photo_img_links").notEmpty().withMessage("Images are required"),
+  body("images").notEmpty().withMessage("Images are required"),
   param("merchandiseItemId")
     .custom(async (merchandiseItemId) => {
       try{
