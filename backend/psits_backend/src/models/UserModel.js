@@ -52,6 +52,10 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  showPublic: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Remove the password in data object when sending the user data
