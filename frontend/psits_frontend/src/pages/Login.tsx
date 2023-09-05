@@ -103,9 +103,9 @@ const Login = () => {
                   Don't have an account yet? <span className=" text-blue-600 hover:underline">Register</span>
                 </p>
               </Link>
-              <Link to="/resetpassword">
+              <Link to="/forgot-password">
                 <p className="mt-2 text-xs text-center text-gray-700">
-                  Forgot password? <span className=" text-blue-600 hover:underline">Reset Password</span>
+                  Forgot password? <span className=" text-blue-600 hover:underline">Forgot Password</span>
                 </p>
               </Link>
             </CardFooter>
