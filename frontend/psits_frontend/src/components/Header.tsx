@@ -17,9 +17,9 @@ import useStore from "@/store";
 
 const ROUTE = ["/admin", "/admin/accounts", "/admin/events", "/admin/merchandise"];
 
-const Header = ({ data }: any) => {
+const Header = () => {
   const { pathname } = useLocation();
-  const store = useStore();
+  const { authUser } = useStore();
 
   // hides the header in admin pages
   if (ROUTE.includes(pathname)) return;
@@ -121,15 +121,15 @@ const Header = ({ data }: any) => {
               </Button>
             </div>
             <div className="flex gap-4 items-center">
-              {store.authUser && <Cart />}
-              {data && data?.isAdmin ? (
+              {authUser && <Cart />}
+              {authUser && authUser?.isAdmin ? (
                 <>
                   <Button className="text-md" variant="ghost" asChild>
                     <Link to="/admin">Admin</Link>
                   </Button>
                   <Profile className="ml-4" />
                 </>
-              ) : data ? (
+              ) : authUser ? (
                 <Profile className="ml-4" />
               ) : (
                 <Button className="text-md" variant="ghost" asChild>

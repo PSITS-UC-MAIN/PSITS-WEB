@@ -2,11 +2,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState, ChangeEvent, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState, ChangeEvent } from "react";
 
-import { updateCurrentUser } from "@/api/user";
+import { getCurrentUser, updateCurrentUser } from "@/api/user";
 import useStore from "@/store";
 import Wrapper from "@/components/Wrapper";
 import { Button } from "@/components/ui/button";
@@ -24,16 +23,15 @@ import {
 } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 
-const EditProfile = z
-  .object({
-    avatar: z.any(),
-    firstname: z.string().min(2),
-    lastname: z.string().min(2),
-    rfid: z.string().optional(),
-    email: z.string().email(),
-    course: z.string(),
-    year: z.string()
-  });
+const EditProfile = z.object({
+  avatar: z.any(),
+  firstname: z.string().min(2),
+  lastname: z.string().min(2),
+  rfid: z.string().optional(),
+  email: z.string().email(),
+  course: z.string(),
+  year: z.string(),
+});
 
 type EditProfile = z.infer<typeof EditProfile>;
 
@@ -41,19 +39,14 @@ const Profile = () => {
   const [files, setFiles] = useState<File[]>([]);
   const store = useStore();
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+
+  const { data: user, isLoading: userIsLoading } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: getCurrentUser,
+  });
 
   const form = useForm<EditProfile>({
     resolver: zodResolver(EditProfile),
-    defaultValues: {
-      avatar: "",
-      firstname: store.authUser?.firstname,
-      lastname: store.authUser?.lastname,
-      rfid: store.authUser?.rfid,
-      email: store.authUser?.email,
-      course: store.authUser?.course,
-      year: store.authUser?.year.toString(),
-    },
   });
 
   const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
@@ -78,8 +71,8 @@ const Profile = () => {
       store.setRequestLoading(true);
     },
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries(["getCurrentUser"]);
       store.setRequestLoading(false);
+      queryClient.invalidateQueries(["currentUser"]);
       toast.success(`${data.message}`);
     },
     onError(error: any) {
@@ -89,30 +82,20 @@ const Profile = () => {
   });
 
   const onSubmit = (values: EditProfile) => {
-    // BUG TO FIX: i dunno why tf it logged out and navigate to home after the submit
-    delete values.avatar
+    delete values.avatar;
 
     const formData = new FormData();
     formData.append("avatar", files[0]);
     formData.append("user", JSON.stringify(values));
 
-    console.log(files.length > 0)
     if (files.length > 0) {
       mutate(formData);
     } else {
-      mutate(values)
+      mutate(values);
     }
   };
 
-  // prevent non-logged user from accessing the profile page
-  useEffect(() => {
-    if (!store.authUser) {
-      toast.error("You are not authorize to access that site.");
-      navigate("/");
-      return;
-    }
-  }, []);
-
+  if (userIsLoading) return <div>Loading...</div>;
 
   return (
     <Wrapper title="PSITS | Profile">
@@ -131,10 +114,7 @@ const Profile = () => {
                     {field.value ? (
                       <img src={field.value} className="h-[200px] w-[200px] shadow border object-fill rounded-full" />
                     ) : (
-                      <img
-                        src={store.authUser?.avatar}
-                        className="h-[200px] object-fill shadow border w-[200px] rounded-full "
-                      />
+                      <img src={user.avatar} className="h-[200px] object-fill shadow border w-[200px] rounded-full " />
                     )}
                     <FormLabel htmlFor="image">
                       <Pencil
@@ -161,7 +141,7 @@ const Profile = () => {
                 render={({ field }) => (
                   <div className="flex flex-col gap-3 w-auto">
                     <Label className="text-gray-500">First Name</Label>
-                    <Input autoComplete="off" id="firstname" className="" {...field} />
+                    <Input autoComplete="off" id="firstname" className="" {...field} defaultValue={user.firstname} />
                     {form.formState.errors.firstname && (
                       <p className="text-red-400 text-sm font-light">{form.formState.errors.firstname.message}</p>
                     )}
@@ -174,7 +154,7 @@ const Profile = () => {
                 render={({ field }) => (
                   <div className="flex flex-col gap-3">
                     <Label className="text-gray-500">Last Name</Label>
-                    <Input autoComplete="off" id="lastname" {...field}></Input>
+                    <Input autoComplete="off" id="lastname" {...field} defaultValue={user.lastname} />
                     {form.formState.errors.lastname && (
                       <p className="text-red-400 text-sm font-light">{form.formState.errors.lastname.message}</p>
                     )}
@@ -187,7 +167,7 @@ const Profile = () => {
                 render={({ field }) => (
                   <div className="flex flex-col gap-3">
                     <Label className="text-gray-500">RFID</Label>
-                    <Input autoComplete="off" id="rfid" {...field}></Input>
+                    <Input autoComplete="off" id="rfid" {...field} defaultValue={user.rfid} />
                     {form.formState.errors.lastname && (
                       <p className="text-red-400 text-sm font-light">{form.formState.errors.lastname.message}</p>
                     )}
@@ -200,7 +180,13 @@ const Profile = () => {
                 render={({ field }) => (
                   <div className="flex flex-col gap-3">
                     <Label className="text-gray-500">E-mail</Label>
-                    <Input autoComplete="off" id="email" placeholder="Enter your e-mail" {...field} />
+                    <Input
+                      autoComplete="off"
+                      id="email"
+                      placeholder="Enter your e-mail"
+                      {...field}
+                      defaultValue={user.email}
+                    />
                     {form.formState.errors.email && (
                       <p className="text-red-400 text-sm font-light">{form.formState.errors.email.message}</p>
                     )}
@@ -213,7 +199,7 @@ const Profile = () => {
                 render={({ field }) => (
                   <div className="flex flex-col gap-3">
                     <Label className="text-gray-500">Course</Label>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={user.course}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select Course" />
                       </SelectTrigger>
@@ -238,7 +224,7 @@ const Profile = () => {
                 render={({ field }) => (
                   <div className="flex flex-col gap-3">
                     <Label className="text-gray-500">Year</Label>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={user.year.toString()}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select Year" />
                       </SelectTrigger>

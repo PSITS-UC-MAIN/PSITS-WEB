@@ -1,4 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUser } from "@/api/user";
+import useStore from "@/store";
 
 import {
   Layout,
@@ -19,6 +22,7 @@ import {
   Login,
   Register,
   ResetPassword,
+  ForgotPassword,
   Error,
 } from "./pages";
 
@@ -97,7 +101,11 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "resetpassword",
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "reset-password/:userId/:token",
         element: <ResetPassword />,
       },
       {
@@ -109,6 +117,23 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+  const store = useStore();
+
+  useQuery(["getCurrentUser"], getCurrentUser, {
+    refetchOnWindowFocus: false,
+    select(data) {
+      return data;
+    },
+    onSuccess(data) {
+      store.setAuthUser(data);
+      store.setRequestLoading(false);
+    },
+    onError(error) {
+      store.setRequestLoading(false);
+      console.log(error);
+    },
+  });
+
   return <RouterProvider router={router} />;
 };
 
