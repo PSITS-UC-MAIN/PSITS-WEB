@@ -12,8 +12,14 @@ import {
   validateMerchandiseItemRevision,
   validateMerchandiseItemDeletion
 } from "../middlewares/validations/merchandiseValidation.js";
+import upload from "../middlewares/multerMiddleware.js";
 
-router.route("/").get(getMerchandise).post(authenticateUser, validateMerchandiseItem, createMerchandiseItem);
+router.route("/").get(getMerchandise).post(
+  authenticateUser,
+  // validateMerchandiseItem,
+  upload.single('images'),
+  createMerchandiseItem
+);
 
 router
   .route("/:merchandiseItemId")
