@@ -20,26 +20,28 @@ import { useState } from "react";
 
 interface Merchandise {
   _id: string;
-  title: string;
-  information: string;
+  name: string;
+  description: string;
   price: number;
   discount: number;
-  stock: number;
-  photo_img_links: string;
+  stocks: number;
+  images: [
+    {
+      imageId: string,
+      imagePublicId: string
+    }
+  ];
   size: string;
   color: string;
-  styles: [];
-  rating: number;
-  quantity: number;
-  showPublic: boolean;
+  ratings: number;
 }
 
 const MerchandiseSchema = z.object({
-  title: z.string().nonempty('This field is required.'),
-  information: z.string().nonempty('This field is required.'),
+  name: z.string().nonempty('This field is required.'),
+  description: z.string().nonempty('This field is required.'),
   price: z.number(),
   discount: z.number().or(z.nan()).default(Number.NaN),
-  photo_img_links: z.any(),
+  images: z.any(),
   color: z.string(),
 });
 
@@ -80,7 +82,18 @@ const Merchandise = () => {
   });
 
   const onSubmit: SubmitHandler<MerchandiseSchema> = (data: any) => {
-    createMutate(data);
+    const formData = new FormData();
+    console.log(data);
+    
+    if (data.images.length > 0) {
+      formData.append("images", data.images[0]);
+      data.images = "";
+      formData.append("merch", JSON.stringify(data));
+      createMutate(formData);
+    } else {
+      data.images = ""
+      createMutate(data);
+    }
   };
 
   const [file, setFile] = useState('')
@@ -104,7 +117,7 @@ const Merchandise = () => {
                   </DialogTrigger>
                   <DialogContent className="h-[85%] bg-white">
                     <ScrollArea>
-                      <form onSubmit={handleSubmit(onSubmit)}>
+                      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
                         <div className="flex flex-col mt-10 gap-y-10 items-center mx-5">
                         {
                           file != '' ?
@@ -122,7 +135,8 @@ const Merchandise = () => {
                               accept="image/*"
                               className="hidden"
                               id="img"
-                              {...register("photo_img_links", {
+                              multiple
+                              {...register("images", {
                                 onChange: (event) => {
                                   const fileURL = URL.createObjectURL(event.target.files[0]);
                                   setFile(() => fileURL);
@@ -144,7 +158,8 @@ const Merchandise = () => {
                               accept="image/*"
                               className="hidden"
                               id="img"
-                              {...register("photo_img_links", {
+                              multiple
+                              {...register("images", {
                                 onChange: (event) => {
                                   const fileURL = URL.createObjectURL(event.target.files[0]);
                                   setFile(() => fileURL);
@@ -163,10 +178,10 @@ const Merchandise = () => {
                                 id="itemName"
                                 placeholder="Enter item name"
                                 className="w-full"
-                                {...register("title")}
+                                {...register("name")}
                               />
-                              {errors.title && (
-                                <p className="text-red-400 text-sm font-light">{errors.title.message}</p>
+                              {errors.name && (
+                                <p className="text-red-400 text-sm font-light">{errors.name.message}</p>
                               )}
                             </div>
                             <div className="flex flex-col gap-y-3">
@@ -218,9 +233,9 @@ const Merchandise = () => {
                               <Label className="text-gray-500" htmlFor="itemDesc">
                                 Item Description
                               </Label>
-                              <Textarea className="w-full" id="itemDesc" {...register("information")} />
-                              {errors.information && (
-                                <p className="text-red-400 text-sm font-light">{errors.information.message}</p>
+                              <Textarea className="w-full" id="itemDesc" {...register("description")} />
+                              {errors.description && (
+                                <p className="text-red-400 text-sm font-light">{errors.description.message}</p>
                               )}
                             </div>
                           </div>
