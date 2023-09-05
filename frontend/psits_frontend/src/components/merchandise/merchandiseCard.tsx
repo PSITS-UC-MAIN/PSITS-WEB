@@ -19,27 +19,29 @@ import { useState } from "react";
 interface MerchandiseCardProps {
   item: {
     _id: string;
-    title: string;
-    information: string;
+    name: string;
+    description: string;
     price: number;
     discount: number;
-    stock: number;
-    photo_img_links: string;
+    stocks: number;
+    images: [
+      {
+        image: string,
+        imagePublicId: string
+      }
+    ];
     size: string;
     color: string;
-    styles: [];
-    rating: number;
-    quantity: number;
-    showPublic: boolean;
   };
 }
 
 const MerchandiseSchema = z.object({
-  title: z.string(),
-  information: z.string(),
+  name: z.string(),
+  description: z.string(),
   price: z.number(),
   discount: z.number(),
-  photo_img_links: z.any(),
+  images: z.any(),
+  size: z.string(),
   color: z.string(),
 });
 
@@ -92,7 +94,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
     <Card className="w-[350px] border-0 shadow-none">
       <CardHeader className="relative">
         <img
-          src={item.photo_img_links[0]}
+          src={item.images[0].image}
           alt="Merch Item"
           className="w-full h-[400px] rounded-lg border-2 border-black"
         />
@@ -119,7 +121,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex flex-col mt-10 gap-y-10 items-center mx-5">
                       <div className="max-h-[300px] max-w-[50%] border-black relative col-span-2">
-                        <img src={file !== '' ? file : item.photo_img_links} alt="" className="h-[300px] shadow-lg rounded-lg" />
+                        <img src={file !== '' ? file : item.images[0].image} alt="" className="h-[300px] shadow-lg rounded-lg" />
                         <Label htmlFor="img">
                           <Plus
                             className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-3 p-2"
@@ -132,7 +134,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                           accept="image/*"
                           className="hidden"
                           id="img"
-                          {...register("photo_img_links", {
+                          {...register("images", {
                             onChange: (event) => {
                               const fileURL = URL.createObjectURL(event.target.files[0]);
                               setFile(() => fileURL);
@@ -150,11 +152,11 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                             id="itemName"
                             placeholder="Enter item name"
                             className="w-full"
-                            defaultValue={item.title}
-                            {...register("title")}
+                            defaultValue={item.name}
+                            {...register("name")}
                           />
-                          {errors.title && (
-                            <p className="text-red-400 text-sm font-light">{errors.title.message}</p>
+                          {errors.name && (
+                            <p className="text-red-400 text-sm font-light">{errors.name.message}</p>
                           )}
                         </div>
                         <div className="flex flex-col gap-y-3">
@@ -212,11 +214,11 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                           <Textarea
                             className="w-full"
                             id="itemDesc"
-                            defaultValue={item.information}
-                            {...register("information")}
+                            defaultValue={item.description}
+                            {...register("description")}
                           />
-                          {errors.information && (
-                            <p className="text-red-400 text-sm font-light">{errors.information.message}</p>
+                          {errors.description && (
+                            <p className="text-red-400 text-sm font-light">{errors.description.message}</p>
                           )}
                         </div>
                       </div>
@@ -239,7 +241,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
       </CardHeader>
       <CardContent>
         <div className="flex flex-row justify-between">
-          <h1 className="text-lg font-semibold">{item.title}</h1>
+          <h1 className="text-lg font-semibold">{item.name}</h1>
           <p className="text-lg font-light">₱{item.price}.00</p>
         </div>
       </CardContent>
