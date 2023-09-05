@@ -23,7 +23,7 @@ const MerchandiseModel = new mongoose.Schema({
   },
   images: [
     {
-      imageId: {
+      image: {
         type: String,
         required: true,
       },
