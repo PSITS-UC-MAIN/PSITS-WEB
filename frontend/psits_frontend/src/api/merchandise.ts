@@ -9,8 +9,8 @@ export async function createMerchandiseItem(data: any) {
   const response = await axios.post(`merch/`, data);
   return response.data;
 }
-export async function updateMerchandiseItem( { merchandiseItemId, formData }: { merchandiseItemId: string; formData: FormData } ) {
-  const response = await axios.patch(`merch/${merchandiseItemId}`, formData);
+export async function updateMerchandiseItem( { merchandiseItemId, data }: { merchandiseItemId: string; data: any } ) {
+  const response = await axios.patch(`merch/${merchandiseItemId}`, data);
   return response.data;
 }
 
