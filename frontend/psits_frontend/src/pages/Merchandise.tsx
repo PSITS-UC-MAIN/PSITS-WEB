@@ -4,7 +4,7 @@ import { z } from "zod";
 import Wrapper from "@/components/Wrapper";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { createMerchandiseItem, getMerchandise } from "@/api/merchandise";
+import { createMerchandiseItem, getAllMerchandise } from "@/api/merchandise";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -35,8 +35,8 @@ interface Merchandise {
 }
 
 const MerchandiseSchema = z.object({
-  title: z.string().nonempty('This field is required.'),
-  information: z.string().nonempty('This field is required.'),
+  title: z.string().nonempty("This field is required."),
+  information: z.string().nonempty("This field is required."),
   price: z.number(),
   discount: z.number().or(z.nan()).default(Number.NaN),
   photo_img_links: z.any(),
@@ -51,7 +51,7 @@ const Merchandise = () => {
 
   const { data: merch } = useQuery({
     queryKey: ["merch"],
-    queryFn: getMerchandise,
+    queryFn: getAllMerchandise,
   });
 
   const {
@@ -63,8 +63,8 @@ const Merchandise = () => {
     defaultValues: {
       price: 0,
       discount: 0,
-      color: ""
-    }
+      color: "",
+    },
   });
 
   const { mutate: createMutate, reset: createReset } = useMutation({
@@ -83,7 +83,7 @@ const Merchandise = () => {
     createMutate(data);
   };
 
-  const [file, setFile] = useState('')
+  const [file, setFile] = useState("");
 
   return (
     <Wrapper title="PSITS | Merchandise">
@@ -106,53 +106,52 @@ const Merchandise = () => {
                     <ScrollArea>
                       <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col mt-10 gap-y-10 items-center mx-5">
-                        {
-                          file != '' ?
-                          <div className="flex justify-center relative">
-                            <img src={file} className="rounded-lg shadow-lg h-[300px] w-[500px] max-w-[50%]" />
-                            <Label htmlFor="img">
-                              <Plus
-                                className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-[28%] p-2"
-                                color="#fff"
-                                size={40}
+                          {file != "" ? (
+                            <div className="flex justify-center relative">
+                              <img src={file} className="rounded-lg shadow-lg h-[300px] w-[500px] max-w-[50%]" />
+                              <Label htmlFor="img">
+                                <Plus
+                                  className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-[28%] p-2"
+                                  color="#fff"
+                                  size={40}
+                                />
+                              </Label>
+                              <Input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                id="img"
+                                {...register("photo_img_links", {
+                                  onChange: (event) => {
+                                    const fileURL = URL.createObjectURL(event.target.files[0]);
+                                    setFile(() => fileURL);
+                                  },
+                                })}
                               />
-                            </Label>
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              className="hidden"
-                              id="img"
-                              {...register("photo_img_links", {
-                                onChange: (event) => {
-                                  const fileURL = URL.createObjectURL(event.target.files[0]);
-                                  setFile(() => fileURL);
-                                }
-                              })}
-                            />
-                          </div>
-                          : 
-                          <div className="bg-gray-200 h-[300px] w-[50%] rounded-lg shadow-lg relative col-span-2">
-                            <Label htmlFor="img">
-                              <Plus
-                                className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-3 p-2"
-                                color="#fff"
-                                size={40}
+                            </div>
+                          ) : (
+                            <div className="bg-gray-200 h-[300px] w-[50%] rounded-lg shadow-lg relative col-span-2">
+                              <Label htmlFor="img">
+                                <Plus
+                                  className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-3 p-2"
+                                  color="#fff"
+                                  size={40}
+                                />
+                              </Label>
+                              <Input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                id="img"
+                                {...register("photo_img_links", {
+                                  onChange: (event) => {
+                                    const fileURL = URL.createObjectURL(event.target.files[0]);
+                                    setFile(() => fileURL);
+                                  },
+                                })}
                               />
-                            </Label>
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              className="hidden"
-                              id="img"
-                              {...register("photo_img_links", {
-                                onChange: (event) => {
-                                  const fileURL = URL.createObjectURL(event.target.files[0]);
-                                  setFile(() => fileURL);
-                                }
-                              })}
-                            />
-                          </div>
-                        }
+                            </div>
+                          )}
                           <div className="flex flex-row gap-x-5">
                             <div className="flex flex-col gap-y-3">
                               <Label className="text-gray-500" htmlFor="itemName">
@@ -224,7 +223,9 @@ const Merchandise = () => {
                               )}
                             </div>
                           </div>
-                          <Button type="submit" className="w-full">Post</Button>
+                          <Button type="submit" className="w-full">
+                            Post
+                          </Button>
                         </div>
                       </form>
                     </ScrollArea>

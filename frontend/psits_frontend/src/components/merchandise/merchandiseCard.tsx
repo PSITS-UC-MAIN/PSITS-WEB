@@ -49,7 +49,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
   const { addToCart } = useShoppingCart();
   const queryClient = useQueryClient();
   const store = useStore();
-  const [file, setFile] = useState('');
+  const [file, setFile] = useState("");
 
   const { mutate: deleteMutate, reset: deleteReset } = useMutation({
     mutationFn: deleteMerchandiseItem,
@@ -84,7 +84,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
   });
 
   const onSubmit: SubmitHandler<MerchandiseSchema> = (data: any) => {
-    const merchandiseItemId = item._id
+    const merchandiseItemId = item._id;
     updateMutate({ merchandiseItemId, data });
   };
 
@@ -107,9 +107,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
             <Dialog>
               <DialogHeader>
                 <DialogTrigger asChild>
-                  <Button
-                    className="bg-[#268EA7] hover:bg-[#3da7c2] py-[7.5%] absolute bottom-[23%] end-[11%] rounded-full"
-                  >
+                  <Button className="bg-[#268EA7] hover:bg-[#3da7c2] py-[7.5%] absolute bottom-[23%] end-[11%] rounded-full">
                     <FileEdit size={20} />
                   </Button>
                 </DialogTrigger>
@@ -119,7 +117,11 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex flex-col mt-10 gap-y-10 items-center mx-5">
                       <div className="max-h-[300px] max-w-[50%] border-black relative col-span-2">
-                        <img src={file !== '' ? file : item.photo_img_links} alt="" className="h-[300px] shadow-lg rounded-lg" />
+                        <img
+                          src={file !== "" ? file : item.photo_img_links}
+                          alt=""
+                          className="h-[300px] shadow-lg rounded-lg"
+                        />
                         <Label htmlFor="img">
                           <Plus
                             className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-3 p-2"
@@ -136,7 +138,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                             onChange: (event) => {
                               const fileURL = URL.createObjectURL(event.target.files[0]);
                               setFile(() => fileURL);
-                            }
+                            },
                           })}
                         />
                       </div>
@@ -153,9 +155,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                             defaultValue={item.title}
                             {...register("title")}
                           />
-                          {errors.title && (
-                            <p className="text-red-400 text-sm font-light">{errors.title.message}</p>
-                          )}
+                          {errors.title && <p className="text-red-400 text-sm font-light">{errors.title.message}</p>}
                         </div>
                         <div className="flex flex-col gap-y-3">
                           <Label className="text-gray-500" htmlFor="itemPrice">
@@ -169,9 +169,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                             defaultValue={item.price}
                             {...register("price", { valueAsNumber: true })}
                           />
-                          {errors.price && (
-                            <p className="text-red-400 text-sm font-light">{errors.price.message}</p>
-                          )}
+                          {errors.price && <p className="text-red-400 text-sm font-light">{errors.price.message}</p>}
                         </div>
                       </div>
                       <div className="flex flex-row gap-x-5">
@@ -220,7 +218,9 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                           )}
                         </div>
                       </div>
-                    <Button type="submit" className="w-full">Update</Button>
+                      <Button type="submit" className="w-full">
+                        Update
+                      </Button>
                     </div>
                   </form>
                 </ScrollArea>
@@ -228,14 +228,14 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
             </Dialog>
           </>
         )}
-        { store.authUser != null &&
+        {store.authUser != null && (
           <Button
             className="bg-black hover:bg-[#303030] py-[7.5%] absolute bottom-[9%] end-[11%] rounded-full"
             onClick={() => addToCart(item)}
           >
             <ShoppingBag size={20} />
           </Button>
-        }
+        )}
       </CardHeader>
       <CardContent>
         <div className="flex flex-row justify-between">

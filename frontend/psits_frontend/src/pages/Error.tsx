@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const Error = () => {
   const error = useRouteError();
-  
+
   if (isRouteErrorResponse(error)) {
     return (
       <Wrapper title="PSITS | Page Not Found">
