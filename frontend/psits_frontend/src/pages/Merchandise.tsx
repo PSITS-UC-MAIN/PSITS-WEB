@@ -4,7 +4,7 @@ import { z } from "zod";
 import Wrapper from "@/components/Wrapper";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { createMerchandiseItem, getMerchandise } from "@/api/merchandise";
+import { createMerchandiseItem, getAllMerchandise } from "@/api/merchandise";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -53,7 +53,7 @@ const Merchandise = () => {
 
   const { data: merch } = useQuery({
     queryKey: ["merch"],
-    queryFn: getMerchandise,
+    queryFn: getAllMerchandise,
   });
 
   const {
@@ -65,8 +65,8 @@ const Merchandise = () => {
     defaultValues: {
       price: 0,
       discount: 0,
-      color: ""
-    }
+      color: "",
+    },
   });
 
   const { mutate: createMutate, reset: createReset } = useMutation({
@@ -96,7 +96,7 @@ const Merchandise = () => {
     }
   };
 
-  const [file, setFile] = useState('')
+  const [file, setFile] = useState("");
 
   return (
     <Wrapper title="PSITS | Merchandise">
@@ -239,7 +239,9 @@ const Merchandise = () => {
                               )}
                             </div>
                           </div>
-                          <Button type="submit" className="w-full">Post</Button>
+                          <Button type="submit" className="w-full">
+                            Post
+                          </Button>
                         </div>
                       </form>
                     </ScrollArea>

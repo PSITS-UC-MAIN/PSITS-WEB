@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 
 import Wrapper from "@/components/Wrapper";
 import { aboutUsUCTransparent, ccsLogo } from "@/assets";
-import { aboutBannerImages } from "@/constants";
-import { Card, CardHeader } from "@/components/ui/card";
+import { aboutUsBannerImages, aboutUsHighlights } from "@/constants";
+import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 const About = () => {
@@ -12,10 +12,10 @@ const About = () => {
     <Wrapper noMargin title="PSITS | About Us" className="mt-10">
       <div className="mx-[150px] rounded mb-20">
         <Slide indicators>
-          {aboutBannerImages.map((slideImage) => (
+          {aboutUsBannerImages.map((slideImage) => (
             <div
               key={slideImage.name}
-              className="flex items-center justify-center rounded h-[500px] bg-contain bg-no-repeat bg-center"
+              className="flex items-center justify-center rounded h-[700px] bg-contain bg-no-repeat bg-center "
               style={{ backgroundImage: `url(${slideImage.banner})` }}
             />
           ))}
@@ -28,52 +28,32 @@ const About = () => {
           <p className="flex flex-col items-center">
             <span>PSITS - University of Cebu-Main Campus Chapter</span>
             <span>the Official School Organization for College of Computer Studies</span>
-            <span>BSIT-BSCS-ACT Students</span>
+            <span>BSIT Students</span>
           </p>
         </div>
-        <img src="./logo/psits_logo.png" alt="PSITS Logo" className="h-[300px]" />
+        <img src="./logo/psits_logo.png" alt="PSITS Logo" className="" />
       </div>
       <div className="mb-20 mx-[150px] text-center overflow-hidden">
         <motion.div
           className="flex gap-10 items-center"
-          animate={{ x: -1920 }}
+          animate={{ x: -2530 }}
           transition={{
-            duration: 30,
+            duration: 20,
             ease: "linear",
             repeat: Infinity,
           }}
         >
-          <div className="flex justify-start gap-6">
-            <Card className="w-[300px]">
-              <CardHeader>
-                <div className="bg-slate-400 h-[400px]" />
-              </CardHeader>
-            </Card>
-            <Card className="w-[300px]">
-              <CardHeader>
-                <div className="bg-slate-400 h-[400px]" />
-              </CardHeader>
-            </Card>
-            <Card className="w-[300px]">
-              <CardHeader>
-                <div className="bg-slate-400 h-[400px]" />
-              </CardHeader>
-            </Card>
-            <Card className="w-[300px]">
-              <CardHeader>
-                <div className="bg-slate-400 h-[400px]" />
-              </CardHeader>
-            </Card>
-            <Card className="w-[300px]">
-              <CardHeader>
-                <div className="bg-slate-400 h-[400px]" />
-              </CardHeader>
-            </Card>
-            <Card className="w-[300px]">
-              <CardHeader>
-                <div className="bg-slate-400 h-[400px]" />
-              </CardHeader>
-            </Card>
+          <div className="flex justify-start gap-4">
+            {aboutUsHighlights.map((highlight) => (
+              <Card className="w-[300px] p-2 bg-[#ece473]" key={Math.random()}>
+                <img src={highlight.image} className="h-[400px] object-cover" />
+              </Card>
+            ))}
+            {aboutUsHighlights.map((highlight) => (
+              <Card className="w-[300px] p-2 bg-[#ece473]" key={Math.random()}>
+                <img src={highlight.image} className="h-[400px] object-cover" />
+              </Card>
+            ))}
           </div>
         </motion.div>
       </div>
@@ -100,7 +80,7 @@ const About = () => {
       </div>
       <div className="mb-20 flex mx-[100px] justify-center text-start gap-4">
         <div className="flex flex-col h-[400px] gap-2 p-4 w-[400px]">
-          <h1 className="text-4xl font-bold">MISSION</h1>
+          <h1 className="text-4xl font-bold text-[#074873]">MISSION</h1>
           <p className="text-md text-start">
             We envision being the hub of quality, globally-competitive and socially-responsive information technology
             education
@@ -108,9 +88,9 @@ const About = () => {
         </div>
         <Separator orientation="vertical" className="h-auto mx-2" />
         <div className="flex flex-col gap-2 p-4 w-[400px]">
-          <h1 className="text-4xl font-bold">VISION</h1>
+          <h1 className="text-4xl font-bold text-[#074873]">VISION</h1>
           <p className="text-md text-start">
-            <span className="font-bold text-start">We commit to continuously:</span>
+            <span className="font-semibold text-start">We commit to continuously:</span>
             <br />
             <br />
             Offer relevant programs that mold well-rounded computing professionals;
@@ -124,9 +104,9 @@ const About = () => {
         </div>
         <Separator orientation="vertical" className="h-auto mx-2" />
         <div className="flex flex-col gap-2 p-4 w-[400px]">
-          <span className="text-4xl font-bold">GOALS</span>
+          <span className="text-4xl font-bold text-[#074873]">GOALS</span>
           <p className="text-start text-md">
-            <span className="font-bold">We aim to cultivate a teaching-learning environment that:</span>
+            <span className="font-semibold">We aim to cultivate a teaching-learning environment that:</span>
             <br />
             <br />
             Promotes scholarly endeavors for the promotion of moral, social, cultural, and environmental interests;
@@ -143,20 +123,20 @@ const About = () => {
         </div>
         <Separator orientation="vertical" className="h-auto mx-2" />
         <div className="flex flex-col gap-2 p-4 w-[400px]">
-          <span className="text-4xl font-bold">CORE VALUES</span>
+          <span className="text-4xl font-bold text-[#074873]">CORE VALUES</span>
           <p className="text-md text-start">
-            <span className="font-bold">These are the core values that CCS believes in:</span>
+            <span className="font-semibold">These are the core values that CCS believes in:</span>
             <br />
             <br />
-            <span className="font-bold">Initiative (inceptum)</span>
+            <span className="font-semibold">Initiative (inceptum)</span>
             wit, practicality, ingenuity
             <br />
             <br />
-            <span className="font-bold">Innovation (innovatio)</span>
+            <span className="font-semibold">Innovation (innovatio)</span>
             technology, creativity, novelty
             <br />
             <br />
-            <span className="font-bold">Service (muneris)</span>
+            <span className="font-semibold">Service (muneris)</span>
             industry, loyalty, courtesy
           </p>
         </div>

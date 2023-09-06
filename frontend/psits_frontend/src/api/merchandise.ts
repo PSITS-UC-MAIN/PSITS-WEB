@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function getMerchandise(data: any) {
+export async function getAllMerchandise(data: any) {
   const response = await axios.get(`merch/`, data);
   return response.data;
 }
@@ -9,7 +9,7 @@ export async function createMerchandiseItem(data: any) {
   const response = await axios.post(`merch/`, data);
   return response.data;
 }
-export async function updateMerchandiseItem( item: { merchandiseItemId: string, data: any } ) {
+export async function updateMerchandiseItem(item: { merchandiseItemId: string; data: any }) {
   const response = await axios.patch(`merch/${item.merchandiseItemId}`, item.data);
   return response.data;
 }
