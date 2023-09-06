@@ -60,11 +60,9 @@ export const updateMerchandiseItemById = async (req, res) => {
   let newObj = { ...req.body };
   const re = /\.[^/.]+$/
   let uploadedImages = []
-  console.log(newObj);
-  console.log(req.files);
 
   // check if uploaded images contain values
-  if (newObj.image.length > 0) {
+  if (newObj.image) {
     // if yes, delete images in the cloud via public id
     for(let i = 0; i < newObj.image.length; i++) {
       await cloudinary.uploader.destroy(newObj.imagePublicId[i])
@@ -96,8 +94,16 @@ export const updateMerchandiseItemById = async (req, res) => {
 
     // insert the new object attributes to the images array
     newObj.images = uploadedImages
-    console.log(newObj);
   }
+
+  for(let i = 0; i < newObj.oldImage.length; i++) {
+    uploadedImages.push({
+      image: newObj.oldImage[i],
+      imagePublicId: newObj.oldImagePublicId[i]
+    })
+  }
+  newObj = JSON.parse(req.body.merch);
+  newObj.images = uploadedImages
 
   // update the database data
   const updatedMerchandiseItem = await Merchandise.findOneAndUpdate(
