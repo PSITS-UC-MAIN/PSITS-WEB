@@ -1,9 +1,10 @@
 import Wrapper from "@/components/Wrapper";
+import AccountsTable from "@/components/tables/AccountsTable";
 
 const AdminAccounts = () => {
   return (
     <Wrapper title="PSITS Admin | Accounts" noMargin>
-      <div className="h-screen">Accounts</div>
+      <AccountsTable />
     </Wrapper>
   );
 };

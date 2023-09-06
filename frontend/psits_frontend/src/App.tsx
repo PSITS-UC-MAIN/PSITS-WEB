@@ -14,6 +14,7 @@ import {
   Developers,
   Merchandise,
   AdminEvents,
+  AdminOrders,
   AdminMerchandise,
   AdminDashboard,
   AdminAccounts,
@@ -24,6 +25,7 @@ import {
   ResetPassword,
   ForgotPassword,
   Error,
+  AdminAnnouncements,
 } from "./pages";
 
 const router = createBrowserRouter([
@@ -83,8 +85,16 @@ const router = createBrowserRouter([
             element: <AdminEvents />,
           },
           {
+            path: "announcements",
+            element: <AdminAnnouncements />,
+          },
+          {
             path: "merchandise",
             element: <AdminMerchandise />,
+          },
+          {
+            path: "orders",
+            element: <AdminOrders />,
           },
         ],
       },

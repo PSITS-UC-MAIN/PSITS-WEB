@@ -1,6 +1,6 @@
 import { Sidebar, Menu, MenuItem, menuClasses } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
-import { User, CalendarDays, ShoppingBasket, PanelLeft, BarChartBig } from "lucide-react";
+import { User, CalendarDays, ShoppingBasket, PanelLeft, BarChartBig, Package2, PartyPopper } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
 
@@ -43,6 +43,20 @@ const AdminSidebar = () => {
             Dashboard
           </MenuItem>
           <MenuItem
+            active={pathname === "/admin/merchandise" ? true : false}
+            icon={<ShoppingBasket />}
+            component={<Link to="/admin/merchandise" />}
+          >
+            Merchandise
+          </MenuItem>
+          <MenuItem
+            active={pathname === "/admin/orders" ? true : false}
+            icon={<Package2 />}
+            component={<Link to="/admin/orders" />}
+          >
+            Orders
+          </MenuItem>
+          <MenuItem
             active={pathname === "/admin/accounts" ? true : false}
             icon={<User />}
             component={<Link to="/admin/accounts" />}
@@ -50,18 +64,18 @@ const AdminSidebar = () => {
             Accounts
           </MenuItem>
           <MenuItem
+            active={pathname === "/admin/announcements" ? true : false}
+            icon={<PartyPopper />}
+            component={<Link to="/admin/announcements" />}
+          >
+            Announcements
+          </MenuItem>
+          <MenuItem
             active={pathname === "/admin/events" ? true : false}
             icon={<CalendarDays />}
             component={<Link to="/admin/events" />}
           >
             Events
-          </MenuItem>
-          <MenuItem
-            active={pathname === "/admin/merchandise" ? true : false}
-            icon={<ShoppingBasket />}
-            component={<Link to="/admin/merchandise" />}
-          >
-            Merchandise
           </MenuItem>
           <Separator className="my-4" />
           <MenuItem icon={<PanelLeft />} component={<Link to="/" />}>
