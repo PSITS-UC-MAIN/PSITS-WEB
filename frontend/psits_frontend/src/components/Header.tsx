@@ -15,7 +15,14 @@ import HamburgerMenu from "./HamburgerMenu";
 import Cart from "./cart/Cart";
 import useStore from "@/store";
 
-const ROUTE = ["/admin", "/admin/accounts", "/admin/events", "/admin/merchandise"];
+const ROUTE = [
+  "/admin",
+  "/admin/accounts",
+  "/admin/events",
+  "/admin/merchandise",
+  "/admin/orders",
+  "/admin/announcements",
+];
 
 const Header = () => {
   const { pathname } = useLocation();
@@ -39,29 +46,29 @@ const Header = () => {
           <div className="truncate flex gap-20 items-center">
             <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
+            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
             <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
+            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
             <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
+            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
             <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
           </div>
           <div className="truncate flex gap-20 items-center">
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
+            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
             <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
+            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
             <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
+            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
             <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
           </div>
         </motion.div>
