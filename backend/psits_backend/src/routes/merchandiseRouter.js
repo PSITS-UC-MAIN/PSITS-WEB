@@ -17,13 +17,18 @@ import upload from "../middlewares/multerMiddleware.js";
 router.route("/").get(getMerchandise).post(
   authenticateUser,
   // validateMerchandiseItem,
-  upload.single('images'),
+  upload.any('images'),
   createMerchandiseItem
 );
 
 router
   .route("/:merchandiseItemId")
-  .patch(authenticateUser, validateMerchandiseItemRevision, updateMerchandiseItemById)
+  .patch(
+    authenticateUser,
+    // validateMerchandiseItemRevision,
+    upload.any('images'),
+    updateMerchandiseItemById
+  )
   .delete(authenticateUser, validateMerchandiseItemDeletion, deleteMerchandiseItemById);
 
 export default router;

@@ -1,5 +1,16 @@
 import mongoose from "mongoose";
 
+const ImageSchema = new mongoose.Schema({
+  image: {
+    type: String,
+    required: true,
+  },
+  imagePublicId: {
+    type: String,
+    required: true,
+  },
+});
+
 const MerchandiseModel = new mongoose.Schema({
   name: {
     type: String,
@@ -21,18 +32,7 @@ const MerchandiseModel = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  images: [
-    {
-      image: {
-        type: String,
-        required: true,
-      },
-      imagePublicId: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  images: [ImageSchema],
   size: {
     type: String,
     enum: ["small", "medium", "large", "extra-large"],

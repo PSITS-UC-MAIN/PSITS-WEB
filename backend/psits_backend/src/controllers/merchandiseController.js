@@ -3,6 +3,7 @@ import Merchandise from "../models/MerchandiseModel.js";
 import { UnauthorizedError } from "../errors/customErrors.js";
 import { v2 as cloudinary } from "cloudinary";
 import { promises as fs } from "fs";
+import webp from 'webp-converter';
 
 export const getMerchandise = async (req, res) => {
   const merchandise = await Merchandise.find({});
@@ -15,18 +16,39 @@ export const createMerchandiseItem = async (req, res) => {
 
   let newBody = { ...req.body };
   
-  if (req.file) {
+  if (req.files) {
     newBody = JSON.parse(req.body.merch);
     
-    // upload the image to cloudinary
-    const response = await cloudinary.uploader.upload(req.file.path);
-    // delete the image in the public folder
-    await fs.unlink(req.file.path);
-    newBody.images = [{
-      image: response.secure_url,
-      imagePublicId: response.public_id
-    }]
+    let uploadedImages = []
+
+    // initialize needed regular expressions
+    const re = /\.[^/.]+$/
+
+    // convert if files are not in webp format
+    for(let i = 0; i < req.files.length; i++) {
+      if (!/\.webp$/.test(req.files[i].filename))
+        await webp.cwebp(req.files[i].path,`${req.files[i].path.replace(re, '')}.webp`,"-q 80")
+    }
+    
+    // upload the images to cloudinary
+    for(let i = 0; i < req.files.length; i++) {
+      const uploadedImage = await cloudinary.uploader.upload(`${req.files[i].path.replace(re, '')}.webp`) // this uploads the webp file
+      uploadedImages.push({
+        image: uploadedImage.secure_url,
+        imagePublicId: uploadedImage.public_id
+      })
+    }
+    // delete the images in the public folder
+    for(let i = 0; i < req.files.length; i++) {
+      // the code below removes the original file and the converted file
+      await fs.unlink(req.files[i].path)
+      await fs.unlink(`${req.files[i].path.replace(re, '')}.webp`)
+    }
+
+    newBody.images = uploadedImages
   }
+
+  console.log(newBody);
 
   await Merchandise.create(newBody);
   res.status(StatusCodes.OK).json({ msg: "Merchandise Item Created!" })
@@ -35,8 +57,49 @@ export const createMerchandiseItem = async (req, res) => {
 export const updateMerchandiseItemById = async (req, res) => {
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
 
-  const newObj = { ...req.body };
+  let newObj = { ...req.body };
+  const re = /\.[^/.]+$/
+  let uploadedImages = []
+  console.log(newObj);
+  console.log(req.files);
 
+  // check if uploaded images contain values
+  if (newObj.image.length > 0) {
+    // if yes, delete images in the cloud via public id
+    for(let i = 0; i < newObj.image.length; i++) {
+      await cloudinary.uploader.destroy(newObj.imagePublicId[i])
+    }
+
+    // prepare merch data by initially parsing it
+    newObj = JSON.parse(req.body.merch);
+
+    // convert files to webp
+    for(let i = 0; i < req.files.length; i++) {
+      if (!/\.webp$/.test(req.files[i].filename))
+        await webp.cwebp(req.files[i].path,`${req.files[i].path.replace(re, '')}.webp`,"-q 80")
+    }
+
+    // then upload the converted new images
+    for(let i = 0; i < req.files.length; i++) {
+      const uploadedImage = await cloudinary.uploader.upload(`${req.files[i].path.replace(re, '')}.webp`) // this uploads the webp file
+      uploadedImages.push({
+        image: uploadedImage.secure_url,
+        imagePublicId: uploadedImage.public_id
+      })
+    }
+
+    // then remove the files from the local storage via public/uploads
+    for(let i = 0; i < req.files.length; i++) {
+      await fs.unlink(req.files[i].path)
+      await fs.unlink(`${req.files[i].path.replace(re, '')}.webp`)
+    }
+
+    // insert the new object attributes to the images array
+    newObj.images = uploadedImages
+    console.log(newObj);
+  }
+
+  // update the database data
   const updatedMerchandiseItem = await Merchandise.findOneAndUpdate(
     { _id: req.params.merchandiseItemId },
     newObj,
@@ -53,6 +116,11 @@ export const updateMerchandiseItemById = async (req, res) => {
 
 export const deleteMerchandiseItemById = async (req, res) => {
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
+
+  const findMerch = await Merchandise.find({ _id: req.params.merchandiseItemId })
+  for (let i = 0; i < findMerch[0].images.length; i++) {
+    await cloudinary.uploader.destroy(findMerch[0].images[i].imagePublicId)
+  }
 
   const removedMerchandiseItem = await Merchandise.findOneAndDelete({
     _id: req.params.merchandiseItemId,

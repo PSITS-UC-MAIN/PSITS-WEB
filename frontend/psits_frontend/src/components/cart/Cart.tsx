@@ -25,23 +25,24 @@ const Cart = () => {
       </DialogTrigger>
       <DialogContent className="max-w-[85%] bg-[#f9f9f9]">
         <div className="flex flex-col mx-[3%]">
-          <div className="grid grid-cols-6 text-center bg-[#254872] text-white rounded-md shadow-md p-5 mt-5 mb-5">
-            <span>Product</span>
-            <span>Size</span>
-            <span>Color</span>
-            <span>Price</span>
-            <span>Quantity</span>
-            <span>Action</span>
+          <div className="grid grid-cols-1 sm:grid-cols-6 text-center bg-[#254872] text-white rounded-md shadow-md p-5 mt-5 mb-5">
+            <span className="block sm:hidden">Items</span>
+            <span className="sm:block hidden">Product</span>
+            <span className="sm:block hidden">Size</span>
+            <span className="sm:block hidden">Color</span>
+            <span className="sm:block hidden">Price</span>
+            <span className="sm:block hidden">Quantity</span>
+            <span className="sm:block hidden">Action</span>
           </div>
           <ScrollArea className="h-[30em] w-full rounded-md">
             {cartItems.map((item: any) => (
-              <div key={item._id} className="grid grid-cols-6 bg-white rounded-md shadow-md p-5 items-center mb-5">
+              <div key={item._id} className="grid grid-flow-rows grid-cols-6 bg-white rounded-md shadow-md p-5 items-center mb-5">
                 <div className="flex flex-cols gap-x-5 items-center">
-                  <img src={item.photo_img_links[0]} alt="Product Image" className="w-[100px] h-[100px] rounded-md" />
-                  <span>{item.title}</span>
+                  <img src={item.images[0].image} alt="Product Image" className="w-[100px] h-[100px] rounded-md" />
+                  <span>{item.name}</span>
                 </div>
-                <span className="text-center">{item.size === "" ? "Not Specified" : item.size}</span>
-                <span className="text-center">{item.color === "" ? "Not Specified" : item.color}</span>
+                <span className="text-center">{item.size === '' ? "N/A" : item.size}</span>
+                <span className="text-center">{item.color}</span>
                 <span className="text-center">&#8369;{item.price}</span>
                 <span className="text-center">{item.quantity}</span>
                 <div className="flex flex-row justify-center">

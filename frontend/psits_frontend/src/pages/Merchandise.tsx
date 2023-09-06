@@ -27,7 +27,7 @@ interface Merchandise {
   stocks: number;
   images: [
     {
-      imageId: string,
+      image: string,
       imagePublicId: string
     }
   ];
@@ -83,11 +83,9 @@ const Merchandise = () => {
 
   const onSubmit: SubmitHandler<MerchandiseSchema> = (data: any) => {
     const formData = new FormData();
-    console.log(data);
     
     if (data.images.length > 0) {
-      formData.append("images", data.images[0]);
-      data.images = "";
+      for(let i = 0; i < data.images.length; formData.append("images",data.images[i]),i++);
       formData.append("merch", JSON.stringify(data));
       createMutate(formData);
     } else {

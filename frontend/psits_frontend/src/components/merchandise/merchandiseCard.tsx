@@ -36,12 +36,11 @@ interface MerchandiseCardProps {
 }
 
 const MerchandiseSchema = z.object({
-  name: z.string(),
-  description: z.string(),
+  name: z.string().nonempty('This field is required.'),
+  description: z.string().nonempty('This field is required.'),
   price: z.number(),
-  discount: z.number(),
+  discount: z.number().or(z.nan()).default(Number.NaN),
   images: z.any(),
-  size: z.string(),
   color: z.string(),
 });
 
@@ -71,6 +70,11 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
     formState: { errors },
   } = useForm<MerchandiseSchema>({
     resolver: zodResolver(MerchandiseSchema),
+    defaultValues: {
+      price: 0,
+      discount: 0,
+      color: ""
+    }
   });
 
   const { mutate: updateMutate, reset: updateReset } = useMutation({
@@ -86,8 +90,21 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
   });
 
   const onSubmit: SubmitHandler<MerchandiseSchema> = (data: any) => {
+    const formData = new FormData();
     const merchandiseItemId = item._id;
-    updateMutate({ merchandiseItemId, data });
+
+    if (data.images.length > 0) {
+      for(let i = 0; i < data.images.length;i++){
+        formData.append("images",data.images[i]);
+        formData.append("image", item.images[i].image);
+        formData.append("imagePublicId", item.images[i].imagePublicId);
+      }
+      formData.append("merch", JSON.stringify(data));
+      updateMutate({ merchandiseItemId, formData });
+    } else {
+      data.images = ""
+      updateMutate({merchandiseItemId, formData});
+    }
   };
 
   return (
@@ -116,7 +133,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
               </DialogHeader>
               <DialogContent className="h-[85%] bg-white mx-10">
                 <ScrollArea>
-                  <form onSubmit={handleSubmit(onSubmit)}>
+                  <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
                     <div className="flex flex-col mt-10 gap-y-10 items-center mx-5">
                       <div className="max-h-[300px] max-w-[50%] border-black relative col-span-2">
                         <img src={file !== '' ? file : item.images[0].image} alt="" className="h-[300px] shadow-lg rounded-lg" />
@@ -132,6 +149,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                           accept="image/*"
                           className="hidden"
                           id="img"
+                          multiple
                           {...register("images", {
                             onChange: (event) => {
                               const fileURL = URL.createObjectURL(event.target.files[0]);
