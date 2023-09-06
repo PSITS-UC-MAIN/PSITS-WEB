@@ -92,6 +92,8 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
   const onSubmit: SubmitHandler<MerchandiseSchema> = (data: any) => {
     const formData = new FormData();
     const merchandiseItemId = item._id;
+    console.log(data);
+    
 
     if (data.images.length > 0) {
       for(let i = 0; i < data.images.length;i++){
@@ -100,10 +102,16 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
         formData.append("imagePublicId", item.images[i].imagePublicId);
       }
       formData.append("merch", JSON.stringify(data));
-      updateMutate({ merchandiseItemId, formData });
+      data = formData
+      updateMutate({ merchandiseItemId, data });
     } else {
-      data.images = ""
-      updateMutate({merchandiseItemId, formData});
+      for(let i = 0; i < item.images.length;i++){
+        formData.append("oldImage", item.images[i].image);
+        formData.append("oldImagePublicId", item.images[i].imagePublicId);
+      }
+      formData.append("merch", JSON.stringify(data));
+      data = formData
+      updateMutate({merchandiseItemId, data});
     }
   };
 
