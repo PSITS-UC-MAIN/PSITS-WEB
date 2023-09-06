@@ -37,6 +37,7 @@ const Profile = ({ className }: { className?: string }) => {
   const logoutHandler = () => {
     refetch();
   };
+
   return (
     <div className={className}>
       <DropdownMenu>
@@ -44,8 +45,8 @@ const Profile = ({ className }: { className?: string }) => {
           <div className="cursor-pointer h-[50px] w-[50px]">
             <Avatar>
               <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt="@shadcn"
+                src={store.authUser?.avatar}
+                alt="profile-avatar"
                 className="rounded-full hover:border-2 transition"
               />
               <AvatarFallback>
