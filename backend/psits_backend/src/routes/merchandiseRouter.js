@@ -2,33 +2,39 @@ import { Router } from "express";
 const router = Router();
 import {
   getMerchandise,
+  getMerchandiseById,
   createMerchandiseItem,
   updateMerchandiseItemById,
-  deleteMerchandiseItemById
+  deleteMerchandiseItemById,
 } from "../controllers/merchandiseController.js";
 import { authenticateUser } from "../middlewares/authMiddleware.js";
 import {
   validateMerchandiseItem,
   validateMerchandiseItemRevision,
-  validateMerchandiseItemDeletion
+  validateMerchandiseItemDeletion,
 } from "../middlewares/validations/merchandiseValidation.js";
 import upload from "../middlewares/multerMiddleware.js";
 
 router.route("/").get(getMerchandise).post(
   authenticateUser,
   // validateMerchandiseItem,
-  upload.any('images'),
+  upload.any("images"),
   createMerchandiseItem
 );
 
 router
   .route("/:merchandiseItemId")
+  .get(getMerchandiseById)
   .patch(
     authenticateUser,
     // validateMerchandiseItemRevision,
-    upload.any('images'),
+    upload.any("images"),
     updateMerchandiseItemById
   )
-  .delete(authenticateUser, validateMerchandiseItemDeletion, deleteMerchandiseItemById);
+  .delete(
+    authenticateUser,
+    validateMerchandiseItemDeletion,
+    deleteMerchandiseItemById
+  );
 
 export default router;
