@@ -171,7 +171,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
             ))}
           </Slide>
           :
-          <img src={item.images[0].image} alt="Product Image" className="h-[400px] shadow-lg rounded-lg" />
+          <img src={item.images[0].image} alt="Product Image" className="h-[400px] border-2 rounded-lg" />
         }
         {store.authUser?.isAdmin && (
           <>
