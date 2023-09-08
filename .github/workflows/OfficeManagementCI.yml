@@ -13,42 +13,28 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+        working-directory: "frontend/psits_frontend_officemanagement"
 
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: 16
+        working-directory: "frontend/psits_frontend_officemanagement"
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
+        working-directory: "frontend/psits_frontend_officemanagement"
 
       - name: Build project
         run: npm run build
         env:
           VITE_SERVER_URL_API: ${{ secrets.VITE_SERVER_URL_API }}
           VITE_SERVER_API_KEY: ${{ secrets.VITE_SERVER_API_KEY }}
+        working-directory: "frontend/psits_frontend_officemanagement"
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
         with:
           name: production-files
           path: ./dist
-
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: production-files
-          path: ./dist
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+        working-directory: "frontend/psits_frontend_officemanagement"
