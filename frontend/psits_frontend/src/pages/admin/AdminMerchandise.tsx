@@ -4,7 +4,7 @@ import MerchandiseTable from "@/components/tables/MerchandiseTable";
 const AdminMerchandise = () => {
   return (
     <Wrapper title="PSITS Admin | Merchandise" noMargin>
-      <MerchandiseTable/>
+      <MerchandiseTable />
     </Wrapper>
   );
 };
