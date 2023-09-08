@@ -14,6 +14,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
+      - name: Open Office Management Directory
+        working-directory: frontend/psits_frontend_officemanagement
+        run: |
+          ls -la
+
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
