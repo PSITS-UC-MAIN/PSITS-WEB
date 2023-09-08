@@ -45,7 +45,7 @@ const Cart = () => {
     }, 0);
   }, 0);
 
-  const { mutate: updateMutate, isLoading: updateIsLoading } = useMutation({
+  const { mutate: updateMutate } = useMutation({
     mutationFn: updateCartItem,
     onSuccess: (cart) => {
       queryClient.invalidateQueries(["cart"]);
@@ -146,7 +146,7 @@ const Cart = () => {
                                 merchItem._id === item.merchId &&
                                 merchItem.size.split(',').map((item: any) => (
                                   <SelectItem
-                                    key={Date.now()+item}
+                                    key={Date.now()+merchItem._id+item}
                                     value={item}
                                     onMouseDown={() => handleSizeSelect(item, merchItem)}
                                   >
@@ -190,12 +190,12 @@ const Cart = () => {
                     </div>
                     <span className="text-center">&#8369;{item.price}</span>
                     <div className="flex flex-row justify-center items-center gap-x-10">
-                      <Button onClick={() => handleOnClickDecrement(item.merchId)} disabled={updateIsLoading}>
-                        {updateIsLoading ? <Loader2 className=" animate-spin" /> : <Minus size={15}/>}
+                      <Button onClick={() => handleOnClickDecrement(item.merchId)}>
+                        <Minus size={15}/>
                       </Button>
                       <span className="text-center">{item.quantity}</span>
-                      <Button onClick={() => handleOnClickIncrement(item.merchId)} disabled={updateIsLoading}>
-                        {updateIsLoading ? <Loader2 className=" animate-spin" /> : <Plus size={15}/>}
+                      <Button onClick={() => handleOnClickIncrement(item.merchId)}>
+                        <Plus size={15}/>
                       </Button>
                     </div>
                     <div className="flex flex-row justify-center">
