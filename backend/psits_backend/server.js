@@ -16,7 +16,7 @@ import v2EventRouter from "./src/routes/eventRouter.js";
 import v2MerchandiseRouter from "./src/routes/merchandiseRouter.js";
 import v2StatRouter from "./src/routes/statRouter.js";
 import v2OfficeLogRouter from "./src/routes/officelogRouter.js";
-import v2CartRouter from './src/routes/cartRouter.js'
+import v2CartRouter from "./src/routes/cartRouter.js";
 
 import homeRouter from "./src/routes/main.js";
 
@@ -44,11 +44,13 @@ app.use(express.static(path.resolve(__dirname, "./public")));
 
 // cors
 app.use(
-  cors({
+  cors(/*
+  {
     origin: [...config.getCorsOrigin()],
     credentials: true,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  })
+  }
+  */)
 );
 
 // middlewares
