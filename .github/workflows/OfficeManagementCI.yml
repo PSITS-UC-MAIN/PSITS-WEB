@@ -23,11 +23,12 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Build project
-        run: npm run build
+        run: |
+          cd ${{github.workspace}}/frontend/psits_frontend_officemanagement
+          npm run build
         env:
           VITE_SERVER_URL_API: ${{ secrets.VITE_SERVER_URL_API }}
           VITE_SERVER_API_KEY: ${{ secrets.VITE_SERVER_API_KEY }}
-        working-directory: "frontend/psits_frontend_officemanagement"
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
