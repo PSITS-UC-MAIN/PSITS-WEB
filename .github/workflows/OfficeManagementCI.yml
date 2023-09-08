@@ -12,6 +12,7 @@ jobs:
 
     steps:
       - name: Checkout repo
+        working-directory: frontend/psits_frontend_officemanagement
         uses: actions/checkout@v2
 
       - name: Open Office Management Directory
@@ -28,9 +29,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Build project
-        run: |
-          cd ${{github.workspace}}/frontend/psits_frontend_officemanagement
-          npm run build
+        run: npm run build
         env:
           VITE_SERVER_URL_API: ${{ secrets.VITE_SERVER_URL_API }}
           VITE_SERVER_API_KEY: ${{ secrets.VITE_SERVER_API_KEY }}
