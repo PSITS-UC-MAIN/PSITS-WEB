@@ -3,7 +3,7 @@ name: OfficeManagement
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - "frontend/psits_frontend_officemanagement/**"
 
