@@ -1,41 +1,56 @@
+import { getAllEvents } from "@/api/event";
 import Wrapper from "@/components/Wrapper";
-import { psits_banner2 } from "@/assets";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-
-const dummyData = [
-  {
-    id: 1,
-    title: "PSITS: OATH TAKING",
-    creationDate: "August 24, 2023",
-    eventDate: "September 1, 2023",
-    photo_img_link: psits_banner2,
-    content:
-      "This aims to:\nensure that all information and projects of the previous administration be turned over property to the incoming officers",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { format, parseISO } from "date-fns";
+import { AlertCircle, Loader2Icon } from "lucide-react";
 
 const Events = () => {
+  const {
+    data: eventData,
+    isLoading,
+    isError,
+  } = useQuery(["events"], getAllEvents, {
+    select(eventData) {
+      return eventData.events;
+    },
+  });
+
   return (
-    <Wrapper title="PSITS | Events">
-      <div className="flex flex-col gap-y-10 mt-10 mb-20">
-        <div className="flex flex-wrap gap-4 justify-center">
-          {dummyData.map((item) => (
-            <Card key={item.id} className="w-[800px] h-[350px] flex ">
-              <div className="h-full bg-blue-600 w-[200px] rounded-l" />
-              <div>
-                <CardHeader>
-                  <h1 className="text-3xl font-bold uppercase">{item.title}</h1>
-                  <h1 className="text-lg text-slate-700 ">{item.eventDate}</h1>
-                  <Separator />
-                </CardHeader>
-                <CardContent>
-                  <p className="text-justify">{item.content}</p>
-                </CardContent>
-              </div>
-            </Card>
-          ))}
-        </div>
+    <Wrapper title="PSITS | Events" className="my-20">
+      <div className="mb-10">
+        <h1 className="text-4xl font-bold text-[#074873]">All Events</h1>
+      </div>
+      <div className="flex flex-wrap gap-6 justify-center">
+        {isLoading ? (
+          <span className="text-center flex justify-center">
+            <Loader2Icon className="animate-spin" />
+          </span>
+        ) : isError ? (
+          <div className="flex items-center gap-2 text-red-500  justify-center">
+            <AlertCircle />
+            <p>Something went wrong!</p>
+          </div>
+        ) : (
+          <>
+            {eventData.map((event: any) => {
+              const parseDate = event.eventDate.toLocaleString();
+              const formattedDate = format(parseISO(parseDate), "PPP | pp");
+              return (
+                <Card key={event._id} className="w-[500px] h-[300px] flex ">
+                  <div className="h-full bg-[#074873] w-[90px] rounded-l" />
+                  <div className="w-full p-6">
+                    <h1 className="text-3xl font-bold uppercase">{event.title}</h1>
+                    <h1 className="text-lg text-slate-700 ">{formattedDate}</h1>
+                    <Separator className="mb-4 mt-2" />
+                    <p className="text-justify text-slate-600">{event.content}</p>
+                  </div>
+                </Card>
+              );
+            })}
+          </>
+        )}
       </div>
     </Wrapper>
   );
