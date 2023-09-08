@@ -70,10 +70,10 @@ export const loginWithRFID = async (req, res) => {
   res.cookie("token", token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
-    secure: false,
+    secure: process.env.NODE_ENV === "production",
     sameSite: "none",
   });
-  res.status(StatusCodes.OK).json({ message: "User logged in!" });
+  res.status(StatusCodes.OK).json({ message: "User logged in!", token });
 };
 
 export const logout = (req, res) => {
