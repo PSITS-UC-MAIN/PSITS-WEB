@@ -44,13 +44,11 @@ app.use(express.static(path.resolve(__dirname, "./public")));
 
 // cors
 app.use(
-  cors(/*
-  {
+  cors({
     origin: [...config.getCorsOrigin()],
     credentials: true,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  }
-  */)
+  })
 );
 
 // middlewares
