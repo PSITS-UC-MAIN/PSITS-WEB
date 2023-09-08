@@ -1,11 +1,9 @@
-name: OfficeManagement
+name: Deploy Office Management
 
 on:
   push:
     branches:
-      - main
-    paths:
-      - "frontend/psits_frontend_officemanagement/**"
+      - master
 
 jobs:
   build:
@@ -16,15 +14,22 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
+      - name: Open Office Management Directory
+        working-directory: frontend/psits_frontend_officemanagement
+        run: |
+          ls -la
+
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: 16
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        working-directory: frontend/psits_frontend_officemanagement
+        run: npm install
 
       - name: Build project
+        working-directory: frontend/psits_frontend_officemanagement
         run: npm run build
         env:
           VITE_SERVER_URL_API: ${{ secrets.VITE_SERVER_URL_API }}
@@ -35,22 +40,3 @@ jobs:
         with:
           name: production-files
           path: ./dist
-
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: production-files
-          path: ./dist
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
