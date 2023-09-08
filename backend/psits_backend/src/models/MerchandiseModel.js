@@ -33,11 +33,7 @@ const MerchandiseModel = new mongoose.Schema({
     default: 0,
   },
   images: [ImageSchema],
-  size: {
-    type: String,
-    enum: ["small", "medium", "large", "extra-large"],
-    default: "small",
-  },
+  size: String,
   color: String,
   ratings: {
     type: Number,
