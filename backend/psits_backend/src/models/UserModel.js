@@ -1,4 +1,28 @@
 import mongoose from "mongoose";
+const Schema = mongoose.Schema;
+
+const CartSchema = new mongoose.Schema({
+  merchId: {
+    type: Schema.Types.ObjectId,
+    ref: "Merchandise",
+    required: true,
+  },
+  price: {
+    type: String,
+    require: true,
+  },
+  quantity: {
+    type: Number,
+    require: true,
+  },
+  size: {
+    type: String,
+    require: true,
+  },
+  color: String,
+  image: String,
+  name: String
+})
 
 const UserSchema = new mongoose.Schema({
   avatar: {
@@ -34,7 +58,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   cart: {
-    type: [{}],
+    type: [CartSchema],
   },
   course: {
     type: String,
