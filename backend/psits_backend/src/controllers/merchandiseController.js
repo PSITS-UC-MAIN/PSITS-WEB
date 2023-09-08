@@ -4,6 +4,7 @@ import { UnauthorizedError } from "../errors/customErrors.js";
 import { v2 as cloudinary } from "cloudinary";
 import { promises as fs } from "fs";
 import webp from 'webp-converter';
+import User from "../models/UserModel.js";
 
 export const getMerchandise = async (req, res) => {
   const merchandise = await Merchandise.find({});
@@ -48,8 +49,6 @@ export const createMerchandiseItem = async (req, res) => {
     newBody.images = uploadedImages
   }
 
-  console.log(newBody);
-
   await Merchandise.create(newBody);
   res.status(StatusCodes.OK).json({ msg: "Merchandise Item Created!" })
 }
@@ -62,7 +61,7 @@ export const updateMerchandiseItemById = async (req, res) => {
   let uploadedImages = []
 
   // check if uploaded images contain values
-  if (newObj.image) {
+  if (req.files.length > 0) {
     // if yes, delete images in the cloud via public id
     for(let i = 0; i < newObj.image.length; i++) {
       await cloudinary.uploader.destroy(newObj.imagePublicId[i])
@@ -94,16 +93,16 @@ export const updateMerchandiseItemById = async (req, res) => {
 
     // insert the new object attributes to the images array
     newObj.images = uploadedImages
+  } else {
+    for(let i = 0; i < newObj.image.length; i++) {
+      uploadedImages.push({
+        image: newObj.image[i],
+        imagePublicId: newObj.imagePublicId[i]
+      })
+    }
+    newObj = JSON.parse(req.body.merch);
+    newObj.images = uploadedImages
   }
-
-  for(let i = 0; i < newObj.oldImage.length; i++) {
-    uploadedImages.push({
-      image: newObj.oldImage[i],
-      imagePublicId: newObj.oldImagePublicId[i]
-    })
-  }
-  newObj = JSON.parse(req.body.merch);
-  newObj.images = uploadedImages
 
   // update the database data
   const updatedMerchandiseItem = await Merchandise.findOneAndUpdate(
@@ -131,6 +130,15 @@ export const deleteMerchandiseItemById = async (req, res) => {
   const removedMerchandiseItem = await Merchandise.findOneAndDelete({
     _id: req.params.merchandiseItemId,
   });
+
+  // this part deletes the merchandise Item from everyone else's cart
+  const users = await User.find({}, "cart"); // hide password
+  let itemIndex = null
+  for (let i = 0; i < users.length; i++) {
+    itemIndex = users[i].cart.findIndex(item => item.merchId.toString() === req.params.merchandiseItemId)
+    users[i].cart.splice(itemIndex)
+    await users[i].save()
+  }
 
   res.status(StatusCodes.OK).json({ message: "Merchandise Item deleted!", removedMerchandiseItem });
 };
