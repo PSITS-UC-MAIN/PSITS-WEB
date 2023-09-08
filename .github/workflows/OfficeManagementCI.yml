@@ -22,7 +22,6 @@ jobs:
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
-        working-directory: "frontend/psits_frontend_officemanagement"
 
       - name: Build project
         run: npm run build
