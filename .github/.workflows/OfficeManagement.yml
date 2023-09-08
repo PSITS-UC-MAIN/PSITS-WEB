@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - ""
+      - "frontend/psits_frontend_officemanagement/**"
 
 jobs:
   build:
