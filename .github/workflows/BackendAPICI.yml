@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Open Office Management Directory
-        working-directory: backend/psits_psits_backend
+        working-directory: backend/psits_backend
         run: |
           ls -la
 
@@ -25,7 +25,7 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        working-directory: backend/psits_psits_backend
+        working-directory: backend/psits_backend
         run: npm install
 
       - name: Upload production-ready build files
