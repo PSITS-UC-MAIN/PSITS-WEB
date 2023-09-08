@@ -17,8 +17,9 @@ export const AuthenticateUser = async ({ rfid, password, API_KEY }) => {
   });
 
   const status = res.status;
+  const { token } = await res.json();
 
-  return status;
+  return { StatusCode: status, token };
 };
 
 export const LogoutUser = async () => {
