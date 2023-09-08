@@ -36,12 +36,15 @@ const Cart = () => {
           </div>
           <ScrollArea className="h-[30em] w-full rounded-md">
             {cartItems.map((item: any) => (
-              <div key={item._id} className="grid grid-flow-rows grid-cols-6 bg-white rounded-md shadow-md p-5 items-center mb-5">
+              <div
+                key={item._id}
+                className="grid grid-flow-rows grid-cols-6 bg-white rounded-md shadow-md p-5 items-center mb-5"
+              >
                 <div className="flex flex-cols gap-x-5 items-center">
                   <img src={item.images[0].image} alt="Product Image" className="w-[100px] h-[100px] rounded-md" />
                   <span>{item.name}</span>
                 </div>
-                <span className="text-center">{item.size === '' ? "N/A" : item.size}</span>
+                <span className="text-center">{item.size === "" ? "N/A" : item.size}</span>
                 <span className="text-center">{item.color}</span>
                 <span className="text-center">&#8369;{item.price}</span>
                 <span className="text-center">{item.quantity}</span>
