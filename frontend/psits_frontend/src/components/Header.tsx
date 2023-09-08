@@ -100,23 +100,28 @@ const Header = () => {
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger className="bg-transparent text-md"> Students </NavigationMenuTrigger>
+                    <NavigationMenuTrigger className="bg-transparent text-md"> Community </NavigationMenuTrigger>
                     <NavigationMenuContent className="flex flex-col gap-4 p-4 m-0 border bg-transparent w-[500px]">
                       <NavigationMenuLink asChild>
                         <Button variant="ghost" className="hover:bg-slate-200">
-                          <Link to="/students">All Students</Link>
+                          <Link to="/community/students">All Students</Link>
                         </Button>
                       </NavigationMenuLink>
                       <NavigationMenuLink asChild>
                         <Button variant="ghost" className="hover:bg-slate-200">
-                          <Link to="/students/officers">
+                          <Link to="/community/faculty">Faculty Members</Link>
+                        </Button>
+                      </NavigationMenuLink>
+                      <NavigationMenuLink asChild>
+                        <Button variant="ghost" className="hover:bg-slate-200">
+                          <Link to="/community/officers">
                             <p>PSITS Officers</p>
                           </Link>
                         </Button>
                       </NavigationMenuLink>
                       <NavigationMenuLink asChild>
                         <Button variant="ghost" className="hover:bg-slate-200">
-                          <Link to="/students/developers">Developers</Link>
+                          <Link to="/community/developers">Developers</Link>
                         </Button>
                       </NavigationMenuLink>
                     </NavigationMenuContent>

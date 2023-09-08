@@ -10,6 +10,7 @@ import {
   Events,
   StudentLayout,
   Students,
+  Faculty,
   Officers,
   Developers,
   Merchandise,
@@ -47,12 +48,16 @@ const router = createBrowserRouter([
         element: <Events />,
       },
       {
-        path: "students",
+        path: "community",
         element: <StudentLayout />,
         children: [
           {
-            index: true,
+            path: "students",
             element: <Students />,
+          },
+          {
+            path: "faculty",
+            element: <Faculty />,
           },
           {
             path: "officers",
