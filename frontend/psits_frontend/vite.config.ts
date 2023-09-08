@@ -14,7 +14,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://psits-web-api.vercel.app/api",
+        target: "https://psits-web-api.vercel-v2.app/api",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
