@@ -1,11 +1,9 @@
-name: OfficeManagement
+name: Deploy Office Management
 
 on:
   push:
     branches:
       - main
-    paths:
-      - ""
 
 jobs:
   build:
