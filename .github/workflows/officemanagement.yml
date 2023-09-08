@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - "PSITS-WEB/frontend/psits_frontend_officemanagement/**"
+      - "frontend/psits_frontend_officemanagement/**"
 
 jobs:
   build:
@@ -20,9 +20,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16
+        paths:
+          - "frontend/psits_frontend_officemanagement/**"
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
+        paths:
+          - "frontend/psits_frontend_officemanagement/**"
 
       - name: Build project
         run: npm run build
