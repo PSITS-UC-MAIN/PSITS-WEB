@@ -35,4 +35,3 @@ jobs:
         with:
           name: production-files
           path: ./dist
-        working-directory: "frontend/psits_frontend_officemanagement"
