@@ -1,3 +1,7 @@
+### Github Workflows
+[![PSITS-API | CI](https://github.com/PSITS-UC-MAIN/PSITS-WEB/actions/workflows/BackendAPICI.yml/badge.svg)](https://github.com/PSITS-UC-MAIN/PSITS-WEB/actions/workflows/BackendAPICI.yml)
+[![PSITS-WEBSITE | CI](https://github.com/PSITS-UC-MAIN/PSITS-WEB/actions/workflows/FrontEndCI.yml/badge.svg)](https://github.com/PSITS-UC-MAIN/PSITS-WEB/actions/workflows/FrontEndCI.yml)
+[![OfficeManagement | CI](https://github.com/PSITS-UC-MAIN/PSITS-WEB/actions/workflows/OfficeManagementCI.yml/badge.svg)](https://github.com/PSITS-UC-MAIN/PSITS-WEB/actions/workflows/OfficeManagementCI.yml)
 # PSITS UC MAIN 2023
 
 This project is owned by [Jayharron Mar Abejar](https://jayharronabejar.info) and is `open for collaboration`.
