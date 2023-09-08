@@ -1,14 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+// import { useQuery } from "@tanstack/react-query";
+// import { AlertCircle, Loader2Icon } from "lucide-react";
 
 const OrdersTable = () => {
-//   const { data, isLoading, isError } = useQuery(["adorders"], getAllMerchandise, {
-//     select(merchData) {
-//       return merchData.merchandise;
-//     },
-//   });
-
-//   if (isLoading) return <div>Loading...</div>;
+  // const { data, isLoading, isError } = useQuery(["orders"], getAllOrders, {
+  //   select(merchData: any) {
+  //     return merchData.merchandise;
+  //   },
+  // });
 
   return (
     <div className="rounded-md border">
@@ -26,18 +25,32 @@ const OrdersTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {/* {data?.map((merch: any) => {
-            return (
-              <TableRow key={merch._id}>
-                <TableCell>{merch.name}</TableCell>
-                <TableCell>{merch.description}</TableCell>
-                <TableCell>{merch.price}</TableCell>
-                <TableCell>{merch.stocks}</TableCell>
-                <TableCell>{merch.size}</TableCell>
-              </TableRow>
-            );
-          })} */}
+          <TableCell>test</TableCell>
         </TableBody>
+        {/* {isLoading ? (
+          <span className="text-center flex justify-center">
+            <Loader2Icon className="animate-spin" />
+          </span>
+        ) : isError ? (
+          <div className="flex items-center gap-2 text-red-500  justify-center">
+            <AlertCircle />
+            <p>Something went wrong!</p>
+          </div>
+        ) : (
+          <TableBody>
+            {data?.map((merch: any) => {
+              return (
+                <TableRow key={merch._id}>
+                  <TableCell>{merch.name}</TableCell>
+                  <TableCell>{merch.description}</TableCell>
+                  <TableCell>{merch.price}</TableCell>
+                  <TableCell>{merch.stocks}</TableCell>
+                  <TableCell>{merch.size}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        )} */}
       </Table>
     </div>
   );
