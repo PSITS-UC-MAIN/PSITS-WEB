@@ -13,7 +13,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-        working-directory: "frontend/psits_frontend_officemanagement"
 
       - name: Setup Node
         uses: actions/setup-node@v1
