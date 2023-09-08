@@ -33,7 +33,6 @@ function TimeLogRequestModal({
         setIsLoading(false);
         return;
       }
-      console.log(RFID_CODE);
 
       const StatusCode = await AuthenticateUser({
         rfid: RFID_CODE,

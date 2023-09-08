@@ -2,7 +2,6 @@ import React from "react";
 import { ClearAppData } from "../../utilities/server_utils";
 
 function Profile({ user, className }) {
-  console.log(user);
   return (
     <div className={`profileCard ${className}`}>
       <div className="card">
