@@ -28,7 +28,7 @@ export const createMerchandiseItem = async (req, res) => {
     // convert if files are not in webp format
     for(let i = 0; i < req.files.length; i++) {
       if (!/\.webp$/.test(req.files[i].filename))
-        await webp.cwebp(req.files[i].path,`${req.files[i].path.replace(re, '')}.webp`,"-q 80")
+        await webp.cwebp(req.files[i].path,`${req.files[i].path.replace(re, '')}.webp`,"-q 75")
     }
     
     // upload the images to cloudinary
@@ -73,7 +73,7 @@ export const updateMerchandiseItemById = async (req, res) => {
     // convert files to webp
     for(let i = 0; i < req.files.length; i++) {
       if (!/\.webp$/.test(req.files[i].filename))
-        await webp.cwebp(req.files[i].path,`${req.files[i].path.replace(re, '')}.webp`,"-q 80")
+        await webp.cwebp(req.files[i].path,`${req.files[i].path.replace(re, '')}.webp`,"-q 75")
     }
 
     // then upload the converted new images
