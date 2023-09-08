@@ -131,7 +131,7 @@ const Announcement = ({
               className="mb-4 w-full border rounded shadow p-6 cursor-pointer flex items-center gap-4"
             >
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src={store.authUser.avatar} />
                 <AvatarFallback>
                   <User />
                 </AvatarFallback>
@@ -164,6 +164,7 @@ const Announcement = ({
                   creationDate={announcement.creationDate}
                   content={announcement.content}
                   image={announcement.image}
+                  authorImage={announcement.author.avatar}
                 />
               );
             })}

@@ -19,6 +19,6 @@ router.post("/login", validateLoginInput, login);
 router.post("/login/rfid", validateLoginRFIDInput, loginWithRFID);
 router.post("/forgot-password/:userId", forgotPassword);
 router.post("/reset-password/:userId/:token", resetPassword);
-router.get("/logout", logout);
+router.post("/logout", logout);
 
 export default router;

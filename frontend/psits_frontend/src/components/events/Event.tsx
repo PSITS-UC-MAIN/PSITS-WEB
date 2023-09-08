@@ -160,7 +160,7 @@ const Event = ({ events, isLoading, isError }: { events: Event[]; isLoading: boo
               className="w-full mb-4 border rounded shadow p-6 cursor-pointer flex items-center gap-4"
             >
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src={store.authUser.avatar} />
                 <AvatarFallback>
                   <User />
                 </AvatarFallback>

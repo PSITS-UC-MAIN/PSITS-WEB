@@ -28,13 +28,13 @@ import { fileURLToPath } from "url";
 import { authenticateUser } from "./src/middlewares/authMiddleware.js";
 import errorHandlerMiddleware from "./src/middlewares/errorHandlerMiddleware.js";
 
+const app = express();
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_API_SECRET,
 });
-
-const app = express();
 
 let PORT = config.PORT;
 
@@ -42,7 +42,7 @@ let PORT = config.PORT;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.resolve(__dirname, "./public")));
 
-// cors
+// middlewares
 app.use(
   cors({
     origin: [...config.getCorsOrigin()],
@@ -50,8 +50,6 @@ app.use(
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   })
 );
-
-// middlewares
 app.use(cookieParser()); // allow node to read cookies
 app.use(express.json()); // uses JSON as payload
 app.use(compression()); // compresses all routes

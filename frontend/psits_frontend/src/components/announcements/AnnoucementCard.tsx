@@ -18,9 +18,10 @@ interface AnnouncementCardProps {
   author: string;
   content: string;
   image: string;
+  authorImage: string
 }
 
-const AnnoucementCard = ({ id, title, author, content, creationDate, image }: AnnouncementCardProps) => {
+const AnnoucementCard = ({ id, title, author, content, creationDate, image, authorImage }: AnnouncementCardProps) => {
   const store = useStore();
   const queryClient = useQueryClient();
   const parseDate = creationDate.toLocaleString();
@@ -50,7 +51,7 @@ const AnnoucementCard = ({ id, title, author, content, creationDate, image }: An
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" className="rounded-full w-[50px]" />
+              <AvatarImage src={authorImage} className="rounded-full w-[50px]" />
               <AvatarFallback>
                 <User />
               </AvatarFallback>
