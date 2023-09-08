@@ -38,8 +38,12 @@ export const login = async (req, res) => {
   res.cookie("token", token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
+    domain:
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:5173"
+        : "https://psits-web-site-v2.vercel.app",
     sameSite: "none",
-    secure: "false",
+    secure: "true",
   });
   res.status(StatusCodes.OK).json({ message: "User logged in!" });
 };
