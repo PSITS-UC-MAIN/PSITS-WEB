@@ -80,6 +80,8 @@ export const logout = (req, res) => {
   res.cookie("token", "logout", {
     httpOnly: true,
     expires: new Date(Date.now()),
+    sameSite: "none",
+    secure: "true",
   });
   res.status(StatusCodes.OK).json({ message: "User logged out!" });
 };
