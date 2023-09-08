@@ -16,7 +16,7 @@ import v2EventRouter from "./src/routes/eventRouter.js";
 import v2MerchandiseRouter from "./src/routes/merchandiseRouter.js";
 import v2StatRouter from "./src/routes/statRouter.js";
 import v2OfficeLogRouter from "./src/routes/officelogRouter.js";
-import v2CartRouter from './src/routes/cartRouter.js'
+import v2CartRouter from "./src/routes/cartRouter.js";
 
 import homeRouter from "./src/routes/main.js";
 
