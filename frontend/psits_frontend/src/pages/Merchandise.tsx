@@ -27,9 +27,9 @@ interface Merchandise {
   stocks: number;
   images: [
     {
-      image: string,
-      imagePublicId: string
-    }
+      image: string;
+      imagePublicId: string;
+    },
   ];
   size: string;
   color: string;
@@ -37,8 +37,8 @@ interface Merchandise {
 }
 
 const MerchandiseSchema = z.object({
-  name: z.string().nonempty('This field is required.'),
-  description: z.string().nonempty('This field is required.'),
+  name: z.string().nonempty("This field is required."),
+  description: z.string().nonempty("This field is required."),
   price: z.number(),
   discount: z.number().or(z.nan()).default(Number.NaN),
   images: z.any(),
@@ -85,13 +85,13 @@ const Merchandise = () => {
 
   const onSubmit: SubmitHandler<MerchandiseSchema> = (data: any) => {
     const formData = new FormData();
-    
+
     if (data.images.length > 0) {
-      for(let i = 0; i < data.images.length; formData.append("images",data.images[i]),i++);
+      for (let i = 0; i < data.images.length; formData.append("images", data.images[i]), i++);
       formData.append("merch", JSON.stringify(data));
       createMutate(formData);
     } else {
-      data.images = ""
+      data.images = "";
       createMutate(data);
     }
   };
@@ -119,55 +119,54 @@ const Merchandise = () => {
                     <ScrollArea>
                       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
                         <div className="flex flex-col mt-10 gap-y-10 items-center mx-5">
-                        {
-                          file != '' ?
-                          <div className="flex justify-center relative">
-                            <img src={file} className="rounded-lg shadow-lg h-[300px] w-[500px] max-w-[50%]" />
-                            <Label htmlFor="img">
-                              <Plus
-                                className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-[28%] p-2"
-                                color="#fff"
-                                size={40}
+                          {file != "" ? (
+                            <div className="flex justify-center relative">
+                              <img src={file} className="rounded-lg shadow-lg h-[300px] w-[500px] max-w-[50%]" />
+                              <Label htmlFor="img">
+                                <Plus
+                                  className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-[28%] p-2"
+                                  color="#fff"
+                                  size={40}
+                                />
+                              </Label>
+                              <Input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                id="img"
+                                multiple
+                                {...register("images", {
+                                  onChange: (event) => {
+                                    const fileURL = URL.createObjectURL(event.target.files[0]);
+                                    setFile(() => fileURL);
+                                  },
+                                })}
                               />
-                            </Label>
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              className="hidden"
-                              id="img"
-                              multiple
-                              {...register("images", {
-                                onChange: (event) => {
-                                  const fileURL = URL.createObjectURL(event.target.files[0]);
-                                  setFile(() => fileURL);
-                                }
-                              })}
-                            />
-                          </div>
-                          : 
-                          <div className="bg-gray-200 h-[300px] w-[50%] rounded-lg shadow-lg relative col-span-2">
-                            <Label htmlFor="img">
-                              <Plus
-                                className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-3 p-2"
-                                color="#fff"
-                                size={40}
+                            </div>
+                          ) : (
+                            <div className="bg-gray-200 h-[300px] w-[50%] rounded-lg shadow-lg relative col-span-2">
+                              <Label htmlFor="img">
+                                <Plus
+                                  className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-3 p-2"
+                                  color="#fff"
+                                  size={40}
+                                />
+                              </Label>
+                              <Input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                id="img"
+                                multiple
+                                {...register("images", {
+                                  onChange: (event) => {
+                                    const fileURL = URL.createObjectURL(event.target.files[0]);
+                                    setFile(() => fileURL);
+                                  },
+                                })}
                               />
-                            </Label>
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              className="hidden"
-                              id="img"
-                              multiple
-                              {...register("images", {
-                                onChange: (event) => {
-                                  const fileURL = URL.createObjectURL(event.target.files[0]);
-                                  setFile(() => fileURL);
-                                }
-                              })}
-                            />
-                          </div>
-                        }
+                            </div>
+                          )}
                           <div className="flex flex-row gap-x-5">
                             <div className="flex flex-col gap-y-3">
                               <Label className="text-gray-500" htmlFor="itemName">
@@ -180,9 +179,7 @@ const Merchandise = () => {
                                 className="w-full"
                                 {...register("name")}
                               />
-                              {errors.name && (
-                                <p className="text-red-400 text-sm font-light">{errors.name.message}</p>
-                              )}
+                              {errors.name && <p className="text-red-400 text-sm font-light">{errors.name.message}</p>}
                             </div>
                             <div className="flex flex-col gap-y-3">
                               <Label className="text-gray-500" htmlFor="itemPrice">

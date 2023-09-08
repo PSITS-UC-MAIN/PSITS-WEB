@@ -4,7 +4,7 @@ import OrdersTable from "@/components/tables/OrdersTables";
 const AdminOrders = () => {
   return (
     <Wrapper title="PSITS Admin | Orders" noMargin>
-      <OrdersTable/>
+      <OrdersTable />
     </Wrapper>
   );
 };

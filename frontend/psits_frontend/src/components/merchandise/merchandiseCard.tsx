@@ -27,9 +27,9 @@ interface MerchandiseCardProps {
     stocks: number;
     images: [
       {
-        image: string,
-        imagePublicId: string
-      }
+        image: string;
+        imagePublicId: string;
+      },
     ];
     size: string;
     color: string;
@@ -37,8 +37,8 @@ interface MerchandiseCardProps {
 }
 
 const MerchandiseSchema = z.object({
-  name: z.string().nonempty('This field is required.'),
-  description: z.string().nonempty('This field is required.'),
+  name: z.string().nonempty("This field is required."),
+  description: z.string().nonempty("This field is required."),
   price: z.number(),
   discount: z.number().or(z.nan()).default(Number.NaN),
   images: z.any(),
@@ -114,7 +114,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
         }
       }
       formData.append("merch", JSON.stringify(data));
-      data = formData
+      data = formData;
       updateMutate({ merchandiseItemId, data });
     } else {
       for(let i = 0; i < item.images.length;i++){
@@ -124,8 +124,8 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
         }
       }
       formData.append("merch", JSON.stringify(data));
-      data = formData
-      updateMutate({merchandiseItemId, data});
+      data = formData;
+      updateMutate({ merchandiseItemId, data });
     }
   };
 
@@ -195,7 +195,11 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                   <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
                     <div className="flex flex-col mt-10 gap-y-10 items-center mx-5">
                       <div className="max-h-[300px] max-w-[50%] border-black relative col-span-2">
-                        <img src={file !== '' ? file : item.images[0].image} alt="" className="h-[300px] shadow-lg rounded-lg" />
+                        <img
+                          src={file !== "" ? file : item.images[0].image}
+                          alt=""
+                          className="h-[300px] shadow-lg rounded-lg"
+                        />
                         <Label htmlFor="img">
                           <Plus
                             className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-3 p-2"
@@ -230,9 +234,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                             defaultValue={item.name}
                             {...register("name")}
                           />
-                          {errors.name && (
-                            <p className="text-red-400 text-sm font-light">{errors.name.message}</p>
-                          )}
+                          {errors.name && <p className="text-red-400 text-sm font-light">{errors.name.message}</p>}
                         </div>
                         <div className="flex flex-col gap-y-3">
                           <Label className="text-gray-500" htmlFor="itemPrice">

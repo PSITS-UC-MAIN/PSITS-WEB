@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-const StudentLayout = () => {
+const CommunityLayout = () => {
   return (
     <>
       <Outlet />
@@ -8,4 +8,4 @@ const StudentLayout = () => {
   );
 };
 
-export default StudentLayout;
+export default CommunityLayout;

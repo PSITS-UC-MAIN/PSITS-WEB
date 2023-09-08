@@ -14,6 +14,7 @@ import v2UserRouter from "./src/routes/userRouter.js";
 import v2AnnouncementRouter from "./src/routes/announcementRouter.js";
 import v2EventRouter from "./src/routes/eventRouter.js";
 import v2MerchandiseRouter from "./src/routes/merchandiseRouter.js";
+import v2StatRouter from "./src/routes/statRouter.js";
 import v2OfficeLogRouter from "./src/routes/officelogRouter.js";
 import v2CartRouter from './src/routes/cartRouter.js'
 
@@ -62,6 +63,7 @@ app.use("/api/v2/user", authenticateUser, v2UserRouter);
 app.use("/api/v2/announcement", v2AnnouncementRouter);
 app.use("/api/v2/event", v2EventRouter);
 app.use("/api/v2/merch", v2MerchandiseRouter);
+app.use("/api/v2/stat", authenticateUser, v2StatRouter);
 app.use("/api/v2/officelog", authenticateUser, v2OfficeLogRouter);
 app.use("/api/v2/cart", v2CartRouter);
 

@@ -1,6 +1,5 @@
 import {
   psits_banner,
-  psits_banner2,
   ucDeanAnnouncementBanner,
   psits_officers,
   highlight1,
@@ -11,20 +10,35 @@ import {
   highlight6,
   highlight7,
   highlight8,
+  pres,
+  vpin,
+  vpex,
+  sec,
+  trea,
+  aud,
+  assttrea,
+  pro,
+  pio,
+  vol,
+  ivrep,
+  iiirep,
+  iirep,
+  irep,
+  kean,
+  darelle,
+  jay,
+  pia,
+  fire,
 } from "@/assets";
 
 export const homeBannerImages = [
   {
-    name: "psits_banner",
+    name: 1,
     banner: ucDeanAnnouncementBanner,
   },
   {
-    name: "psits_banner2",
+    name: 2,
     banner: psits_banner,
-  },
-  {
-    name: "psits_banner3",
-    banner: psits_banner2,
   },
 ];
 
@@ -72,52 +86,139 @@ export const aboutUsHighlights = [
 
 export const psitsOfficers = [
   {
+    id: 1,
     name: "Jeshelle Andrea Colonia",
     position: "President",
+    image: pres,
   },
   {
+    id: 2,
     name: "Clint Louie Tuyor",
     position: "VP-Internal",
+    image: vpin,
   },
   {
+    id: 3,
     name: "Vince Andrew Santoya",
     position: "VP-External",
+    image: vpex,
   },
   {
+    id: 4,
+    name: "Jean Erika Sumotia",
+    position: "Secretary",
+    image: sec,
+  },
+  {
+    id: 5,
     name: "Dexie Ann Cabido",
     position: "Treasurer",
+    image: trea,
   },
   {
+    id: 6,
     name: "Angela Postrero",
     position: "Asst. Treasurer",
+    image: assttrea,
   },
   {
+    id: 7,
     name: "Aubrey Leyros",
     position: "Auditor",
+    image: aud,
   },
   {
-    name: "Daisy Lyn Laygan",
-    position: "P.I.O",
-  },
-  {
+    id: 8,
     name: "John Paul Costillas",
     position: "P.R.O",
+    image: pro,
   },
   {
+    id: 9,
+    name: "Daisy Lyn Laygan",
+    position: "P.I.O",
+    image: pio,
+  },
+  {
+    id: 10,
     name: "Cyril John Ypil",
     position: "Chief Volunteer",
+    image: vol,
   },
   {
+    id: 11,
     name: "Edrian Laro",
-    position: "4th Year Rep",
+    position: "4th Year Representative",
+    image: ivrep,
   },
   {
+    id: 12,
     name: "Maria Clemens Pia Abellana",
-    position: "3rd Year Rep",
+    position: "3rd Year Representative",
+    image: iiirep,
   },
   {
+    id: 13,
     name: "Princess Villanueva",
-    position: "2nd Year Rep",
+    position: "2nd Year Representative",
+    image: iirep,
+  },
+  {
+    id: 14,
+    name: "Chenzy Bitoon",
+    position: "1st Year Representative",
+    image: irep,
+  },
+];
+
+export const ccsFaculty = [
+  {
+    id: 1,
+    name: "Basabe, Neil A.",
+    position: "BSCS, MIT",
+    image: "",
+  },
+  {
+    id: 2,
+    name: "Ferolino, Heubert M.",
+    position: "BSIT, MST-CS, PHD UNITS",
+    image: "",
+  },
+  {
+    id: 3,
+    name: "Durano, Dennis S.",
+    position: "BSCOE, MIT CANDIDANT",
+    image: "",
+  },
+  {
+    id: 8,
+    name: "Caminade, Franz Joseph I.",
+    position: "BSICS, MSIT CANDIDANT",
+    image: "",
+  },
+  {
+    id: 4,
+    name: "Amores, Jennifer G.",
+    position: "BSCS, MSCS, PHD UNITS",
+    image: "",
+  },
+  {
+    id: 5,
+    name: "Amores, Jennifer G.",
+    position: "BSCS, MSCS, PHD UNITS",
+    image: "",
+  },
+  {
+    id: 6,
+    name: "Odjinar, Nonitor O.",
+    position: "TBA",
+    image: "",
+  },
+  {
+    id: 7,
+    name: "Ybañez Leah B.",
+    position: "TBA",
+    image: "",
   },
 ];
 
@@ -126,20 +227,26 @@ export const psitsWebDevelopers = [
     id: 1,
     name: "Jayharron Mar Abejar",
     position: "Project Owner",
+    image: jay,
   },
   {
     id: 2,
     name: "Kean Jieden Villaflor",
-    position: "Team Lead",
+    position: "Team Lead - UI/UX - Dev",
+    image: kean,
+    gif: fire,
   },
   {
     id: 3,
     name: "Darelle Gochuico",
-    position: "Dev",
+    position: "Developer",
+    image: darelle,
+    gif: fire,
   },
   {
-    id: 3,
+    id: 4,
     name: "Maria Clemens Pia Abellana",
     position: "Q/A",
+    image: pia,
   },
 ];

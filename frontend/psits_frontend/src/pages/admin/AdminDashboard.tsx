@@ -3,7 +3,9 @@ import { XAxis, YAxis, CartesianGrid, ResponsiveContainer, AreaChart, Tooltip, A
 import Wrapper from "@/components/Wrapper";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { User } from "lucide-react";
+import { AlertCircle, Banknote, Bell, CalendarCheck, Loader2Icon, Shirt, ShoppingBag, User } from "lucide-react";
+import { getAllStats } from "@/api/stat";
+import { useQuery } from "@tanstack/react-query";
 
 const data = [
   { name: "January", sales: 1000 },
@@ -18,53 +20,116 @@ const data = [
 ];
 
 const AdminDashboard = () => {
+  const {
+    data: serverStats,
+    isLoading,
+    isError,
+  } = useQuery(["stats"], getAllStats, {
+    select(serverStats) {
+      return serverStats;
+    },
+  });
+
   return (
     <Wrapper title="PSITS Admin | Dashboard" noMargin>
       <div className=" flex flex-col gap-10">
-        <div className="flex items-center gap-4">
-          <Card className="max-w-[250px] bg-gradient-to-r from-blue-400 to-cyan-400">
-            <CardHeader>
-              <CardTitle>
-                <div className="flex items-center gap-2 text-white">
-                  <User strokeWidth={3} />
-                  <span className="text-xl text-white">Total Earnings</span>
+        {isLoading ? (
+          <span className="text-center flex justify-center">
+            <Loader2Icon className="animate-spin" />
+          </span>
+        ) : isError ? (
+          <div className="flex items-center gap-2 text-red-500  justify-center">
+            <AlertCircle />
+            <p>Something went wrong!</p>
+          </div>
+        ) : (
+          <div className="flex items-center gap-4">
+            <Card className="max-w-[250px] bg-gradient-to-r from-blue-400 to-cyan-400">
+              <CardHeader>
+                <CardTitle>
+                  <div className="flex items-center gap-2 text-white">
+                    <Banknote strokeWidth={3} />
+                    <span className="text-xl text-white">Total Earnings</span>
+                  </div>
+                  <Separator className="my-2" />
+                </CardTitle>
+                <div className="flex text-white items-center gap-2 justify-start">
+                  <h1 className="text-3xl text-white font-semibold">₱6969.00</h1>
                 </div>
-                <Separator className="my-2" />
-              </CardTitle>
-              <div className="flex text-white items-center gap-2 justify-start">
-                <h1 className="text-3xl text-white font-semibold">₱6969.00</h1>
-              </div>
-            </CardHeader>
-          </Card>
-          <Card className="max-w-[250px] bg-gradient-to-r from-orange-400 to-red-400">
-            <CardHeader>
-              <CardTitle>
-                <div className="flex items-center gap-2 text-white">
-                  <User strokeWidth={3} />
-                  <span className="text-xl text-white">Total Students</span>
+              </CardHeader>
+            </Card>
+            <Card className="max-w-[250px] bg-gradient-to-r from-orange-400 to-red-400">
+              <CardHeader>
+                <CardTitle>
+                  <div className="flex items-center gap-2 text-white">
+                    <User strokeWidth={3} />
+                    <span className="text-xl text-white">Total Students</span>
+                  </div>
+                  <Separator className="my-2" />
+                </CardTitle>
+                <div className="flex text-white items-center gap-2 justify-start">
+                  <h1 className="text-3xl text-white font-semibold">{serverStats.users}</h1>
                 </div>
-                <Separator className="my-2" />
-              </CardTitle>
-              <div className="flex text-white items-center gap-2 justify-start">
-                <h1 className="text-3xl text-white font-semibold">+ 699</h1>
-              </div>
-            </CardHeader>
-          </Card>
-          <Card className="max-w-[250px] bg-gradient-to-r from-purple-400 to-pink-400">
-            <CardHeader>
-              <CardTitle>
-                <div className="flex items-center gap-2 text-white">
-                  <User strokeWidth={3} />
-                  <span className="text-xl text-white">Total Orders</span>
+              </CardHeader>
+            </Card>
+            <Card className="max-w-[250px] bg-gradient-to-r from-purple-400 to-pink-400">
+              <CardHeader>
+                <CardTitle>
+                  <div className="flex items-center gap-2 text-white">
+                    <ShoppingBag strokeWidth={3} />
+                    <span className="text-xl text-white">Total Orders</span>
+                  </div>
+                  <Separator className="my-2" />
+                </CardTitle>
+                <div className="flex text-white items-center gap-2 justify-start">
+                  <h1 className="text-3xl text-white font-semibold">{serverStats.orders}</h1>
                 </div>
-                <Separator className="my-2" />
-              </CardTitle>
-              <div className="flex text-white items-center gap-2 justify-start">
-                <h1 className="text-3xl text-white font-semibold">+ 20</h1>
-              </div>
-            </CardHeader>
-          </Card>
-        </div>
+              </CardHeader>
+            </Card>
+            <Card className="max-w-[250px] bg-gradient-to-r from-[#ee2a7b] to-[#ff00d4]">
+              <CardHeader>
+                <CardTitle>
+                  <div className="flex items-center gap-2 text-white">
+                    <Shirt strokeWidth={3} />
+                    <span className="text-xl text-white">Merchandise</span>
+                  </div>
+                  <Separator className="my-2" />
+                </CardTitle>
+                <div className="flex text-white items-center gap-2 justify-start">
+                  <h1 className="text-3xl text-white font-semibold">{serverStats.merchandise}</h1>
+                </div>
+              </CardHeader>
+            </Card>
+            <Card className="max-w-[400px] bg-gradient-to-r from-[#00a1ff] to-[#00ff8f]">
+              <CardHeader>
+                <CardTitle>
+                  <div className="flex items-center gap-2 text-white">
+                    <Bell strokeWidth={3} />
+                    <span className="text-xl text-white">Announcements</span>
+                  </div>
+                  <Separator className="my-2" />
+                </CardTitle>
+                <div className="flex text-white items-center gap-2 justify-start">
+                  <h1 className="text-3xl text-white font-semibold">{serverStats.announcements}</h1>
+                </div>
+              </CardHeader>
+            </Card>
+            <Card className="max-w-[400px] bg-gradient-to-r from-[#7f00ff] to-[#e100ff]">
+              <CardHeader>
+                <CardTitle>
+                  <div className="flex items-center gap-2 text-white">
+                    <CalendarCheck strokeWidth={3} />
+                    <span className="text-xl text-white">Events</span>
+                  </div>
+                  <Separator className="my-2" />
+                </CardTitle>
+                <div className="flex text-white items-center gap-2 justify-start">
+                  <h1 className="text-3xl text-white font-semibold">{serverStats.events}</h1>
+                </div>
+              </CardHeader>
+            </Card>
+          </div>
+        )}
         <Card>
           <CardContent>
             <h1 className="mt-4 mb-2 text-2xl font-semibold text-">Monthly Revenue</h1>
