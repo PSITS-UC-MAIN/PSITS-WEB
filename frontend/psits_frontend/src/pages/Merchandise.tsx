@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { z } from "zod";
 
 import Wrapper from "@/components/Wrapper";
@@ -43,9 +43,10 @@ const MerchandiseSchema = z.object({
   discount: z.number().or(z.nan()).default(Number.NaN),
   images: z.any(),
   color: z.string(),
+  size: z.string()
 });
 
-type MerchandiseSchema = z.infer<typeof MerchandiseSchema>;
+export type MerchandiseSchema = z.infer<typeof MerchandiseSchema>;
 
 const Merchandise = () => {
   const queryClient = useQueryClient();
@@ -66,18 +67,19 @@ const Merchandise = () => {
       price: 0,
       discount: 0,
       color: "",
+      description: "Type description here"
     },
   });
 
-  const { mutate: createMutate, reset: createReset } = useMutation({
+  const { mutate: createMutate, reset: createReset, isLoading: createIsLoading } = useMutation({
     mutationFn: createMerchandiseItem,
     onSuccess: (merch) => {
       queryClient.invalidateQueries(["merch"]);
-      toast.success(`${merch.msg}`);
+      toast.success(`${merch.msg}`, { position: 'bottom-right' });
       createReset();
     },
     onError(error: any) {
-      toast.error(error.response.merch.message || error.message);
+      toast.error(error.response.merch.message || error.message, { position: 'bottom-right' });
     },
   });
 
@@ -200,6 +202,36 @@ const Merchandise = () => {
                           </div>
                           <div className="flex flex-row gap-x-5">
                             <div className="flex flex-col gap-y-3">
+                              <Label className="text-gray-500" htmlFor="itemSize">
+                                Item Size
+                              </Label>
+                              <Input
+                                autoComplete="off"
+                                id="itemSize"
+                                placeholder="Enter item size"
+                                {...register("size")}
+                              />
+                              {errors.size && (
+                                <p className="text-red-400 text-sm font-light">{errors.size.message}</p>
+                              )}
+                            </div>
+                            <div className="flex flex-col gap-y-3">
+                              <Label className="text-gray-500" htmlFor="itemColor">
+                                Item Color
+                              </Label>
+                              <Input
+                                autoComplete="off"
+                                id="itemColor"
+                                placeholder="Enter item color"
+                                {...register("color")}
+                              />
+                              {errors.color && (
+                                <p className="text-red-400 text-sm font-light">{errors.color.message}</p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex flex-row items-center gap-x-5">
+                            <div className="flex flex-col gap-y-3">
                               <Label className="text-gray-500" htmlFor="itemDiscount">
                                 Item Discount in %
                               </Label>
@@ -215,19 +247,6 @@ const Merchandise = () => {
                               )}
                             </div>
                             <div className="flex flex-col gap-y-3">
-                              <Label className="text-gray-500" htmlFor="itemColor">
-                                Item Color
-                              </Label>
-                              <Input
-                                autoComplete="off"
-                                id="itemColor"
-                                placeholder="Enter item color"
-                                {...register("color")}
-                              />
-                            </div>
-                          </div>
-                          <div className="flex flex-row items-center gap-x-5">
-                            <div className="flex flex-col gap-y-3">
                               <Label className="text-gray-500" htmlFor="itemDesc">
                                 Item Description
                               </Label>
@@ -237,8 +256,8 @@ const Merchandise = () => {
                               )}
                             </div>
                           </div>
-                          <Button type="submit" className="w-full">
-                            Post
+                          <Button type="submit" className="w-full" disabled={createIsLoading}>
+                            {createIsLoading ? <Loader2 className=" animate-spin" /> : "Post"}
                           </Button>
                         </div>
                       </form>
