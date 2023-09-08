@@ -18,10 +18,28 @@ import highlight5 from "./highlights/highlight5.jpg";
 import highlight6 from "./highlights/highlight6.jpg";
 import highlight7 from "./highlights/highlight7.jpg";
 import highlight8 from "./highlights/highlight8.jpg";
+import pres from "./officers/Jeshelle.jpg";
+import vpin from "./officers/Tuyor.jpg";
+import vpex from "./officers/Santoya.jpg";
+import sec from "./officers/Jean.jpg";
+import trea from "./officers/Dexie.jpg";
+import aud from "./officers/Aubrey.jpg";
+import assttrea from "./officers/Angela.jpg";
+import pro from "./officers/John.jpg";
+import pio from "./officers/Daisy.jpg";
+import vol from "./officers/Ypil.jpg";
+import irep from "./officers/Chenzy.jpg";
+import iirep from "./officers/Princess.jpg";
+import iiirep from "./officers/Pia.jpg";
+import ivrep from "./officers/Lars.jpg";
+import kean from "./devs/lilbeast.png";
+import darelle from "./devs/cursezuc.jpg";
+import jay from "./devs/Jay.jpg";
+import pia from "./devs/Pia.jpg";
+import fire from "./devs/giphy.gif";
 
 export {
   psits_banner,
-  psits_banner2,
   trinitylogo,
   notfound,
   aboutUsUCTransparent,
@@ -40,4 +58,23 @@ export {
   highlight6,
   highlight7,
   highlight8,
+  pres,
+  vpin,
+  vpex,
+  sec,
+  trea,
+  aud,
+  assttrea,
+  pro,
+  pio,
+  vol,
+  ivrep,
+  iiirep,
+  iirep,
+  irep,
+  kean,
+  darelle,
+  jay,
+  pia,
+  fire,
 };
