@@ -68,17 +68,4 @@ export const validateLoginRFIDInput = withValidationErrors([
     .withMessage("Password is required")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long"),
-  header("api_key").custom((api_key, { req }) => {
-    if (!req.body.password && !api_key) {
-      throw new BadRequestError(
-        "API KEY is required when password is not in the body"
-      );
-    } else if (
-      !config.getAPI_KEYS().includes(api_key) &&
-      api_key &&
-      !req.body.password
-    )
-      throw new UnauthorizedError("API KEY provided is not authorized");
-    return true;
-  }),
 ]);
