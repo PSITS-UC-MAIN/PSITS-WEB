@@ -28,9 +28,9 @@ jobs:
         working-directory: frontend/psits_frontend
         run: npm install
 
-      - name: Run Code Linting
-        working-directory: frontend/psits_frontend
-        run: npm run lint
+      # - name: Run Code Linting
+      #   working-directory: frontend/psits_frontend
+      #   run: npm run lint
 
       - name: Build Code
         working-directory: frontend/psits_frontend

@@ -14,7 +14,15 @@ export async function forgotPassword(userId: string) {
   return response.data;
 }
 
-export async function resetPassword({ userId, token, data }: { userId: string; token: string; data: any }) {
+export async function resetPassword({
+  userId,
+  token,
+  data,
+}: {
+  userId: string | undefined;
+  token: string | undefined;
+  data: any;
+}) {
   const response = await axios.post(`auth/reset-password/${userId}/${token}`, data);
   return response.data;
 }

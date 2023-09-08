@@ -7,16 +7,16 @@ import {
 import { User } from "../models/user";
 
 export const LoginUser = async ({ rfid, password }) => {
-  const StatusCode = await AuthenticateUser({ rfid, password });
+  const { StatusCode, token } = await AuthenticateUser({ rfid, password });
 
   /*
     200 - success
     400 - bad request
     409 - invalid login
   */
-  const user = await GetUserDataCurrent();
-
   if (StatusCode === 200) {
+    document.cookie = `token=${token}`;
+    const user = await GetUserDataCurrent();
     window.localStorage.setItem("app_user_data", JSON.stringify(user));
     return { StatusCode, Message: "Login Successful!" };
   } else if (StatusCode === 409) {

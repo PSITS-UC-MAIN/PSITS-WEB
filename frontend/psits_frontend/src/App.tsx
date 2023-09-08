@@ -8,12 +8,14 @@ import {
   Home,
   About,
   Events,
-  StudentLayout,
+  CommunityLayout,
   Students,
   Faculty,
   Officers,
   Developers,
+  MerchLayout,
   Merchandise,
+  ViewSingleMerchandise,
   AdminEvents,
   AdminOrders,
   AdminMerchandise,
@@ -49,7 +51,7 @@ const router = createBrowserRouter([
       },
       {
         path: "community",
-        element: <StudentLayout />,
+        element: <CommunityLayout />,
         children: [
           {
             path: "students",
@@ -71,7 +73,17 @@ const router = createBrowserRouter([
       },
       {
         path: "merchandise",
-        element: <Merchandise />,
+        element: <MerchLayout />,
+        children: [
+          {
+            index: true,
+            element: <Merchandise />,
+          },
+          {
+            path: ":merchId",
+            element: <ViewSingleMerchandise />,
+          },
+        ],
       },
       {
         path: "admin",
