@@ -19,7 +19,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16
-        working-directory: "frontend/psits_frontend_officemanagement"
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
