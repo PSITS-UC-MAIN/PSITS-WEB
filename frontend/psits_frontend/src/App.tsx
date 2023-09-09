@@ -30,6 +30,7 @@ import {
   Error,
   AdminAnnouncements,
 } from "./pages";
+import Orders from "./pages/Orders";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
             element: <ViewSingleMerchandise />,
           },
         ],
+      },
+      {
+        path: "orders/:userId",
+        element: <Orders />,
       },
       {
         path: "admin",
