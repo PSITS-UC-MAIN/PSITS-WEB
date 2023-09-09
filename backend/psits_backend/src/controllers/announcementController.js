@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import Announcement from "../models/AnnouncementModel.js";
 import { NotFoundError, UnauthorizedError } from "../errors/customErrors.js";
 import { v2 as cloudinary } from "cloudinary";
-import { promises as fs } from "fs";
+import { formatImage } from "../middlewares/multerMiddleware.js";
 
 export const getAllAnnouncement = async (req, res) => {
   const announcements = await Announcement.find({})
@@ -20,13 +20,10 @@ export const createAnnouncement = async (req, res) => {
   console.log(newBody);
 
   if (req.file) {
-    console.log(req.file);
+    const file = formatImage(req.file);
     newBody = JSON.parse(req.body.announcement);
-
     // upload the image to cloudinary
-    const response = await cloudinary.uploader.upload(req.file.path);
-    // delete the image in the public folder
-    await fs.unlink(req.file.path);
+    const response = await cloudinary.uploader.upload(file);
     newBody.image = response.secure_url;
     newBody.imagePublicId = response.public_id;
   }

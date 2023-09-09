@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import User from "../models/UserModel.js";
 import { NotFoundError, UnauthorizedError } from "../errors/customErrors.js";
 import { v2 as cloudinary } from "cloudinary";
-import { promises as fs } from "fs";
+import { formatImage } from "../middlewares/multerMiddleware.js";
 
 export const getCurrentUser = async (req, res) => {
   const user = await User.findOne({ userId: req.user.userId });
@@ -17,10 +17,10 @@ export const updateCurrentUser = async (req, res) => {
   delete newUser.avatar;
 
   if (req.file) {
+    const file = formatImage(req.file);
     newUser = JSON.parse(req.body.user);
-
-    const response = await cloudinary.uploader.upload(req.file.path);
-    await fs.unlink(req.file.path);
+    // upload the image to cloudinary
+    const response = await cloudinary.uploader.upload(file);
     newUser.avatar = response.secure_url;
     newUser.avatarPublicId = response.public_id;
   }
