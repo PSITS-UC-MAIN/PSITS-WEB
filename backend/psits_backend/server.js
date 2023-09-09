@@ -42,7 +42,7 @@ let PORT = config.PORT;
 
 // temporarily store images in the public folder to utilize file upload
 const __dirname = dirname(fileURLToPath(import.meta.url));
-app.use(express.static(path.resolve(__dirname, "./tmp")));
+app.use(express.static(path.resolve(__dirname, "./public")));
 
 // middlewares
 app.use(
