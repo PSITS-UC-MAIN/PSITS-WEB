@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Minus, Plus, ShoppingCart, Trash } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Loader2, Minus, Plus, ShoppingCart, Ticket, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCartItems, removeFromCart, updateCartItem } from "@/api/cart";
@@ -8,14 +8,21 @@ import useStore from "@/store";
 import { toast } from "react-toastify";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 import { getAllMerchandise } from "@/api/merchandise";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { createOrder } from "@/api/order";
 
 const Cart = () => {
   const store = useStore();
   const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const { data } = useQuery({
+  const { data: cart } = useQuery({
     queryKey: ["cart"],
-    queryFn: () => getCartItems(store.authUser?.userId)
+    queryFn: () => getCartItems(store.authUser?._id)
   });
 
   const { data: merch } = useQuery({
@@ -27,7 +34,6 @@ const Cart = () => {
     mutationFn: removeFromCart,
     onSuccess: (cart) => {
       queryClient.invalidateQueries(["cart"]);
-      toast.success(`${cart.msg}`,{ position: 'bottom-right' });
     },
     onError(error: any) {
       toast.error(error.response.cart.message || error.message, { position: 'bottom-right' })
@@ -35,11 +41,12 @@ const Cart = () => {
   })
 
   const handleRemoveFromCart = (merchId: any) => {
-    const userId = Number(store.authUser?.userId)
+    const userId = store.authUser?._id || ""
+    
     deleteMutate({ userId, merchId })
   }
 
-  const totalPrice = data?.reduce((acc: any, cart: any) => {
+  const totalPrice = cart?.reduce((acc: any, cart: any) => {
     return acc + cart?.cart?.reduce((cartTotal: any, item: any) => {
       return cartTotal + (item.price * item.quantity);
     }, 0);
@@ -49,7 +56,6 @@ const Cart = () => {
     mutationFn: updateCartItem,
     onSuccess: (cart) => {
       queryClient.invalidateQueries(["cart"]);
-      toast.success(`${cart.msg}`,{ position: 'bottom-right' });
     },
     onError(error: any) {
       toast.error(error.response.cart.message || error.message, { position: 'bottom-right' })
@@ -57,7 +63,7 @@ const Cart = () => {
   })
 
   const handleColorSelect = (item: any, merchItem: any) => {
-    const userId = Number(store.authUser?.userId)
+    const userId = store.authUser?.userId || ""
     const data = {
       merchId: merchItem._id,
       color: item,
@@ -67,7 +73,7 @@ const Cart = () => {
   }
 
   const handleSizeSelect = (item: any, merchItem: any) => {
-    const userId = Number(store.authUser?.userId)
+    const userId = store.authUser?.userId || ""
     const data = {
       merchId: merchItem._id,
       size: item,
@@ -77,7 +83,7 @@ const Cart = () => {
   }
 
   const handleOnClickDecrement = (merchId: any) => {
-    const userId = Number(store.authUser?.userId)
+    const userId = store.authUser?.userId || ""
     const data = {
       merchId: merchId,
       quantity: -1
@@ -87,7 +93,7 @@ const Cart = () => {
   }
 
   const handleOnClickIncrement = (merchId: any) => {
-    const userId = Number(store.authUser?.userId)
+    const userId = store.authUser?.userId || ""
     const data = {
       merchId: merchId,
       quantity: 1
@@ -96,39 +102,50 @@ const Cart = () => {
     updateMutate({ userId, data })
   }
 
+  const { mutate, isLoading } = useMutation({
+    mutationFn: createOrder,
+    onSuccess: (order) => {
+      queryClient.invalidateQueries(["order"]);
+      toast.success(`${order.msg}`, { position: 'bottom-right' });
+      setOpen(false);
+      navigate(`/orders/${store.authUser?.userId}`);
+    },
+    onError(error: any) {
+      toast.error(error.response.cart.msg || error.msg, { position: 'bottom-right' })
+    }
+  })
+
+  const handleConfirmOrder = () => {
+    const userId = store.authUser?._id || "";
+    const data = { cartItems: cart[0].cart };
+    if (cart[0].cart.length > 0) mutate({ userId, data })
+  }
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="link" className="relative">
           <ShoppingCart color="#fff" />
           <span
             className={
-              data?.length > 0 && data[0].cart.length < 1
+              cart?.length > 0 && cart[0].cart.length < 1
                 ? "absolute top-[-5px] end-[-5px] bg-red-600 text-white font-bold rounded-full p-1 text-[15px] px-3 hidden"
                 : "absolute top-[-5px] end-[-5px] bg-red-600 text-white font-bold rounded-full p-1 text-[15px] px-3"
             }
           >
-            {data?.length > 0 && data[0].cart.length}
+            {cart?.length > 0 && cart[0].cart.length}
           </span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[85%] bg-[#fff]">
-        <div className="flex flex-col mx-[3%]">
-          <div className="grid grid-cols-1 sm:grid-cols-6 text-center bg-[#254872] text-white rounded-md shadow-md p-5 mt-5 mb-5">
-            <span className="block sm:hidden">Items</span>
-            <span className="sm:block hidden">Product</span>
-            <span className="sm:block hidden">Size</span>
-            <span className="sm:block hidden">Color</span>
-            <span className="sm:block hidden">Price</span>
-            <span className="sm:block hidden">Quantity</span>
-            <span className="sm:block hidden">Action</span>
-          </div>
-          <ScrollArea className="h-[30em] w-full rounded-md">
-            {data?.length > 0 && data?.map((cart: any) =>
-              cart?.cart?.map((item: any) => {
-                return (
-                  <div key={item._id} className="grid grid-flow-rows grid-cols-6 bg-white rounded-md shadow-md p-5 items-center mb-5">
-                    <div className="flex flex-cols gap-x-5 items-center">
+      <DialogContent className="max-w-[95%] min-h-[90%] max-h-[90%] bg-[#fff] text-sm">
+        <div className="flex flex-row sm:flex-nowrap flex-wrap mx-[2%] mt-10 gap-x-10">
+          <div className="flex flex-col min-w-[80%]">
+            <ScrollArea className="max-h-[90%] h-[100%] w-full rounded-md">
+              <div className="p-4">
+              {cart?.length > 0 && cart?.map((cart: any) =>
+                cart?.cart?.map((item: any) => (
+                  <div key={item._id} className="grid sm:grid-flow-rows sm:grid-cols-6 grid-flow-rows grid-cols-1 bg-white rounded-md border-2 border-gray-100 shadow-lg p-5 items-center mb-5">
+                    <div className="flex flex-col gap-y-5 items-center">
                       <img src={item.image} alt="Product Image" className="w-[100px] h-[100px] rounded-md" />
                       <span>{item.name}</span>
                     </div>
@@ -204,16 +221,47 @@ const Cart = () => {
                       </Button>
                     </div>
                   </div>
-                )
-              })
-            )}
-          </ScrollArea>
-          <div className="flex flex-row justify-end items-center gap-x-10 p-5">
-            <span className="bg-white rounded-md py-2 px-5 shadow-md">Order Total:&emsp;&#8369;{totalPrice}</span>
-            <Button type="submit" className="bg-[#268EA7] hover:bg-[#3da7c2]">
-              Checkout
-            </Button>
+                ))
+              )}
+              </div>
+            </ScrollArea>
           </div>
+          <form className="flex flex-col gap-y-5">
+            <span className="mt-5 font-semibold">OFFERS</span>
+            <div className="flex flex-row items-center gap-x-5">
+              <Ticket size={35} />
+              <Input placeholder="APPLY COUPON CODE" className="border-0"/>
+            </div>
+            <Separator/>
+            <span className="font-semibold">PRICE SUMMARY</span>
+            <div className="flex flex-row justify-between">
+              <span>Subtotal</span>
+              <span>&#8369;&nbsp;{totalPrice}</span>
+            </div>
+            <div className="flex flex-row justify-between">
+              <span>Order Total</span>
+              <span>&#8369;&nbsp;{totalPrice}</span>
+            </div>
+            <Separator/>
+            <div className="flex">
+              <span className="text-xs text-gray-400 text-justify">
+                Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim
+                labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi
+                animcupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est
+                aliquip amet voluptate voluptate dolor minim nulla est proident.
+              </span>
+            </div>
+            { cart && cart.length > 0 && cart[0].cart.length > 0 &&
+              <Button type="button" className="bg-[#268EA7] hover:bg-[#3da7c2] w-full mt-10" onClick={handleConfirmOrder} disabled={isLoading}>
+                {isLoading ? <Loader2 className=" animate-spin" /> : "CONFIRM ORDER"}
+              </Button>
+            }
+            <Button className="bg-[#074873] hover:bg-[#2C6388] w-full" onClick={() => setOpen(false)}>
+              <Link to={`orders/${store.authUser?.userId}`}>
+                View My Orders
+              </Link>
+            </Button>
+          </form>
         </div>
       </DialogContent>
     </Dialog>
