@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { CartSchema } from "./UserModel.js";
 const Schema = mongoose.Schema;
 
 const OrderModel = new mongoose.Schema({
@@ -7,36 +8,20 @@ const OrderModel = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  orderItems: [
-    {
-      merchId: {
-        type: Schema.Types.ObjectId,
-        ref: "Merchandise",
-        required: true,
-      },
-      price: {
-        type: String,
-        require: true,
-      },
-      quantity: {
-        type: Number,
-        require: true,
-      },
-      size: {
-        type: String,
-        require: true,
-      },
-      color: String,
-    },
-  ],
+  orderDate: {
+    type: Date,
+    default: Date.now
+  },
+  cartItems: [CartSchema],
   orderStatus: {
     type: String,
-    enum: ["CANCELLED", "PENDING", "CLAIMED"],
-    default: "PENDING",
+    enum: ["ORDERED", "PENDING", "CLAIMED", "CANCELLED"],
+    default: "ORDERED",
   },
   additionalInfo: {
     type: String,
-  },
+    default: ""
+  }
 });
 
 export default mongoose.model("Order", OrderModel);
