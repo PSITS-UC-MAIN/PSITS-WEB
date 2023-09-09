@@ -38,8 +38,8 @@ export const login = async (req, res) => {
   res.cookie("token", token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "none",
+    secure: "true",
   });
   res.status(StatusCodes.OK).json({ message: "User logged in!" });
 };
@@ -70,7 +70,7 @@ export const loginWithRFID = async (req, res) => {
   res.cookie("token", token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
-    secure: process.env.NODE_ENV === "production",
+    secure: "true",
     sameSite: "none",
   });
   res.status(StatusCodes.OK).json({ message: "User logged in!", token });
@@ -80,6 +80,8 @@ export const logout = (req, res) => {
   res.cookie("token", "logout", {
     httpOnly: true,
     expires: new Date(Date.now()),
+    sameSite: "none",
+    secure: "true",
   });
   res.status(StatusCodes.OK).json({ message: "User logged out!" });
 };

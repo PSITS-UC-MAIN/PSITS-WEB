@@ -21,7 +21,7 @@ export const createAnnouncement = async (req, res) => {
   console.log(newBody);
 
   if (req.file) {
-    console.log(req.file);
+    const file = formatImage(req.file);
     newBody = JSON.parse(req.body.announcement);
 
     // compress the file

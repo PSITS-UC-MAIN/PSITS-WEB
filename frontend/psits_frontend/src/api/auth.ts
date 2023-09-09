@@ -28,6 +28,6 @@ export async function resetPassword({
 }
 
 export async function logoutUser() {
-  const response = await axios.get(`auth/logout`, { withCredentials: true });
+  const response = await axios.post(`auth/logout`, { withCredentials: true });
   return response.data;
 }

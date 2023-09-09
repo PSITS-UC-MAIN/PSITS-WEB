@@ -62,13 +62,17 @@ const Announcement = ({
     onSuccess: (data) => {
       queryClient.invalidateQueries(["announcements"]);
       store.setRequestLoading(false);
-      toast.success(`${data.message}!`);
+      toast.success(`${data.message}!`, {
+        position: "bottom-right",
+      });
       reset();
       setAnnounceState(false);
     },
     onError(error: any) {
       store.setRequestLoading(false);
-      toast.error(error.response.data.message || error.message);
+      toast.error(error.response.data.message || error.message, {
+        position: "bottom-right",
+      });
     },
   });
 
@@ -131,7 +135,7 @@ const Announcement = ({
               className="mb-4 w-full border rounded shadow p-6 cursor-pointer flex items-center gap-4"
             >
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src={store.authUser.avatar} />
                 <AvatarFallback>
                   <User />
                 </AvatarFallback>
@@ -164,6 +168,7 @@ const Announcement = ({
                   creationDate={announcement.creationDate}
                   content={announcement.content}
                   image={announcement.image}
+                  authorImage={announcement.author.avatar}
                 />
               );
             })}

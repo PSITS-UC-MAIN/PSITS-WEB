@@ -22,12 +22,16 @@ import v2OrderRouter from "./src/routes/orderRouter.js";
 import homeRouter from "./src/routes/main.js";
 
 // public
-import path, { dirname } from "path";
+import { dirname } from "path";
 import { fileURLToPath } from "url";
 
 // middleware
 import { authenticateUser } from "./src/middlewares/authMiddleware.js";
 import errorHandlerMiddleware from "./src/middlewares/errorHandlerMiddleware.js";
+
+const app = express();
+
+// create a public folder for files
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -35,15 +39,11 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-const app = express();
-
 let PORT = config.PORT;
 
-// temporarily store images in the public folder to utilize file upload
 const __dirname = dirname(fileURLToPath(import.meta.url));
-app.use(express.static(path.resolve(__dirname, "./public")));
 
-// cors
+// middlewares
 app.use(
   cors({
     origin: [...config.getCorsOrigin()],
@@ -51,8 +51,6 @@ app.use(
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   })
 );
-
-// middlewares
 app.use(cookieParser()); // allow node to read cookies
 app.use(express.json()); // uses JSON as payload
 app.use(compression()); // compresses all routes

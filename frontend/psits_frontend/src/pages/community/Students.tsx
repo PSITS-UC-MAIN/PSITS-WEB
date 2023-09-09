@@ -10,14 +10,14 @@ const Students = () => {
     data: students,
     isLoading,
     isError,
-  } = useQuery(["cusers"], getAllUser, {
+  } = useQuery(["users"], getAllUser, {
     select(studentsData) {
-      const filteredStudents = studentsData.filter((student: any) => student.showPublic !== true);
+      const filteredStudents = studentsData.filter((student: any) => student.showPublic === true);
       return filteredStudents;
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
+
   return (
     <Wrapper title="PSITS | Students" className="my-20">
       {/* <div className="flex justify-end">
@@ -78,7 +78,7 @@ const Students = () => {
               <Card className="w-[300px] text-center shadow">
                 <div className="p-2">
                   <div className="border rounded h-[250px] w-full justify-center flex items-center">
-                    <img src={student.avatar} className="object-cover" />
+                    <img src={student.avatar} className="object-contain w-full h-full" />
                   </div>
                 </div>
                 <div className="flex flex-col px-4 pb-2">
