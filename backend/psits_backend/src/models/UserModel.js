@@ -24,6 +24,8 @@ const CartSchema = new mongoose.Schema({
   name: String
 })
 
+export { CartSchema }
+
 const UserSchema = new mongoose.Schema({
   avatar: {
     type: String,
