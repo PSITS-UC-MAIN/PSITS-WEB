@@ -30,6 +30,8 @@ import errorHandlerMiddleware from "./src/middlewares/errorHandlerMiddleware.js"
 
 const app = express();
 
+// create a public folder for files
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
