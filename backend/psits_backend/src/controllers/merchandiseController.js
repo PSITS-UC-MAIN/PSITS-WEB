@@ -60,23 +60,6 @@ export const createMerchandiseItem = async (req, res) => {
       await fs.unlink(`${req.files[i].path.replace(re, "")}.webp`);
     }
 
-    // upload the images to cloudinary
-    for (let i = 0; i < req.files.length; i++) {
-      const uploadedImage = await cloudinary.uploader.upload(
-        `${req.files[i].path.replace(re, "")}.webp`
-      ); // this uploads the webp file
-      uploadedImages.push({
-        image: uploadedImage.secure_url,
-        imagePublicId: uploadedImage.public_id,
-      });
-    }
-    // delete the images in the public folder
-    for (let i = 0; i < req.files.length; i++) {
-      // the code below removes the original file and the converted file
-      await fs.unlink(req.files[i].path);
-      await fs.unlink(`${req.files[i].path.replace(re, "")}.webp`);
-    }
-
     newBody.images = uploadedImages;
   }
 
