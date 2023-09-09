@@ -21,7 +21,7 @@ import v2CartRouter from "./src/routes/cartRouter.js";
 import homeRouter from "./src/routes/main.js";
 
 // public
-import path, { dirname } from "path";
+import { dirname } from "path";
 import { fileURLToPath } from "url";
 
 // middleware
@@ -38,9 +38,7 @@ cloudinary.config({
 
 let PORT = config.PORT;
 
-// temporarily store images in the public folder to utilize file upload
 const __dirname = dirname(fileURLToPath(import.meta.url));
-app.use(express.static(path.resolve(__dirname, "./public")));
 
 // middlewares
 app.use(
