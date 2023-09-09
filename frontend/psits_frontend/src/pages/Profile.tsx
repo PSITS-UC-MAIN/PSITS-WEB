@@ -31,6 +31,7 @@ const EditProfile = z.object({
   email: z.string().email(),
   course: z.string(),
   year: z.string(),
+  showPublic: z.preprocess((value) => (value === "true" ? true : false), z.boolean()),
 });
 
 type EditProfile = z.infer<typeof EditProfile>;
@@ -47,6 +48,15 @@ const Profile = () => {
 
   const form = useForm<EditProfile>({
     resolver: zodResolver(EditProfile),
+    defaultValues: {
+      firstname: user?.firstname,
+      lastname: user?.lastname,
+      course: user?.course,
+      email: user?.email,
+      rfid: user?.rfid,
+      showPublic: user?.showPublic.toString(),
+      year: user?.year.toString(),
+    },
   });
 
   const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
@@ -83,7 +93,7 @@ const Profile = () => {
 
   const onSubmit = (values: EditProfile) => {
     delete values.avatar;
-
+    
     const formData = new FormData();
     formData.append("avatar", files[0]);
     formData.append("user", JSON.stringify(values));
@@ -96,12 +106,11 @@ const Profile = () => {
   };
 
   if (userIsLoading) return <div>Loading...</div>;
-
   return (
     <Wrapper title="PSITS | Profile">
       <div className="flex flex-col mt-10 mb-20 gap-y-10 mx-[20%]">
-        <div className="flex justify-center">
-          <span className="font-bold text-4xl">Edit Profile</span>
+        <div className="text-center">
+          <span className="font-bold text-4xl text-[#074873]">Edit Profile</span>
         </div>
         <Form {...form}>
           <form autoComplete="off" onSubmit={form.handleSubmit(onSubmit)}>
@@ -112,9 +121,15 @@ const Profile = () => {
                 <FormItem>
                   <div className="flex justify-center mb-8">
                     {field.value ? (
-                      <img src={field.value} className="h-[200px] w-[200px] shadow border object-fill rounded-full" />
+                      <img
+                        src={field.value}
+                        className="h-[200px] w-[200px] shadow border object-cover rounded-full"
+                      />
                     ) : (
-                      <img src={user.avatar} className="h-[200px] object-fill shadow border w-[200px] rounded-full " />
+                      <img
+                        src={user.avatar}
+                        className="h-[200px] object-contain shadow border w-[200px] rounded-full "
+                      />
                     )}
                     <FormLabel htmlFor="image">
                       <Pencil
@@ -240,6 +255,29 @@ const Profile = () => {
                     </Select>
                     {form.formState.errors.year && (
                       <p className="text-red-400 text-sm font-light">{form.formState.errors.year.message}</p>
+                    )}
+                  </div>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="showPublic"
+                render={({ field }) => (
+                  <div className="flex flex-col gap-3">
+                    <Label className="text-gray-500">Show Profile Public</Label>
+                    <Select onValueChange={field.onChange} defaultValue={user.showPublic.toString()}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Show Public" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="true">True</SelectItem>
+                          <SelectItem value="false">False</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    {form.formState.errors.showPublic && (
+                      <p className="text-red-400 text-sm font-light">{form.formState.errors.showPublic.message}</p>
                     )}
                   </div>
                 )}
