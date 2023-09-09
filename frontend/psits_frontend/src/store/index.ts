@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 interface Register {
+  _id: string;
   avatar: any;
   userId: string;
   rfid: string;
