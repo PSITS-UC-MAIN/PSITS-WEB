@@ -27,8 +27,12 @@ import { fileURLToPath } from "url";
 // middleware
 import { authenticateUser } from "./src/middlewares/authMiddleware.js";
 import errorHandlerMiddleware from "./src/middlewares/errorHandlerMiddleware.js";
+import { createDirectory } from "./src/utils/fileUtils.js";
 
 const app = express();
+
+// create a public folder for files
+createDirectory("public/uploads");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
