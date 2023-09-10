@@ -41,9 +41,10 @@ const Profile = () => {
   const store = useStore();
   const queryClient = useQueryClient();
 
-  const { data: user, isLoading: userIsLoading } = useQuery({
-    queryKey: ["currentUser"],
-    queryFn: getCurrentUser,
+  const { data: user, isLoading: userIsLoading } = useQuery(["currentUser"], getCurrentUser, {
+    select(userData) {
+      return userData;
+    },
   });
 
   const form = useForm<EditProfile>({
@@ -51,11 +52,11 @@ const Profile = () => {
     defaultValues: {
       firstname: user?.firstname,
       lastname: user?.lastname,
-      course: user?.course,
-      email: user?.email,
       rfid: user?.rfid,
-      showPublic: user?.showPublic.toString(),
+      email: user?.email,
+      course: user?.course,
       year: user?.year.toString(),
+      showPublic: user?.showPublic.toString(),
     },
   });
 
@@ -83,17 +84,21 @@ const Profile = () => {
     onSuccess: (data: any) => {
       store.setRequestLoading(false);
       queryClient.invalidateQueries(["currentUser"]);
-      toast.success(`${data.message}`);
+      toast.success(`${data.message}`, {
+        position: "bottom-right",
+      });
     },
     onError(error: any) {
       store.setRequestLoading(false);
-      toast.error(error.response.data.message || error.message);
+      toast.error(error.response.data.message || error.message, {
+        position: "bottom-right",
+      });
     },
   });
 
   const onSubmit = (values: EditProfile) => {
     delete values.avatar;
-    
+
     const formData = new FormData();
     formData.append("avatar", files[0]);
     formData.append("user", JSON.stringify(values));
@@ -121,10 +126,7 @@ const Profile = () => {
                 <FormItem>
                   <div className="flex justify-center mb-8">
                     {field.value ? (
-                      <img
-                        src={field.value}
-                        className="h-[200px] w-[200px] shadow border object-cover rounded-full"
-                      />
+                      <img src={field.value} className="h-[200px] w-[200px] shadow border object-cover rounded-full" />
                     ) : (
                       <img
                         src={user.avatar}
