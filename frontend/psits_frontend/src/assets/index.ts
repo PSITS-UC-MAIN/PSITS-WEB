@@ -37,6 +37,7 @@ import jay from "./devs/Jay.jpg";
 import pia from "./devs/Pia.jpg";
 import fire from "./devs/giphy.gif";
 import underconstruct from "./under-construct.svg";
+import emptycart from "./undraw_empty_cart_co35.svg"
 
 export {
   psits_banner,
@@ -78,4 +79,5 @@ export {
   pia,
   fire,
   underconstruct,
+  emptycart,
 };
