@@ -1,16 +1,28 @@
 import multer from "multer";
-import DataParser from "datauri/parser.js";
-import path from "path";
+import sharp from 'sharp';
+import { v2 as cloudinary } from "cloudinary";
 
 const storage = multer.memoryStorage();
 
 const upload = multer({ storage });
 
-const parser = new DataParser();
+export const formatImage = async (file) => {
+  const webpBuffer = await sharp(file.buffer).webp({ quality: 75 }).toBuffer();
 
-export const formatImage = (file) => {
-  const fileExtension = path.extname(file.originalname).toString();
-  return parser.format(fileExtension, file.buffer).content;
-};
+  const uploadedImage = await new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { resource_type: 'image' },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      }
+    );
+
+    stream.write(webpBuffer);
+    stream.end();
+  }).then(image => { return image })
+
+  return { image: uploadedImage.secure_url, imagePublicId: uploadedImage.public_id }
+}
 
 export default upload;
