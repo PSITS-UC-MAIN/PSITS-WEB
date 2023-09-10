@@ -37,7 +37,16 @@ import jay from "./devs/Jay.jpg";
 import pia from "./devs/Pia.jpg";
 import fire from "./devs/giphy.gif";
 import underconstruct from "./under-construct.svg";
-import emptycart from "./undraw_empty_cart_co35.svg"
+import amores from "./faculty/Amores.png";
+import barral from "./faculty/barral.jpg";
+import codera from "./faculty/codera.png";
+import basabe from "./faculty/basabe.png";
+import bermudez from "./faculty/bermudez.png";
+import caminade from "./faculty/Caminade.png";
+import ferolino from "./faculty/ferolino.png";
+import durano from "./faculty/durano.png";
+import ybanez from "./faculty/Ybanez.png";
+import emptycart from "./undraw_empty_cart_co35.svg";
 
 export {
   psits_banner,
@@ -79,5 +88,14 @@ export {
   pia,
   fire,
   underconstruct,
+  amores,
+  barral,
+  codera,
+  basabe,
+  bermudez,
+  caminade,
+  durano,
+  ferolino,
+  ybanez,
   emptycart,
 };
