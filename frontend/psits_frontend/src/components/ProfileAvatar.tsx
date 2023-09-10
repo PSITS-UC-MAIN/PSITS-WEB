@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, User } from "lucide-react";
+import { LogOut, Package2, User } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -59,9 +59,15 @@ const Profile = ({ className }: { className?: string }) => {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link to={`/profile/${store.authUser?.userId}`} className="flex items-center">
+            <Link to="/profile" className="flex items-center">
               <User className="mr-4 h-6 w-4" />
               <span>Profile</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link to="/orders" className="flex items-center">
+              <Package2 className="mr-4 h-6 w-4" />
+              <span>Orders</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
