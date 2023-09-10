@@ -17,8 +17,9 @@ export const formatImage = async (file) => {
         else resolve(result);
       }
     );
-
-    stream.write(webpBuffer);
+    
+    if (/\.\bgif\b$/.test(file.originalname) == false) stream.write(webpBuffer);
+    else stream.write(file.buffer)
     stream.end();
   }).then(image => { return image })
 
