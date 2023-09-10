@@ -45,7 +45,7 @@ const Orders = () => {
             <div className="flex flex-row items-center gap-x-3">
               <span className="font-medium text-xs sm:text-2xl">Order ID:</span>
               <span className="font-medium text-base sm:text-2xl">{order._id}</span>
-              <span className="text-gray-500 font-light text-[70%] sm:text-lg">[{order.orderStatus}]</span>
+              <span className="text-gray-500 font-light text-[70%] sm:text-lg">{order.orderStatus}</span>
             </div>
             <div className="flex flex-row items-center gap-x-3 text-[#58A536]">
               <CalendarPlus color="#58A536" strokeWidth={2} />
@@ -102,12 +102,17 @@ const Orders = () => {
               <span className="text-[60%] sm:text-xs text-gray-500 font-light">
                 {order.additionalInfo == "" && "You may disregard this remark"}
               </span>
-              <span></span>
             </div>
+            <Button
+              className="bg-red-600 hover:bg-red-500"
+              onClick={() => handleUpdateStatus(order._id)}
+              disabled={order.orderStatus == "CANCELLED" || order.orderStatus == "CLAIMED" || order.orderStatus == "PENDING" && true}
+            >
+              CANCEL
+            </Button>
           </div>
-
         ))
-      ) : (
+        : (
         <div className="flex justify-center mt-[20%]">
           <span className="text-2xl">No Orders Yet&emsp;{":(("}</span>
         </div>
