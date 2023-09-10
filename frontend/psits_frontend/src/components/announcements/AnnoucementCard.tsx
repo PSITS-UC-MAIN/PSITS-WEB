@@ -3,6 +3,7 @@ import ReackMarkDown from "react-markdown";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Slide } from "react-slideshow-image";
 
 import { deleteAnnouncementById, updateAnnouncementById } from "@/api/announcement";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,7 +44,12 @@ interface AnnouncementCardProps {
   creationDate: Date;
   author: string;
   content: string;
-  image: string;
+  images: [
+    {
+      image: string;
+      imagePublicId: string;
+    },
+  ];
   authorImage: string;
 }
 
@@ -54,7 +60,7 @@ const AnnouncementSchema = z.object({
 
 type AnnouncementSchema = z.infer<typeof AnnouncementSchema>;
 
-const AnnoucementCard = ({ id, title, author, content, creationDate, image, authorImage }: AnnouncementCardProps) => {
+const AnnoucementCard = ({ id, title, author, content, creationDate, images, authorImage }: AnnouncementCardProps) => {
   const store = useStore();
   const queryClient = useQueryClient();
   const parseDate = creationDate.toLocaleString();
@@ -208,8 +214,24 @@ const AnnoucementCard = ({ id, title, author, content, creationDate, image, auth
           className="markdown text-light font-light text-gray-700"
           allowedElements={["p", "br", "strong", "em", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li"]}
         />
-        <div className="flex justify-center max-h-[600px]">
-          <img src={image} className="h-full" />
+        <div className="max-h-[650px]">
+          {images.length > 1 ? (
+            <Slide indicators>
+              {images.map((slideImage) => (
+                <img
+                  key={slideImage.imagePublicId}
+                  src={slideImage.image}
+                  className="flex items-center justify-center rounded object-contain"
+                />
+              ))}
+            </Slide>
+          ) : (
+            <div className="flex justify-center max-h-600">
+              {images[0] && (
+                <img src={images[0].image} alt="image" className="rounded h-full object-contain object-center" />
+              )}
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

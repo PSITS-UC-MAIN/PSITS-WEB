@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const Officers = () => {
   return (
-    <Wrapper title="PSTIS | Officers" className="my-20">
+    <Wrapper title="PSITS | Officers" className="my-20">
       <h1 className="text-4xl font-bold mb-10 text-[#074873]">PSITS Officers</h1>
       <div className="flex gap-6 flex-wrap justify-center">
         {psitsOfficers.map((officer) => {

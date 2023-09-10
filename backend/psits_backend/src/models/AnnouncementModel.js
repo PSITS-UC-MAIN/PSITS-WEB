@@ -1,8 +1,16 @@
 import mongoose from "mongoose";
 
+const ImageSchema = new mongoose.Schema({
+  image: {
+    type: String,
+  },
+  imagePublicId: {
+    type: String,
+  },
+});
+
 const AnnouncementSchema = new mongoose.Schema({
-  image: String,
-  imagePublicId: String,
+  images: [ImageSchema],
   title: {
     type: String,
     required: true,

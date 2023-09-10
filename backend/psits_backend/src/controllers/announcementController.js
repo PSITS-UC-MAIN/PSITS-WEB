@@ -18,13 +18,18 @@ export const createAnnouncement = async (req, res) => {
 
   let newBody = { ...req.body };
 
-  if (req.file) {
+  delete newBody.images;
+
+  if (req.files) {
+    let uploadedImages = [];
+
     newBody = JSON.parse(req.body.announcement);
 
-    const response = await formatImage(req.file);
+    for (let i = 0; i < req.files.length; i++) {
+      uploadedImages.push(await formatImage(req.files[i]));
+    }
 
-    newBody.image = response.image;
-    newBody.imagePublicId = response.imagePublicId;
+    newBody.images = uploadedImages;
   }
 
   newBody.author = req.user.id;
@@ -56,16 +61,18 @@ export const updateAnnouncementbyId = async (req, res) => {
 };
 
 export const deleteAnnouncementbyId = async (req, res) => {
-  // TODO: Validation for params
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
 
   const findAnnouncement = await Announcement.find({
     _id: req.params.announcementId,
   });
 
-  if (findAnnouncement[0].imagePublicId) await cloudinary.uploader.destroy(findAnnouncement[0].imagePublicId);
+  for (let i = 0; i < findAnnouncement[0].images.length; i++) {
+    await cloudinary.uploader.destroy(
+      findAnnouncement[0].images[i].imagePublicId
+    );
+  }
 
-  //TODO: Validation for body data
   const removedAnnouncement = await Announcement.findOneAndDelete({
     _id: req.params.announcementId,
   });
