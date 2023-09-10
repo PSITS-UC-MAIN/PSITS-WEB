@@ -42,7 +42,7 @@ const HamburgerMenu = () => {
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="bg-transparent text-md"> Students </NavigationMenuTrigger>
-                  <NavigationMenuContent className="flex flex-col gap-4 p-4 m-0 border bg-transparent w-[500px]">
+                  <NavigationMenuContent className="flex flex-col gap-4 p-4 m-0 border bg-transparent w-[200px] sm:w-[500px]">
                     <NavigationMenuLink asChild>
                       <Button variant="ghost" className="hover:bg-slate-200">
                         <SheetClose asChild>

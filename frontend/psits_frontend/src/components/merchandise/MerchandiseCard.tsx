@@ -211,13 +211,16 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                   <AlertDialogHeader>
                     <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete the annoucement and remove the data
+                      This action cannot be undone. This will permanently delete the merchandise item and remove the data
                       from the server.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => deleteMutate(item._id)} className="bg-[#074873] hover:bg-[#2d7db3]">
+                    <AlertDialogAction
+                      onClick={() => deleteMutate(item._id)}
+                      className="bg-[#074873] hover:bg-[#2d7db3]"
+                    >
                       Continue
                     </AlertDialogAction>
                   </AlertDialogFooter>
