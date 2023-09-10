@@ -20,7 +20,7 @@ function AdminDashboard({ className }) {
     // update in 60 seconds
     const refreshData = setInterval(() => {
       LoadData();
-    }, 60_000);
+    }, 30_000);
 
     return () => clearInterval(refreshData);
   }, [datePicked]);
@@ -54,7 +54,17 @@ function AdminDashboard({ className }) {
             min={minimumDate}
           />
         </div>
-        <Calendar calendarData={data} />
+        {!Loading ? (
+          <Calendar calendarData={data} />
+        ) : (
+          <div className="dashboard-loader">
+            <div class="three-body">
+              <div class="three-body__dot"></div>
+              <div class="three-body__dot"></div>
+              <div class="three-body__dot"></div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

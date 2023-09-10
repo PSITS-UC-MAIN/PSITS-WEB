@@ -44,7 +44,6 @@ function TimeLogRequestModal({
       }
       // try to log out
       const statusCode = await OfficeLogOff();
-      console.log("test, ", statusCode);
 
       /*
               StatusCode: 404
