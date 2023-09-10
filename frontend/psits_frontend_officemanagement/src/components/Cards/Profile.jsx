@@ -13,7 +13,17 @@ function Profile({ user, className }) {
           <p className="name">
             {user.firstname} {user.lastname}
           </p>
+          <p className="course-year">
+            {user.course} {user.year}
+          </p>
           <p className="role">Administrator</p>
+          <a
+            className="link"
+            href="https://psits-web-site.vercel.app"
+            target="_blank"
+          >
+            update profile
+          </a>
         </div>
         <div className="textContainer">
           <button
