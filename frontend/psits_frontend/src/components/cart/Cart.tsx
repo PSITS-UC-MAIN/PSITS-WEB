@@ -141,8 +141,97 @@ const Cart = () => {
           </span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[95%] min-h-[90%] max-h-[90%] bg-[#fff] text-sm">
-        <div className="flex flex-row sm:flex-nowrap flex-wrap mx-[2%] mt-10 gap-x-10">
+      <DialogContent className="max-w-[80%] min-h-[80%] max-h-[90%] bg-[#fff] text-sm">
+        <div className="flex flex-col mt-10">
+          <ScrollArea className="max-h-[50%] sm:max-h-[90%] h-[100%] w-full rounded-md">
+            {cart?.length > 0 && cart?.map((cart: any) =>
+              cart?.cart?.map((item: any) => (
+                <div className="flex flex-col mb-10 shadow-lg border-2 py-5 rounded-lg" key={item._id}>
+                  <div className="grid grid-cols-1 sm:grid-cols-6 flex-wrap justify-items-center gap-y-5">
+                    <div className="flex flex-col items-center w-full sm:w-[200px]">
+                      <img src={item.image} alt="Product Image" className="w-[100px] h-[100px] rounded-md" />
+                      <span>{item.name}</span>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      { item.size != '' &&
+                        <Select>
+                          <SelectTrigger className="w-full sm:w-[180px]">
+                            <SelectValue placeholder={item.size.charAt(0).toUpperCase() + item.size.slice(1)} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Sizes</SelectLabel>
+                              {
+                                merch?.merchandise?.map((merchItem: any) => (
+                                  merchItem._id === item.merchId &&
+                                  merchItem.size.split(',').map((item: any) => (
+                                    <SelectItem
+                                      key={Date.now()+merchItem._id+item}
+                                      value={item}
+                                      onMouseDown={() => handleSizeSelect(item, merchItem)}
+                                    >
+                                      {item.charAt(0).toUpperCase() + item.slice(1)}
+                                    </SelectItem>
+                                  ))
+                                ))
+                              }
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      }
+                    </div>
+                    <div className="flex items-center justify-center">
+                      { item.color != '' &&
+                        <Select>
+                          <SelectTrigger className="w-full sm:w-[180px]">
+                            <SelectValue placeholder={item.color.charAt(0).toUpperCase() + item.color.slice(1)} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Colors</SelectLabel>
+                              {
+                                merch?.merchandise?.map((merchItem: any) => (
+                                  merchItem._id === item.merchId &&
+                                  merchItem.color.split(',').map((item: any) => (
+                                    <SelectItem
+                                      key={Date.now()+item}
+                                      value={item}
+                                      onMouseDown={() => handleColorSelect(item, merchItem)}
+                                    >
+                                      {item.charAt(0).toUpperCase() + item.slice(1)}
+                                    </SelectItem>
+                                  ))
+                                ))
+                              }
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      }
+                    </div>
+                    <div className="flex flex-row gap-x-5 items-center justify-center">
+                      <Button onClick={() => handleOnClickDecrement(item.merchId)}>
+                        <Minus size={15}/>
+                      </Button>
+                      <span>{item.quantity}</span>
+                      <Button onClick={() => handleOnClickIncrement(item.merchId)}>
+                        <Plus size={15}/>
+                      </Button>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="text-center">&#8369;{item.price}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Button className="bg-red-600" onClick={() => handleRemoveFromCart(item.merchId)}>
+                        <Trash size={20} />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </ScrollArea>
+        </div>
+        {/* <div className="flex flex-row sm:flex-nowrap flex-wrap mx-[2%] mt-10 gap-x-10">
           <div className="flex flex-col min-w-[80%]">
             <ScrollArea className="max-h-[90%] h-[100%] w-full rounded-md">
               <div className="p-4">
@@ -233,9 +322,9 @@ const Cart = () => {
               </div>
             </ScrollArea>
           </div>
-          <form className="flex flex-col gap-y-5">
-            <span className="mt-5 font-semibold">OFFERS</span>
-            <div className="flex flex-row items-center gap-x-5">
+          <form className="flex flex-col sm:gap-y-5 gap-y-3 text-base sm:h-0 h-[200px]">
+            <span className="mt-5 font-semibold sm:block hidden">OFFERS</span>
+            <div className="sm:flex flex-row items-center gap-x-5 hidden">
               <Ticket size={35} />
               <Input placeholder="APPLY COUPON CODE" className="border-0" />
             </div>
@@ -245,7 +334,7 @@ const Cart = () => {
               <span>Subtotal</span>
               <span>&#8369;&nbsp;{totalPrice}</span>
             </div>
-            <div className="flex flex-row justify-between">
+            <div className="sm:flex flex-row justify-between hidden">
               <span>Order Total</span>
               <span>&#8369;&nbsp;{totalPrice}</span>
             </div>
@@ -268,7 +357,7 @@ const Cart = () => {
               </Button>
             )}
           </form>
-        </div>
+        </div> */}
       </DialogContent>
     </Dialog>
   );
