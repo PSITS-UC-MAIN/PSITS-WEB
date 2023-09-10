@@ -1,6 +1,6 @@
 import { Sidebar, Menu, MenuItem, menuClasses } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
-import { User, CalendarDays, ShoppingBasket, PanelLeft, BarChartBig, Package2, PartyPopper } from "lucide-react";
+import { User, CalendarDays, ShoppingBasket, PanelLeft, BarChartBig, Package2, PartyPopper, Cable } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
 
@@ -76,6 +76,13 @@ const AdminSidebar = () => {
             component={<Link to="/admin/events" />}
           >
             Events
+          </MenuItem>
+          <MenuItem
+            active={pathname === "/admin/routes" ? true : false}
+            icon={<Cable />}
+            component={<Link to="/admin/routes" />}
+          >
+            Routes
           </MenuItem>
           <Separator className="my-4" />
           <MenuItem icon={<PanelLeft />} component={<Link to="/" />}>
