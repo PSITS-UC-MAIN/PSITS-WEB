@@ -203,12 +203,6 @@ export const ccsFaculty = [
     image: "",
   },
   {
-    id: 5,
-    name: "Amores, Jennifer G.",
-    position: "BSCS, MSCS, PHD UNITS",
-    image: "",
-  },
-  {
     id: 6,
     name: "Odjinar, Nonitor O.",
     position: "TBA",
