@@ -1,5 +1,5 @@
-import { Loader2, Minus, Plus, ShoppingCart, Ticket, Trash } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Loader2, Minus, Plus, ShoppingCart, Trash } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,9 +11,8 @@ import { Button } from "@/components/ui/button";
 import { getCartItems, removeFromCart, updateCartItem } from "@/api/cart";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 import { getAllMerchandise } from "@/api/merchandise";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { createOrder } from "@/api/order";
+import { emptycart } from "@/assets";
 
 const Cart = () => {
   const store = useStore();
@@ -141,21 +140,21 @@ const Cart = () => {
           </span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[80%] min-h-[80%] max-h-[90%] bg-[#fff] text-sm">
+      <DialogContent className="max-w-[95%] sm:max-w-[80%] min-h-[80%] max-h-[95%] bg-[#fff] text-sm">
         <div className="flex flex-col mt-10">
-          <ScrollArea className="max-h-[50%] sm:max-h-[90%] h-[100%] w-full rounded-md">
-            {cart?.length > 0 && cart?.map((cart: any) =>
+          <ScrollArea className="max-h-[55%] sm:max-h-[75%] h-[800px] w-full rounded-md">
+            {cart?.length > 0 && cart[0]?.cart?.length > 0 ? cart?.map((cart: any) =>
               cart?.cart?.map((item: any) => (
                 <div className="flex flex-col mb-10 shadow-lg border-2 py-5 rounded-lg" key={item._id}>
-                  <div className="grid grid-cols-1 sm:grid-cols-6 flex-wrap justify-items-center gap-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-6 flex-wrap justify-items-center gap-y-10 my-5 mx-5">
                     <div className="flex flex-col items-center w-full sm:w-[200px]">
-                      <img src={item.image} alt="Product Image" className="w-[100px] h-[100px] rounded-md" />
+                      <img src={item.image} alt="Product Image" className="w-[150px] h-[150px] rounded-lg p-3 border-2" />
                       <span>{item.name}</span>
                     </div>
                     <div className="flex items-center justify-center">
                       { item.size != '' &&
                         <Select>
-                          <SelectTrigger className="w-full sm:w-[180px]">
+                          <SelectTrigger className="w-[260px] sm:w-[150px]">
                             <SelectValue placeholder={item.size.charAt(0).toUpperCase() + item.size.slice(1)} />
                           </SelectTrigger>
                           <SelectContent>
@@ -183,7 +182,7 @@ const Cart = () => {
                     <div className="flex items-center justify-center">
                       { item.color != '' &&
                         <Select>
-                          <SelectTrigger className="w-full sm:w-[180px]">
+                          <SelectTrigger className="w-[260px] sm:w-[150px]">
                             <SelectValue placeholder={item.color.charAt(0).toUpperCase() + item.color.slice(1)} />
                           </SelectTrigger>
                           <SelectContent>
@@ -208,7 +207,7 @@ const Cart = () => {
                         </Select>
                       }
                     </div>
-                    <div className="flex flex-row gap-x-5 items-center justify-center">
+                    <div className="flex flex-row gap-x-20 sm:gap-x-5 items-center justify-center">
                       <Button onClick={() => handleOnClickDecrement(item.merchId)}>
                         <Minus size={15}/>
                       </Button>
@@ -221,143 +220,38 @@ const Cart = () => {
                       <span className="text-center">&#8369;{item.price}</span>
                     </div>
                     <div className="flex items-center">
-                      <Button className="bg-red-600" onClick={() => handleRemoveFromCart(item.merchId)}>
+                      <Button className="bg-red-600 w-[260px] sm:w-[100%]" onClick={() => handleRemoveFromCart(item.merchId)}>
                         <Trash size={20} />
                       </Button>
                     </div>
                   </div>
                 </div>
-              ))
-            )}
-          </ScrollArea>
-        </div>
-        {/* <div className="flex flex-row sm:flex-nowrap flex-wrap mx-[2%] mt-10 gap-x-10">
-          <div className="flex flex-col min-w-[80%]">
-            <ScrollArea className="max-h-[90%] h-[100%] w-full rounded-md">
-              <div className="p-4">
-                {cart?.length > 0 &&
-                  cart?.map(
-                    (cart: any) =>
-                      cart?.cart?.map((item: any) => (
-                        <div
-                          key={item._id}
-                          className="grid sm:grid-flow-rows sm:grid-cols-6 grid-flow-rows grid-cols-1 bg-white rounded-md border-2 border-gray-100 shadow-lg p-5 items-center mb-5"
-                        >
-                          <div className="flex flex-col gap-y-5 items-center">
-                            <img src={item.image} alt="Product Image" className="w-[100px] h-[100px] rounded-md" />
-                            <span>{item.name}</span>
-                          </div>
-                          <div className="flex justify-center">
-                            {item.size != "" && (
-                              <Select>
-                                <SelectTrigger className="w-[180px]">
-                                  <SelectValue placeholder={item.size.charAt(0).toUpperCase() + item.size.slice(1)} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectGroup>
-                                    <SelectLabel>Sizes</SelectLabel>
-                                    {merch?.merchandise?.map(
-                                      (merchItem: any) =>
-                                        merchItem._id === item.merchId &&
-                                        merchItem.size.split(",").map((item: any) => (
-                                          <SelectItem
-                                            key={Date.now() + merchItem._id + item}
-                                            value={item}
-                                            onMouseDown={() => handleSizeSelect(item, merchItem)}
-                                          >
-                                            {item.charAt(0).toUpperCase() + item.slice(1)}
-                                          </SelectItem>
-                                        )),
-                                    )}
-                                  </SelectGroup>
-                                </SelectContent>
-                              </Select>
-                            )}
-                          </div>
-                          <div className="flex justify-center">
-                            {item.color != "" && (
-                              <Select>
-                                <SelectTrigger className="w-[180px]">
-                                  <SelectValue placeholder={item.color.charAt(0).toUpperCase() + item.color.slice(1)} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectGroup>
-                                    <SelectLabel>Colors</SelectLabel>
-                                    {merch?.merchandise?.map(
-                                      (merchItem: any) =>
-                                        merchItem._id === item.merchId &&
-                                        merchItem.color.split(",").map((item: any) => (
-                                          <SelectItem
-                                            key={Date.now() + item}
-                                            value={item}
-                                            onMouseDown={() => handleColorSelect(item, merchItem)}
-                                          >
-                                            {item.charAt(0).toUpperCase() + item.slice(1)}
-                                          </SelectItem>
-                                        )),
-                                    )}
-                                  </SelectGroup>
-                                </SelectContent>
-                              </Select>
-                            )}
-                          </div>
-                          <span className="text-center">&#8369;{item.price}</span>
-                          <div className="flex flex-row justify-center items-center gap-x-10">
-                            <Button onClick={() => handleOnClickDecrement(item.merchId)}>
-                              <Minus size={15} />
-                            </Button>
-                            <span className="text-center">{item.quantity}</span>
-                            <Button onClick={() => handleOnClickIncrement(item.merchId)}>
-                              <Plus size={15} />
-                            </Button>
-                          </div>
-                          <div className="flex flex-row justify-center">
-                            <Button className="bg-red-600" onClick={() => handleRemoveFromCart(item.merchId)}>
-                              <Trash size={20} />
-                            </Button>
-                          </div>
-                        </div>
-                      )),
-                  )}
+              )))
+              :
+              <div className="flex flex-col items-center justify-center text-center">
+                <img className="md:max-w-[600px] sm:max-w-[400px] block mb-8" src={emptycart} alt="under-construction" />
+                <h3 className="text-xl md:text-3xl font-bold mb-4">Looks like your cart is empty!</h3>
               </div>
-            </ScrollArea>
-          </div>
-          <form className="flex flex-col sm:gap-y-5 gap-y-3 text-base sm:h-0 h-[200px]">
-            <span className="mt-5 font-semibold sm:block hidden">OFFERS</span>
-            <div className="sm:flex flex-row items-center gap-x-5 hidden">
-              <Ticket size={35} />
-              <Input placeholder="APPLY COUPON CODE" className="border-0" />
+            }
+          </ScrollArea>
+          <form className="flex flex-col mt-10 gap-y-5 text-base sm:h-0 h-[200px]">
+            <div className="flex justify-end">
+              <span className="font-semibold">PRICE SUMMARY</span>
             </div>
-            <Separator />
-            <span className="font-semibold">PRICE SUMMARY</span>
-            <div className="flex flex-row justify-between">
-              <span>Subtotal</span>
+            <div className="flex flex-row justify-end gap-x-5">
+              <span>Cart Total:</span>
               <span>&#8369;&nbsp;{totalPrice}</span>
             </div>
-            <div className="sm:flex flex-row justify-between hidden">
-              <span>Order Total</span>
-              <span>&#8369;&nbsp;{totalPrice}</span>
-            </div>
-            <Separator />
-            <div className="flex">
-              <span className="text-xs text-gray-400 text-justify">
-                Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi
-                Lorem pariatur mollit ex esse exercitation amet. Nisi animcupidatat excepteur officia. Reprehenderit
-                nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident.
-              </span>
-            </div>
-            {cart && cart.length > 0 && cart[0].cart.length > 0 && (
-              <Button
-                type="button"
-                className="bg-[#268EA7] hover:bg-[#3da7c2] w-full mt-10"
-                onClick={handleConfirmOrder}
-                disabled={isLoading}
-              >
-                {isLoading ? <Loader2 className=" animate-spin" /> : "CONFIRM ORDER"}
-              </Button>
-            )}
+            <Button
+              type="button"
+              className="bg-[#268EA7] hover:bg-[#3da7c2] w-full mt-5"
+              onClick={handleConfirmOrder}
+              disabled={cart && cart.length > 0 && cart[0].cart.length > 0 ? false : true}
+            >
+              {isLoading ? <Loader2 className=" animate-spin" /> : "CONFIRM ORDER"}
+            </Button>
           </form>
-        </div> */}
+        </div>
       </DialogContent>
     </Dialog>
   );
