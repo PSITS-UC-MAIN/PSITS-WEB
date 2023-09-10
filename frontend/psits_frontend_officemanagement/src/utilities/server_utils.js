@@ -104,3 +104,12 @@ export function delete_cookie(name, path, domain) {
       ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
   }
 }
+
+export const getMinimumDateLogged = async () => {
+  const logs = await GetTimeLogs(
+    new Date("2023-08-09").toISOString(),
+    new Date().toISOString()
+  );
+  const log = logs[logs.length - 1];
+  return new Date(log.loginTime);
+};
