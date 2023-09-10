@@ -17,11 +17,12 @@ import v2MerchandiseRouter from "./src/routes/merchandiseRouter.js";
 import v2StatRouter from "./src/routes/statRouter.js";
 import v2OfficeLogRouter from "./src/routes/officelogRouter.js";
 import v2CartRouter from "./src/routes/cartRouter.js";
+import v2OrderRouter from "./src/routes/orderRouter.js";
 
 import homeRouter from "./src/routes/main.js";
 
 // public
-import path, { dirname } from "path";
+import { dirname } from "path";
 import { fileURLToPath } from "url";
 
 // middleware
@@ -40,9 +41,7 @@ cloudinary.config({
 
 let PORT = config.PORT;
 
-// temporarily store images in the public folder to utilize file upload
 const __dirname = dirname(fileURLToPath(import.meta.url));
-app.use(express.static(path.resolve(__dirname, "./public")));
 
 // middlewares
 app.use(
@@ -66,6 +65,7 @@ app.use("/api/v2/merch", v2MerchandiseRouter);
 app.use("/api/v2/stat", authenticateUser, v2StatRouter);
 app.use("/api/v2/officelog", authenticateUser, v2OfficeLogRouter);
 app.use("/api/v2/cart", v2CartRouter);
+app.use("/api/v2/order", v2OrderRouter);
 
 // throw error in json format if route not exist
 app.use("*", (req, res) => {

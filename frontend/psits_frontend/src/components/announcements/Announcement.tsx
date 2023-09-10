@@ -62,13 +62,17 @@ const Announcement = ({
     onSuccess: (data) => {
       queryClient.invalidateQueries(["announcements"]);
       store.setRequestLoading(false);
-      toast.success(`${data.message}!`);
+      toast.success(`${data.message}!`, {
+        position: "bottom-right",
+      });
       reset();
       setAnnounceState(false);
     },
     onError(error: any) {
       store.setRequestLoading(false);
-      toast.error(error.response.data.message || error.message);
+      toast.error(error.response.data.message || error.message, {
+        position: "bottom-right",
+      });
     },
   });
 

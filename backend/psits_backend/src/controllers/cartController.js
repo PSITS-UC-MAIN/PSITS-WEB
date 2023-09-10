@@ -1,18 +1,20 @@
 import { StatusCodes } from "http-status-codes";
 import User from "../models/UserModel.js";
 import { NotFoundError } from "../errors/customErrors.js";
+import mongoose from "mongoose";
 
 export const getAllCartItems = async (req, res) => {
   // this fetches the current user's cart
-  const cartItems = await User.find({ userId: req.params.userId }, "cart");
+  const cartItems = await User.find({ _id: req.params.userId }, "cart");
 
   res.status(StatusCodes.OK).json(cartItems);
 };
 
 export const createCartItem = async (req, res) => {
+  const test = new mongoose.Types.ObjectId(req.params.userId);
   let newBody = { ...req.body };
   // check if the user exists
-  const user = await User.findOne({ userId: req.params.userId })
+  const user = await User.findOne({ _id: req.params.userId })
 
   if (!user) throw new NotFoundError("User does not exist")
 
@@ -58,7 +60,7 @@ export const updateCartItem = async (req, res) => {
 
 export const deleteCartItem = async (req, res) => {
   // check if the user exists
-  const user = await User.findOne({ userId: req.params.userId })
+  const user = await User.findOne({ _id: req.params.userId })
 
   if (!user) throw new NotFoundError("User does not exist")
 

@@ -40,10 +40,11 @@ const MerchandiseSchema = z.object({
   name: z.string().nonempty("This field is required."),
   description: z.string().nonempty("This field is required."),
   price: z.number(),
-  discount: z.number().or(z.nan()).default(Number.NaN),
+  discount: z.number(),
   images: z.any(),
   color: z.string(),
-  size: z.string()
+  size: z.string(),
+  stocks: z.number()
 });
 
 type MerchandiseSchema = z.infer<typeof MerchandiseSchema>;
@@ -52,6 +53,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
   const queryClient = useQueryClient();
   const store = useStore();
   const [file, setFile] = useState("");
+  const [open, setOpen] = useState(false);
 
   const {
     mutate: deleteMutate,
@@ -80,7 +82,8 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
       price: item.price,
       discount: item.discount,
       color: item.color,
-      description: item.description
+      description: item.description,
+      stocks: item.stocks
     }
   });
 
@@ -94,6 +97,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
       queryClient.invalidateQueries(["merch"]);
       toast.success(`${merch.message}`, { position: 'bottom-right' });
       updateReset();
+      setOpen(false);
     },
     onError(error: any) {
       toast.error(error.response.merch.message || error.message, { position: 'bottom-right' });
@@ -141,7 +145,8 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
   })
 
   const handleAddToCart = () => {
-    const userId = Number(store.authUser?.userId)
+    const userId = store?.authUser?._id || "";
+    
     const size = item.size.split(',')
     const color = item.color.split(',')
     const data = {
@@ -152,9 +157,10 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
       color: color[0],
       image: item.images[0].image,
       name: item.name,
+      stock: item.stocks
     }
     
-    createMutate({userId, data})
+    createMutate({ userId , data })
   }
 
   return (
@@ -171,7 +177,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
             ))}
           </Slide>
           :
-          <img src={item.images[0].image} alt="Product Image" className="h-[400px] shadow-lg rounded-lg" />
+          <img src={item.images[0].image} alt="Product Image" className="h-[400px] border-2 rounded-lg" />
         }
         {store.authUser?.isAdmin && (
           <>
@@ -182,7 +188,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
             >
               <Trash size={20} />
             </Button>
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
               <DialogHeader>
                 <DialogTrigger asChild>
                   <Button className="bg-[#268EA7] hover:bg-[#3da7c2] py-[7.5%] absolute top-[15%] end-[0%] rounded-full">
@@ -285,19 +291,19 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
                       </div>
                       <div className="flex flex-row items-center gap-x-5">
                         <div className="flex flex-col gap-y-3">
-                          <Label className="text-gray-500" htmlFor="itemDiscount">
-                            Item Discount in %
+                          <Label className="text-gray-500" htmlFor="itemStock">
+                            Stock
                           </Label>
                           <Input
                             autoComplete="off"
-                            id="itemDiscount"
-                            placeholder="Enter discount"
+                            id="itemStock"
+                            placeholder="Enter stock"
                             type="number"
-                            defaultValue={item.discount}
-                            {...register("discount", { valueAsNumber: true })}
+                            defaultValue={item.stocks}
+                            {...register("stocks", { valueAsNumber: true })}
                           />
-                          {errors.discount && (
-                            <p className="text-red-400 text-sm font-light">{errors.discount.message}</p>
+                          {errors.stocks && (
+                            <p className="text-red-400 text-sm font-light">{errors.stocks.message}</p>
                           )}
                         </div>
                         <div className="flex flex-col gap-y-3">
@@ -335,6 +341,9 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
         )}
       </CardHeader>
       <CardContent>
+        <div className="flex flex-row">
+          <span className="text-xs text-gray-500">Stock: {item.stocks}</span>
+        </div>
         <div className="flex flex-row justify-between">
           <h1 className="text-lg font-semibold">{item.name}</h1>
           <p className="text-lg font-light">₱{item.price}.00</p>

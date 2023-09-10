@@ -3,6 +3,7 @@ import Announcement from "../models/AnnouncementModel.js";
 import { NotFoundError, UnauthorizedError } from "../errors/customErrors.js";
 import { v2 as cloudinary } from "cloudinary";
 import { promises as fs } from "fs";
+import webp from 'webp-converter'
 
 export const getAllAnnouncement = async (req, res) => {
   const announcements = await Announcement.find({})
@@ -20,13 +21,21 @@ export const createAnnouncement = async (req, res) => {
   console.log(newBody);
 
   if (req.file) {
-    console.log(req.file);
+    const file = formatImage(req.file);
     newBody = JSON.parse(req.body.announcement);
+
+    // compress the file
+    await webp.cwebp(req.file.path,`${req.file.path.replace(/\.[^/.]+$/, '')}.webp`,"-q 75");
 
     // upload the image to cloudinary
     const response = await cloudinary.uploader.upload(req.file.path);
+
     // delete the image in the public folder
     await fs.unlink(req.file.path);
+
+    // unlink the converted file
+    await fs.unlink(`${req.file.path.replace(/\.[^/.]+$/, '')}.webp`);
+    
     newBody.image = response.secure_url;
     newBody.imagePublicId = response.public_id;
   }
@@ -62,6 +71,10 @@ export const updateAnnouncementbyId = async (req, res) => {
 export const deleteAnnouncementbyId = async (req, res) => {
   //TODO: Validation for params
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
+
+  const findAnnouncement = await Announcement.find({ _id: req.params.announcementId });
+
+  await cloudinary.uploader.destroy(findAnnouncement[0]?.imagePublicId)
 
   //TODO: Validation for body data
   const removedAnnouncement = await Announcement.findOneAndDelete({

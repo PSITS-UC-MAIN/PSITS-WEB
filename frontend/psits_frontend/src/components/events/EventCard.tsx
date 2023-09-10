@@ -8,6 +8,17 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { CalendarCheck2, PartyPopper, Trash2 } from "lucide-react";
 import { deleteEvent } from "@/api/event";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface EventCardProps {
   id: string;
@@ -49,9 +60,28 @@ const EventCard = ({ id, title, eventDate, content }: EventCardProps) => {
             <span className=" text-md font-bold">{formattedDate}</span>
           </div>
           {store.authUser?.isAdmin && (
-            <Button onClick={() => mutate(id)} variant="ghost">
-              <Trash2 color="#df2020" size={16} />
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost">
+                  <Trash2 color="#df2020" size={16} />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete the event and remove the data from the
+                    server.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => mutate(id)} className="bg-[#074873] hover:bg-[#2d7db3]">
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           )}
         </div>
       </div>
