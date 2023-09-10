@@ -6,7 +6,7 @@ import { Switch } from "../ui/switch";
 
 const MerchandiseFilter = () => {
   return (
-    <div className="w-[320px]">
+    <div className="w-[320px] hidden sm:block">
       <div className="flex items-center gap-4">
         <SlidersHorizontal />
         <p>Filters</p>

@@ -56,14 +56,14 @@ export const updateAnnouncementbyId = async (req, res) => {
 };
 
 export const deleteAnnouncementbyId = async (req, res) => {
-  //TODO: Validation for params
+  // TODO: Validation for params
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
 
   const findAnnouncement = await Announcement.find({
     _id: req.params.announcementId,
   });
 
-  await cloudinary.uploader.destroy(findAnnouncement[0].imagePublicId);
+  if (findAnnouncement[0].imagePublicId) await cloudinary.uploader.destroy(findAnnouncement[0].imagePublicId);
 
   //TODO: Validation for body data
   const removedAnnouncement = await Announcement.findOneAndDelete({

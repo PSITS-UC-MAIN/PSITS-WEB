@@ -3,6 +3,7 @@ import Wrapper from "@/components/Wrapper";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useStore from "@/store";
+import { Item } from "@radix-ui/react-navigation-menu";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format, parseISO, addDays } from "date-fns";
 import { CalendarPlus } from "lucide-react";
@@ -37,84 +38,81 @@ const Orders = () => {
   };
 
   return (
-    <Wrapper title="PSITS | My Orders" className="my-20 mx-[20%]" noMargin>
-      {orderData?.userOrders?.length > 0 ? (
+    <Wrapper title="PSITS | My Orders" className="my-20 sm:mx-[20%] mx-5" noMargin>
+      { orderData?.userOrders?.length > 0 ?
         orderData?.userOrders?.map((order: any) => (
-          <div className="flex flex-col gap-y-8 mb-10 border-2 shadow-lg p-10 rounded-lg" key={order._id}>
-            <div className="flex flex-row justify-between orders-center">
-              <div className="flex flex-row items-center gap-x-5">
-                <span className="text-4xl font-medium">Order ID: {order._id}</span>
-                <span className="text-gray-500">{order.orderStatus}</span>
-              </div>
-              <Button
-                className={
-                  order.orderStatus == "CANCELLED" || order.orderStatus == "CLAIMED" || order.orderStatus == "PENDING"
-                    ? "bg-red-600 hover:bg-red-500 text-xl hidden"
-                    : "bg-red-600 hover:bg-red-500 text-xl"
-                }
-                onClick={() => handleUpdateStatus(order._id)}
-              >
-                CANCEL
-              </Button>
+          <div className="flex flex-col gap-y-5 shadow-lg border-2 p-5 mb-10" key={order._id}>
+            <div className="flex flex-row items-center gap-x-3">
+              <span className="font-medium text-xs sm:text-2xl">Order ID:</span>
+              <span className="font-medium text-base sm:text-2xl">{order._id}</span>
+              <span className="text-gray-500 font-light text-[70%] sm:text-lg">{order.orderStatus}</span>
             </div>
-            <div className="flex flex-row orders-center">
-              <div className="flex flex-row gap-x-5 text-[#58A536]">
-                <CalendarPlus color="#58A536" strokeWidth={1} />
-                <span className="font-light">Order Date:</span>
-                <span className="font-semibold">{handleDateFormat(order.orderDate, 0)}</span>
-              </div>
+            <div className="flex flex-row items-center gap-x-3 text-[#58A536]">
+              <CalendarPlus color="#58A536" strokeWidth={2} />
+              <span className="font-medium text-xs sm:text-xl">Order Date:</span>
+              <span className="font-medium text-base sm:text-xl">{handleDateFormat(order.orderDate,0)}</span>
             </div>
             <Separator />
             {order?.cartItems?.map((item: any) => (
               <div className="flex flex-col" key={item._id}>
                 <div className="flex flex-row items-center justify-between gap-x-5">
                   <div className="flex flex-row items-center gap-x-5">
-                    <img
-                      src={item.image}
-                      alt="Product Image"
-                      className="h-[150px] w-[150px] rounded-lg p-5 bg-[#fafafa] border-2 border-gray-150"
-                    />
+                    <img src={item.image} alt="Product Image" className="h-[100px] sm:h-[150px] w-[100px] sm:w-[150px] rounded-lg p-3 bg-[#fafafa] border-2 border-gray-150" />
                     <div className="flex flex-col gap-y-3">
-                      <span className="text-lg">{item.name}</span>
-                      <span className="text-sm text-gray-500">
-                        Color:&emsp;{item.color ? item.color : "N/A"}&emsp;|&emsp; Size:&emsp;{item.size}
-                      </span>
+                      <span className="text-sm sm:text-lg">{item.name}</span>
+                      <div className="flex flex-row flex-wrap">
+                        <span className="text-xs sm:text-sm text-gray-500">
+                          Color:&emsp;{item.color ? item.color : "N/A"}&emsp;|&emsp;
+                        </span>
+                        <span className="text-xs sm:text-sm text-gray-500">
+                          Size:&emsp;{item.size? item.size: "N/A"}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-y-3">
-                    <span>&#8369;&nbsp;{item.price}</span>
-                    <span>Qty: {item.quantity}</span>
+                  <div className="flex flex-col gap-y-3 items-center">
+                    <span className="text-xs sm:text-base">&#8369;&nbsp;{item.price}</span>
+                    <span className="text-[60%] sm:text-xs text-gray-500">Qty: {item.quantity}</span>
                   </div>
                 </div>
               </div>
             ))}
             <Separator />
             <div className="flex flex-row justify-end">
-              <span className="text-xl font-semibold">ORDER SUMMARY</span>
+              <span className="text-base sm:text-2xl font-semibold">ORDER SUMMARY</span>
             </div>
             <div className="flex flex-row items-center justify-end gap-x-10">
-              <span className="text-lg">Subtotal</span>
-              <span>
-                &#8369;&nbsp;
+              <span className="text-xs sm:text-xl">Subtotal</span>
+              <span className="text-xs sm:text-xl">&#8369;&nbsp;
                 {order?.cartItems?.reduce((total: any, item: any) => {
                   return total + item.price * item.quantity;
                 }, 0)}
               </span>
             </div>
             <div className="flex flex-row items-center justify-end gap-x-10">
-              <span className="text-lg">Total</span>
-              <span>
-                &#8369;&nbsp;
+              <span className="text-xs sm:text-xl">Total</span>
+              <span className="text-xs sm:text-xl">&#8369;&nbsp;
                 {order?.cartItems?.reduce((total: any, item: any) => {
                   return total + item.price * item.quantity;
                 }, 0)}
               </span>
             </div>
-            <Separator />
-            <span className="text-gray-500 text-sm">{order.additionalInfo}</span>
+            <Separator/>
+            <div className="flex">
+              <span className="text-[60%] sm:text-xs text-gray-500 font-light">
+                {order.additionalInfo == "" && "You may disregard this remark"}
+              </span>
+            </div>
+            <Button
+              className="bg-red-600 hover:bg-red-500"
+              onClick={() => handleUpdateStatus(order._id)}
+              disabled={order.orderStatus == "CANCELLED" || order.orderStatus == "CLAIMED" || order.orderStatus == "PENDING" && true}
+            >
+              CANCEL
+            </Button>
           </div>
         ))
-      ) : (
+        : (
         <div className="flex justify-center mt-[20%]">
           <span className="text-2xl">No Orders Yet&emsp;{":(("}</span>
         </div>

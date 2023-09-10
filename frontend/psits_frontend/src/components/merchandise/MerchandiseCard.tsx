@@ -19,6 +19,17 @@ import { Textarea } from "../ui/textarea";
 import useStore from "@/store";
 import { useState } from "react";
 import { addToCart } from "@/api/cart";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface MerchandiseCardProps {
   item: {
@@ -187,13 +198,31 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
           )}
           {store.authUser?.isAdmin && (
             <>
-              <Button
-                className="bg-red-600 hover:bg-red-500 py-[7.5%] absolute top-[0%] end-[0%] rounded-full"
-                onClick={() => deleteMutate(item._id)}
-                disabled={deleteIsLoading}
-              >
-                <Trash size={20} />
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    className="bg-red-600 hover:bg-red-500 py-[7.5%] absolute top-[0%] end-[0%] rounded-full"
+                    disabled={deleteIsLoading}
+                  >
+                    <Trash size={20} />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete the annoucement and remove the data
+                      from the server.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => deleteMutate(item._id)} className="bg-[#074873] hover:bg-[#2d7db3]">
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogHeader>
                   <DialogTrigger asChild>
