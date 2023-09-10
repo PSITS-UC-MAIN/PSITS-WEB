@@ -21,13 +21,18 @@ interface Announcement {
   creationDate: Date;
   author: string;
   content: string;
-  image: string;
+  images: [
+    {
+      image: string;
+      imagePublicId: string;
+    },
+  ];
 }
 
 const AnnouncementSchema = z.object({
   title: z.string().min(4),
   content: z.string().min(4),
-  image: z.any(),
+  images: z.any(),
 });
 
 type AnnouncementSchema = z.infer<typeof AnnouncementSchema>;
@@ -78,14 +83,13 @@ const Announcement = ({
 
   const onSubmit: SubmitHandler<AnnouncementSchema> = (data) => {
     // check if there's an image uploaded
-    if (data.image.length > 0) {
+    if (data.images.length > 0) {
       const formData = new FormData();
-      formData.append("image", data.image[0]);
-      data.image = "";
+      for (let i = 0; i < data.images.length; formData.append("images", data.images[i]), i++);
       formData.append("announcement", JSON.stringify(data));
       mutate(formData);
     } else {
-      data.image = "";
+      data.images = "";
       mutate(data);
     }
   };
@@ -95,7 +99,7 @@ const Announcement = ({
       {store.authUser?.isAdmin && (
         <>
           {announceState ? (
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
               <Card className="mb-4 w-full">
                 <CardHeader>
                   <Input placeholder="Announcement Title" {...register("title")} />
@@ -116,7 +120,8 @@ const Announcement = ({
                     accept="image/*"
                     placeholder="Upload a photo"
                     className="w-auto"
-                    {...register("image")}
+                    multiple
+                    {...register("images")}
                   />
                   <div className="flex items-center gap-4">
                     <Button variant="ghost" onClick={() => setAnnounceState(false)}>
@@ -167,7 +172,7 @@ const Announcement = ({
                   author={`${announcement.author.firstname} ${announcement.author.lastname}`}
                   creationDate={announcement.creationDate}
                   content={announcement.content}
-                  image={announcement.image}
+                  images={announcement.images}
                   authorImage={announcement.author.avatar}
                 />
               );
