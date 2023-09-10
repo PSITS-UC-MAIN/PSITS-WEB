@@ -16,7 +16,7 @@ import upload from "../middlewares/multerMiddleware.js";
 router.route("/").get(getAllAnnouncement).post(
   authenticateUser,
   // validateAnnouncementBody,
-  upload.single("image"),
+  upload.any("images"),
   createAnnouncement
 );
 
