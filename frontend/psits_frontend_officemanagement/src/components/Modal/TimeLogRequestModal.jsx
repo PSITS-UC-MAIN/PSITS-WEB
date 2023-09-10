@@ -7,7 +7,6 @@ import {
   OfficeLogOff,
 } from "../../database/api_service";
 import { app_config } from "../../utilities/config";
-import { AuthenticationToken } from "../../models/authToken";
 
 function TimeLogRequestModal({
   showModal,
@@ -34,12 +33,11 @@ function TimeLogRequestModal({
         return;
       }
 
-      const StatusCode = await AuthenticateUser({
+      const { StatusCode, token } = await AuthenticateUser({
         rfid: RFID_CODE,
         API_KEY: app_config.API_KEY,
       });
-
-      if (StatusCode === 409) {
+      if ((StatusCode === 409 || StatusCode === 400) && !token) {
         /* Unauthorized */
         setIsLoading(false);
         return;
@@ -67,12 +65,12 @@ function TimeLogRequestModal({
   }
 
   async function submitRequest(purpose) {
-    const StatusCode = await AuthenticateUser({
+    const { StatusCode, token } = await AuthenticateUser({
       rfid: rfidCode,
       API_KEY: app_config.API_KEY,
     });
 
-    if (StatusCode === 409) {
+    if ((StatusCode === 409 || StatusCode === 400) && !token) {
       /* Unauthorized */
       isError(true);
       setMessage("Failed to Authenticate account");
