@@ -22,6 +22,7 @@ const ROUTE = [
   "/admin/merchandise",
   "/admin/orders",
   "/admin/announcements",
+  "/admin/routes",
 ];
 
 const Header = () => {
@@ -104,7 +105,7 @@ const Header = () => {
                     <NavigationMenuContent className="flex flex-col gap-4 p-4 m-0 border bg-transparent w-[500px]">
                       <NavigationMenuLink asChild>
                         <Button variant="ghost" className="hover:bg-slate-200">
-                          <Link to="/community/students">All Students</Link>
+                          <Link to="/community">All Students</Link>
                         </Button>
                       </NavigationMenuLink>
                       <NavigationMenuLink asChild>
