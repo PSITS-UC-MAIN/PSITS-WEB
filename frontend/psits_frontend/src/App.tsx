@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "@/api/user";
-import useStore from "@/store";
 
+import useStore from "@/store";
 import {
   Layout,
   Home,
@@ -15,9 +15,11 @@ import {
   Developers,
   MerchLayout,
   Merchandise,
+  Orders,
   ViewSingleMerchandise,
   AdminEvents,
   AdminOrders,
+  AdminRoutes,
   AdminMerchandise,
   AdminDashboard,
   AdminAccounts,
@@ -30,7 +32,6 @@ import {
   Error,
   AdminAnnouncements,
 } from "./pages";
-import Orders from "./pages/Orders";
 
 const router = createBrowserRouter([
   {
@@ -55,7 +56,7 @@ const router = createBrowserRouter([
         element: <CommunityLayout />,
         children: [
           {
-            path: "students",
+            index: true,
             element: <Students />,
           },
           {
@@ -81,13 +82,13 @@ const router = createBrowserRouter([
             element: <Merchandise />,
           },
           {
-            path: ":merchId",
+            path: ":merchandiseItemId",
             element: <ViewSingleMerchandise />,
           },
         ],
       },
       {
-        path: "orders/:userId",
+        path: "orders",
         element: <Orders />,
       },
       {
@@ -118,10 +119,14 @@ const router = createBrowserRouter([
             path: "orders",
             element: <AdminOrders />,
           },
+          {
+            path: "routes",
+            element: <AdminRoutes />,
+          },
         ],
       },
       {
-        path: "profile/:userId",
+        path: "profile",
         element: <Profile />,
       },
       {
@@ -139,10 +144,6 @@ const router = createBrowserRouter([
       {
         path: "reset-password/:userId/:token",
         element: <ResetPassword />,
-      },
-      {
-        path: "error",
-        element: <Error />,
       },
     ],
   },

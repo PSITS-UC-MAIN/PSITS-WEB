@@ -1,22 +1,23 @@
+import { useState } from "react";
 import { Loader2, Plus } from "lucide-react";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 import Wrapper from "@/components/Wrapper";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { createMerchandiseItem, getAllMerchandise } from "@/api/merchandise";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import MerchandiseCard from "@/components/merchandise/MerchandiseCard";
 import useStore from "@/store";
-import { useState } from "react";
+import MerchandiseFilter from "@/components/merchandise/MerchandiseFilter";
 
 interface Merchandise {
   _id: string;
@@ -44,7 +45,7 @@ const MerchandiseSchema = z.object({
   images: z.any(),
   color: z.string(),
   size: z.string(),
-  stocks: z.number()
+  stocks: z.number(),
 });
 
 export type MerchandiseSchema = z.infer<typeof MerchandiseSchema>;
@@ -68,19 +69,23 @@ const Merchandise = () => {
       price: 0,
       discount: 0,
       color: "",
-      description: "Type description here"
+      description: "Type description here",
     },
   });
 
-  const { mutate: createMutate, reset: createReset, isLoading: createIsLoading } = useMutation({
+  const {
+    mutate: createMutate,
+    reset: createReset,
+    isLoading: createIsLoading,
+  } = useMutation({
     mutationFn: createMerchandiseItem,
     onSuccess: (merch) => {
       queryClient.invalidateQueries(["merch"]);
-      toast.success(`${merch.msg}`, { position: 'bottom-right' });
+      toast.success(`${merch.msg}`, { position: "bottom-right" });
       createReset();
     },
     onError(error: any) {
-      toast.error(error.response.merch.message || error.message, { position: 'bottom-right' });
+      toast.error(error.response.merch.message || error.message, { position: "bottom-right" });
     },
   });
 
@@ -100,29 +105,32 @@ const Merchandise = () => {
   const [file, setFile] = useState("");
 
   return (
-    <Wrapper title="PSITS | Merchandise">
-      <div className="min-h-screen my-20">
-        <h1 className="text-2xl sm:text-7xl text-center font-bold text-[#1A1A1A] mb-20">Merchandise</h1>
-        <div className="flex flex-row flex-wrap justify-center">
+    <Wrapper title="PSITS | Merchandise" className="min-h-screen my-20">
+      <h1 className="text-4xl font-bold text-[#074873] mb-10">Merchandise</h1>
+      <div className="flex gap-10">
+        <MerchandiseFilter />
+        <div className="flex flex-wrap justify-evenly mt-14 gap-6">
           {store.authUser?.isAdmin && (
-            <Card className="w-[350px] border-0 shadow-none">
+            <Card className="w-[350px]">
               <CardHeader>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button
                       variant="link"
-                      className="max-h-[400px] h-[400px] bg-transparent hover:bg-transparent border-2 text-black rounded-lg"
+                      className="max-h-[400px] h-[400px] bg-transparent hover:bg-transparent text-black border"
                     >
                       <Plus size={40} />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="h-[85%] bg-white">
+                  <DialogContent className="h-[85%] min-w-[700px] bg-white">
                     <ScrollArea>
                       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-                        <div className="flex flex-col mt-10 gap-y-10 items-center mx-5">
+                        <div className="flex flex-col mt-10 gap-y-4 items-center mx-4">
                           {file != "" ? (
                             <div className="flex justify-center relative">
-                              <img src={file} className="rounded-lg shadow-lg h-[300px] w-[500px] max-w-[50%]" />
+                              <div className="border flex justify-center p-2 ">
+                                <img src={file} className="object-cover" />
+                              </div>
                               <Label htmlFor="img">
                                 <Plus
                                   className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-[28%] p-2"
@@ -209,9 +217,7 @@ const Merchandise = () => {
                                 placeholder="Enter item size"
                                 {...register("size")}
                               />
-                              {errors.size && (
-                                <p className="text-red-400 text-sm font-light">{errors.size.message}</p>
-                              )}
+                              {errors.size && <p className="text-red-400 text-sm font-light">{errors.size.message}</p>}
                             </div>
                             <div className="flex flex-col gap-y-3">
                               <Label className="text-gray-500" htmlFor="itemColor">
@@ -270,9 +276,7 @@ const Merchandise = () => {
               </CardContent>
             </Card>
           )}
-          {merch?.merchandise?.map((item: any) => {
-            return <MerchandiseCard key={item._id.toString()} item={item} />;
-          })}
+          {merch?.merchandise?.map((item: any) => <MerchandiseCard key={item._id.toString()} item={item} />)}
         </div>
       </div>
     </Wrapper>

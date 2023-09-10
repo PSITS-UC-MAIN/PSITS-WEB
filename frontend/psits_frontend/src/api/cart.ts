@@ -5,17 +5,17 @@ export async function getCartItems(data: any) {
   return response.data;
 }
 
-export async function addToCart({ userId, data }: { userId: string ,data: any }) {
+export async function addToCart({ userId, data }: { userId: string; data: any }) {
   const response = await axios.post(`cart/${userId}`, data);
   return response.data;
 }
 
-export async function updateCartItem ({ userId, data }: { userId: string, data: any }) {
+export async function updateCartItem({ userId, data }: { userId: string; data: any }) {
   const response = await axios.patch(`cart/${userId}`, data);
   return response.data;
 }
 
-export async function removeFromCart({ userId, merchId }: { userId: string, merchId: string }) {
+export async function removeFromCart({ userId, merchId }: { userId: string; merchId: string }) {
   const response = await axios.delete(`cart/${userId}/${merchId}`);
   return response.data;
 }

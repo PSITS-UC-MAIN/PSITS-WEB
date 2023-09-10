@@ -10,12 +10,12 @@ export async function getCurrentUserOrders(userId: string) {
   return response.data;
 }
 
-export async function createOrder({ userId, data }: { userId: string, data: any }) {
+export async function createOrder({ userId, data }: { userId: string; data: any }) {
   const response = await axios.post(`order/${userId}`, data);
   return response.data;
 }
 
-export async function updateOrder({ userId, data }: { userId: string, data: any }) {
+export async function updateOrder({ userId, data }: { userId: string; data: any }) {
   const response = await axios.patch(`order/${userId}`, data);
   return response.data;
 }

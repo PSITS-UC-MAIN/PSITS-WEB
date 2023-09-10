@@ -17,7 +17,6 @@ const Students = () => {
     },
   });
 
-
   return (
     <Wrapper title="PSITS | Students" className="my-20">
       {/* <div className="flex justify-end">

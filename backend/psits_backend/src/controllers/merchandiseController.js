@@ -14,7 +14,7 @@ export const getMerchandise = async (req, res) => {
 export const getMerchandiseById = async (req, res) => {
   const { merchandiseItemId } = req.params;
 
-  const item = await Merchandise.findOne({ name: merchandiseItemId });
+  const item = await Merchandise.findOne({ _id: merchandiseItemId });
 
   res.status(StatusCodes.OK).json({ item });
 };
@@ -28,11 +28,11 @@ export const createMerchandiseItem = async (req, res) => {
     let uploadedImages = [];
 
     newBody = JSON.parse(req.body.merch);
-    
+
     for (let i = 0; i < req.files.length; i++) {
       uploadedImages.push(await formatImage(req.files[i]));
     }
-    
+
     newBody.images = uploadedImages;
   }
 

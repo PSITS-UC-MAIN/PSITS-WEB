@@ -5,6 +5,11 @@ export async function getAllMerchandise(data: any) {
   return response.data;
 }
 
+export async function getMerchandiseItemById(merchandiseItemId: string) {
+  const response = await axios.get(`merch/${merchandiseItemId}`);
+  return response.data;
+}
+
 export async function createMerchandiseItem(data: any) {
   const response = await axios.post(`merch/`, data);
   return response.data;

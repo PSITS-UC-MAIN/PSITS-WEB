@@ -46,14 +46,21 @@ const HamburgerMenu = () => {
                     <NavigationMenuLink asChild>
                       <Button variant="ghost" className="hover:bg-slate-200">
                         <SheetClose asChild>
-                          <Link to="/students">All Students</Link>
+                          <Link to="/community">All Students</Link>
                         </SheetClose>
                       </Button>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild>
                       <Button variant="ghost" className="hover:bg-slate-200">
                         <SheetClose asChild>
-                          <Link to="/students/officers">
+                          <Link to="/community/faculty">Falculty Members</Link>
+                        </SheetClose>
+                      </Button>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Button variant="ghost" className="hover:bg-slate-200">
+                        <SheetClose asChild>
+                          <Link to="/community/officers">
                             <p>PSITS Officers</p>
                           </Link>
                         </SheetClose>
@@ -62,7 +69,7 @@ const HamburgerMenu = () => {
                     <NavigationMenuLink asChild>
                       <Button variant="ghost" className="hover:bg-slate-200">
                         <SheetClose asChild>
-                          <Link to="/students/developers">Developers</Link>
+                          <Link to="/community/developers">Developers</Link>
                         </SheetClose>
                       </Button>
                     </NavigationMenuLink>
