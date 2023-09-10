@@ -37,7 +37,7 @@ import jay from "./devs/Jay.jpg";
 import pia from "./devs/Pia.jpg";
 import fire from "./devs/giphy.gif";
 import underconstruct from "./under-construct.svg";
-import amores from "./faculty/Amores.png";
+import amores from "./faculty/amores.png";
 import barral from "./faculty/barral.jpg";
 import codera from "./faculty/codera.png";
 import basabe from "./faculty/basabe.png";
