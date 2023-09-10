@@ -1,41 +1,66 @@
+import { getMerchandiseItemById } from "@/api/merchandise";
 import Wrapper from "@/components/Wrapper";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
+import { Slide } from "react-slideshow-image";
+import { Maintenance } from "..";
 
 const ViewSingleMerchandise = () => {
+  const { merchandiseItemId } = useParams();
+
+  const { data, isLoading } = useQuery(
+    ["currentMerchItem", merchandiseItemId],
+    () => getMerchandiseItemById(merchandiseItemId!),
+    {
+      select(merchData) {
+        return merchData.item;
+      },
+    },
+  );
+
+  if (true) return <Maintenance />;
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <Wrapper title="PSITS | Merch Title" className="my-20">
       <div className="flex gap-20">
-        <div className="h-[600px] w-[1000px]">
-          <div className="w-full h-full bg-slate-400 rounded" />
+        <div className="h-[600px] w-[800px]">
+          <Slide>
+            {data.images.map((slideImage: any) => (
+              <div
+                key={slideImage.imagePublicId}
+                className="flex items-center justify-center h-[600px] w-[800px] bg-cover bg-no-repeat bg-center"
+                style={{ backgroundImage: `url(${slideImage.image})` }}
+              />
+              // <img key={slideImage.imagePublicId} src={slideImage.image} className="w-full object-cover object-fill" />
+            ))}
+          </Slide>
         </div>
         <div className="flex flex-col gap-4 w-full">
           <h3>Category</h3>
-          <h1 className="text-6xl font-semibold">Title</h1>
-          <p className="font-medium text-lg text-red-500 ">₱82.00</p>
+          <h1 className="text-6xl font-semibold">{data.name}</h1>
+          <p className="font-medium text-lg">₱{data.price}.00</p>
           <Separator />
-          <p>
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum."
-          </p>
+          <div className="h-[100px]">
+            <p className="font-light">{data.description}</p>
+          </div>
           <div className="flex flex-col gap-2 mb-2">
             <p className="">Size: M</p>
             <div className="flex items-center gap-2">
-              <Button>S</Button>
-              <Button>M</Button>
-              <Button>L</Button>
-              <Button>XL</Button>
+              {data.size.split(",").map((size: string) => (
+                <Button key={size}>{size}</Button>
+              ))}
             </div>
           </div>
           <div className="flex flex-col gap-2 mb-2">
             <p className="">Color: Black</p>
             <div className="flex items-center gap-2">
-              <div className="h-[50px] w-[50px] border border-gray-500 bg-slate-300" />
-              <div className="h-[50px] w-[50px] border border-gray-500 bg-slate-300" />
-              <div className="h-[50px] w-[50px] border border-gray-500 bg-slate-300" />
+              {data.color.split(",").map((color: string) => (
+                <div key={color} className={`h-[50px] w-[50px] border border-gray-500 bg-${color}`} />
+              ))}
             </div>
           </div>
           <div className="flex flex-col gap-2 mb-2">
@@ -46,7 +71,7 @@ const ViewSingleMerchandise = () => {
               <Button variant="ghost">+</Button>
             </div>
           </div>
-          <Button className="w-[40%] bg-[#268EA7] hover:bg-[#3da7c2] py-6">Add to cart</Button>
+          <Button className="w-[50%] bg-[#268EA7] hover:bg-[#3da7c2] py-6">Add to cart</Button>
         </div>
       </div>
     </Wrapper>
