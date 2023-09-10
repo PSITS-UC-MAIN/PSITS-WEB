@@ -32,46 +32,37 @@ const Header = () => {
   // hides the header in admin pages
   if (ROUTE.includes(pathname)) return;
 
+  const handleGenerateRunningText = (n: number) => {
+    const generateRunningText = Array.from({ length: n }, (_, index) => (
+      <div className="truncate flex gap-20 items-center" key={n + index}>
+        <Button className="bg-transparent">
+          <Link to="/merchandise">BUY OUR MERCH</Link>
+        </Button>
+        <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
+        <Button className="bg-transparent">
+          <Link to="https://www.facebook.com/PSITS.UCmain" target="_blank">
+            VISIT OUR FB PAGE
+          </Link>
+        </Button>
+        <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
+      </div>
+    ));
+    return generateRunningText;
+  };
+
   return (
     <>
       <div className="w-full h-[30px] mx-auto overflow-hidden flex justify-start bg-[#1A1A1A]">
         <motion.div
           className=" flex gap-20 items-center text-white"
-          animate={{ x: -1394 }}
+          animate={{ x: -1430 }}
           transition={{
             duration: 15,
             ease: "linear",
             repeat: Infinity,
           }}
         >
-          <div className="truncate flex gap-20 items-center">
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-          </div>
-          <div className="truncate flex gap-20 items-center">
-            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">BUY OUR MERCH</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-            <p className="font-semibold text-sm break-keep">VISIT OUR FB PAGE</p>
-            <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-          </div>
+          {handleGenerateRunningText(6)}
         </motion.div>
       </div>
 
