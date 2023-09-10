@@ -113,3 +113,35 @@ export const getMinimumDateLogged = async () => {
   const log = logs[logs.length - 1];
   return new Date(log.loginTime);
 };
+
+export const DownloadCSV = (data) => {
+  console.log(data);
+  let csv = "";
+  for (const obj in data) {
+    csv += "Date: " + data[obj].date.split("T")[0] + "\n";
+    for (const resKey in data[obj]) {
+      if (resKey === "date") continue;
+      for (const log of data[obj][resKey]) {
+        let str = `${log.user.firstname} ${log.user.lastname},login: ${
+          log.loginTime.split("T")[0] +
+          " " +
+          new Date(log.loginTime).toLocaleTimeString()
+        },logout: ${
+          log.logoutTime.split("T")[0] +
+          " " +
+          new Date(log.logoutTime).toLocaleTimeString()
+        },remark:${log.remarks}`;
+        csv += str + "\n";
+      }
+    }
+  }
+
+  console.log(csv);
+
+  var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(csv);
+  var dlAnchorElem = document.createElement("a");
+  dlAnchorElem.setAttribute("href", dataStr);
+  dlAnchorElem.setAttribute("download", `timelogs-${new Date().getTime()}.csv`);
+  dlAnchorElem.click();
+  dlAnchorElem.remove();
+};

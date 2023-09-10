@@ -161,6 +161,20 @@ body {
 }
 
 /* util styles */
+.text-right {
+  text-align: right;
+  padding: 10px;
+}
+
+.margin-5 {
+  margin: 5px;
+}
+
+.center-x {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
 .center-abs-y {
   position: absolute;
   top: 50%;

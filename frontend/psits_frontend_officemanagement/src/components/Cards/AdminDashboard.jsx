@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "../Utils/Calendar";
 import {
+  DownloadCSV,
   Get5DaysBefore,
   getMinimumDateLogged,
 } from "../../utilities/server_utils";
+import Button from "../Utils/Button";
 
 function AdminDashboard({ className }) {
   const [data, setData] = useState(null);
@@ -42,6 +44,24 @@ function AdminDashboard({ className }) {
     <div className={`adminCard ${className}`}>
       <div className="card">
         <h1>Office Logs</h1>
+        <div className="text-right">
+          <Button
+            className={"button-blue margin-5"}
+            onClick={() => {
+              DownloadCSV(data);
+            }}
+          >
+            CSV
+          </Button>
+          <Button
+            className={"button-blue margin-5"}
+            onClick={() => {
+              location.href = "/timelog";
+            }}
+          >
+            Time Log Request
+          </Button>
+        </div>
         <div className="flex">
           <label htmlFor="datePicker">Select date: </label>
           <input
@@ -58,10 +78,10 @@ function AdminDashboard({ className }) {
           <Calendar calendarData={data} />
         ) : (
           <div className="dashboard-loader">
-            <div class="three-body">
-              <div class="three-body__dot"></div>
-              <div class="three-body__dot"></div>
-              <div class="three-body__dot"></div>
+            <div className="three-body">
+              <div className="three-body__dot"></div>
+              <div className="three-body__dot"></div>
+              <div className="three-body__dot"></div>
             </div>
           </div>
         )}
