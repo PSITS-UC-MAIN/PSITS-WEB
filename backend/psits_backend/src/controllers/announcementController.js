@@ -22,7 +22,7 @@ export const createAnnouncement = async (req, res) => {
     newBody = JSON.parse(req.body.announcement);
 
     const response = await formatImage(req.file);
-    
+
     newBody.image = response.image;
     newBody.imagePublicId = response.imagePublicId;
   }
@@ -59,9 +59,11 @@ export const deleteAnnouncementbyId = async (req, res) => {
   //TODO: Validation for params
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
 
-  const findAnnouncement = await Announcement.find({ _id: req.params.announcementId });
+  const findAnnouncement = await Announcement.find({
+    _id: req.params.announcementId,
+  });
 
-  await cloudinary.uploader.destroy(findAnnouncement[0]?.imagePublicId)
+  await cloudinary.uploader.destroy(findAnnouncement[0].imagePublicId);
 
   //TODO: Validation for body data
   const removedAnnouncement = await Announcement.findOneAndDelete({
