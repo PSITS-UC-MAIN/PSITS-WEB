@@ -36,6 +36,7 @@ import darelle from "./devs/cursezuc.jpg";
 import jay from "./devs/Jay.jpg";
 import pia from "./devs/Pia.jpg";
 import fire from "./devs/giphy.gif";
+import underconstruct from "./under-construct.svg";
 
 export {
   psits_banner,
@@ -76,4 +77,5 @@ export {
   jay,
   pia,
   fire,
+  underconstruct,
 };
