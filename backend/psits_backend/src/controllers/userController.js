@@ -17,12 +17,11 @@ export const updateCurrentUser = async (req, res) => {
   delete newUser.avatar;
 
   if (req.file) {
-    const file = formatImage(req.file);
+    const file = await formatImage(req.file);
     newUser = JSON.parse(req.body.user);
-    // upload the image to cloudinary
-    const response = await cloudinary.uploader.upload(file);
-    newUser.avatar = response.secure_url;
-    newUser.avatarPublicId = response.public_id;
+
+    newUser.avatar = file.image;
+    newUser.avatarPublicId = file.imagePublicId;
   }
 
   const updatedUser = await User.findOneAndUpdate(
