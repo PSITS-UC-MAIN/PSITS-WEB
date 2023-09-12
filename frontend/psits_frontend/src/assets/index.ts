@@ -47,7 +47,7 @@ import ferolino from "./faculty/ferolino.png";
 import durano from "./faculty/durano.png";
 import ybanez from "./faculty/Ybanez.png";
 import emptycart from "./undraw_empty_cart_co35.svg";
-import emptyorders from "./undraw_payments_re_77x0.svg";;
+import emptyorders from "./undraw_payments_re_77x0.svg";
 
 export {
   psits_banner,
