@@ -138,7 +138,7 @@ const Cart = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="link" className="relative">
+        <Button variant="link" className="m-0 p-0">
           <ShoppingCart color="#fff" />
           <span
             className={
@@ -279,8 +279,7 @@ const Cart = () => {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Confirm your order?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This action will create an order and redirect you to your orders
-                    directly.
+                    This action will create an order and redirect you to your orders directly.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

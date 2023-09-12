@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, Package2, User } from "lucide-react";
+import { LogOut, Package2, ShieldAlert, User } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -42,21 +42,26 @@ const Profile = ({ className }: { className?: string }) => {
     <div className={className}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="cursor-pointer h-[50px] w-[50px]">
-            <Avatar>
-              <AvatarImage
-                src={store.authUser?.avatar}
-                alt="profile-avatar"
-                className="rounded-full hover:border-2 transition"
-              />
-              <AvatarFallback>
-                <User />
-              </AvatarFallback>
-            </Avatar>
-          </div>
+          <Avatar className="h-[40px] w-[40px] sm:h-[50px] sm:w-[50px]">
+            <AvatarImage
+              src={store.authUser?.avatar}
+              alt="profile-avatar"
+              className=" rounded-full h-full w-full object-contain hover:border-2 transition"
+            />
+            <AvatarFallback>
+              <User />
+            </AvatarFallback>
+          </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-40">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Link to="/admin" className="flex items-center">
+              <ShieldAlert className="mr-4 h-6 w-4" />
+              <span className="text-red-400">Admin</span>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link to="/profile" className="flex items-center">

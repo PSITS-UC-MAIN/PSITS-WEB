@@ -25,6 +25,22 @@ const ROUTE = [
   "/admin/routes",
 ];
 
+const handleGenerateRunningText = (n: number) => {
+  const generateRunningText = Array.from({ length: n }, (_, index) => (
+    <div className="truncate flex gap-20 items-center" key={n + index}>
+      <Link to="/merchandise" className="text-[12px] font-bold">
+        BUY OUR MERCH
+      </Link>
+      <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
+      <Link to="https://www.facebook.com/PSITS.UCmain" target="_blank" className="text-[12px] font-bold">
+        VISIT OUR FB PAGE
+      </Link>
+      <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
+    </div>
+  ));
+  return generateRunningText;
+};
+
 const Header = () => {
   const { pathname } = useLocation();
   const { authUser } = useStore();
@@ -32,27 +48,10 @@ const Header = () => {
   // hides the header in admin pages
   if (ROUTE.includes(pathname)) return;
 
-  const handleGenerateRunningText = (n: number) => {
-    const generateRunningText = Array.from({ length: n }, (_, index) => (
-      <div className="truncate flex gap-20 items-center" key={n + index}>
-        <Button className="bg-transparent">
-          <Link to="/merchandise">BUY OUR MERCH</Link>
-        </Button>
-        <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-        <Button className="bg-transparent">
-          <Link to="https://www.facebook.com/PSITS.UCmain" target="_blank">
-            VISIT OUR FB PAGE
-          </Link>
-        </Button>
-        <span className="h-[5px] min-w-[5px] bg-white rounded-full" />
-      </div>
-    ));
-    return generateRunningText;
-  };
 
   return (
     <>
-      <div className="w-full h-[30px] mx-auto overflow-hidden flex justify-start bg-[#1A1A1A]">
+      <div className="w-full h-[40px] mx-auto overflow-hidden flex justify-start bg-[#1A1A1A]">
         <motion.div
           className=" flex gap-20 items-center text-white"
           animate={{ x: -1430 }}
@@ -67,14 +66,15 @@ const Header = () => {
       </div>
 
       <header className="sticky top-0 z-50">
-        <nav className="bg-[#074873] w-full py-6 text-start">
-          <div className="flex items-center justify-between text-white mx-10 xl:mx-[150px]">
+        <nav className="bg-[#074873] w-full sm:py-6 py-4 text-start">
+          <div className="flex items-center justify-between text-white mx-4 xl:mx-[150px]">
             <Link to="/">
               <div className="flex items-center gap-4 cursor-pointer">
-                <div className="max-h-[60px] max-w-[60px]">
-                  <img src="/logo/psits_logo.png" className="max-w-[60px] max-h-[60px]" />
+                <div className="w-[40px] h-[40px] sm:h-[60px] sm:w-[60px]">
+                  <img src="/logo/psits_logo.png" className="w-full h-full object-contain" />
                 </div>
-                <h1 className="hidden sm:block font-semibold text-sm md:text-lg">
+                <span className="sm:hidden font-medium">UC Main - PSITS</span>
+                <h1 className="hidden sm:block font-semibold sm:max:md:text-sm lg:text-md 2xl:text-lg">
                   Philippine Society of Information <br /> Technology Students
                 </h1>
               </div>
@@ -125,16 +125,11 @@ const Header = () => {
               </Button>
             </div>
             <div className="flex gap-4 items-center">
-              {authUser && <Cart />}
-              {authUser && authUser?.isAdmin ? (
+              {authUser ? (
                 <>
-                  <Button className="text-md" variant="ghost" asChild>
-                    <Link to="/admin">Admin</Link>
-                  </Button>
-                  <Profile className="ml-4" />
+                  <Cart />
+                  <Profile className="sm:ml-4 flex items-center" />
                 </>
-              ) : authUser ? (
-                <Profile className="ml-4" />
               ) : (
                 <Button className="text-md" variant="ghost" asChild>
                   <Link to="/login">Login</Link>

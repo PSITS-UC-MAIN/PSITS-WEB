@@ -16,9 +16,7 @@ const HamburgerMenu = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" className="block lg:hidden">
-          <Menu />
-        </Button>
+        <Menu className="sm:hidden" />
       </SheetTrigger>
       <SheetContent side="right">
         <SheetHeader>
