@@ -99,14 +99,15 @@ export const forgotPassword = async (req, res) => {
     id: user._id,
   });
 
-  // // we multiply to 1000 to make it milliseconds
-  // const oneHour = 1000 * 60 * 60;
+  // we multiply to 1000 to make it milliseconds
+  const oneHour = 1000 * 60 * 60;
 
-  // res.cookie("token", token, {
-  //   httpOnly: true,
-  //   expires: new Date(Date.now() + oneHour),
-  //   secure: process.env.NODE_ENV === "production",
-  // });
+  res.cookie("token", token, {
+    httpOnly: true,
+    expires: new Date(Date.now() + oneHour),
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+  });
 
   try {
     sendMail({
@@ -128,7 +129,6 @@ export const forgotPassword = async (req, res) => {
 export const resetPassword = async (req, res) => {
   const { token } = req.params;
 
-  console.log(req.body);
   const hashedPassword = await hashPassword(req.body.password);
   req.body.password = hashedPassword;
 
