@@ -46,7 +46,7 @@ const Profile = ({ className }: { className?: string }) => {
             <AvatarImage
               src={store.authUser?.avatar}
               alt="profile-avatar"
-              className="rounded-full h-[40px] w-[40px] sm:h-[50px] sm:w-[50px] object-contain hover:border-2 transition"
+              className="rounded-full h-[40px] w-[40px] sm:h-[50px] sm:w-[50px] object-cover hover:border-2 transition"
             />
             <AvatarFallback>
               <User className="rounded-full text-white"/>

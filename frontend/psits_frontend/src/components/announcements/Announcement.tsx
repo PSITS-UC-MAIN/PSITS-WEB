@@ -140,7 +140,7 @@ const Announcement = ({
               className="mb-4 w-full border rounded shadow p-6 cursor-pointer flex items-center gap-4"
             >
               <Avatar>
-                <AvatarImage src={store.authUser.avatar} />
+                <AvatarImage src={store.authUser.avatar}  className="object-cover"/>
                 <AvatarFallback>
                   <User />
                 </AvatarFallback>

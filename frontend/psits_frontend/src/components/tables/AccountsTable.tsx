@@ -40,7 +40,7 @@ const AccountsTable = () => {
             {data?.map((user: any) => (
               <TableRow key={user._id}>
                 <TableCell>
-                  <img src={user.avatar} className="w-[50px] h-[50px]" />
+                  <img src={user.avatar} className="w-[50px] h-[50px] object-cover rounded-full" />
                 </TableCell>
                 <TableCell>{user.userId}</TableCell>
                 <TableCell>{user.rfid}</TableCell>
