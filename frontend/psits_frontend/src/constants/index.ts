@@ -28,7 +28,6 @@ import {
   darelle,
   jay,
   pia,
-  fire,
   amores,
   barral,
   codera,
@@ -444,14 +443,12 @@ export const psitsWebDevelopers = [
     name: "Kean Jieden Villaflor",
     position: "Team Lead - UI/UX - Dev",
     image: kean,
-    gif: fire,
   },
   {
     id: 3,
     name: "Darelle Gochuico",
     position: "Developer",
     image: darelle,
-    gif: fire,
   },
   {
     id: 4,

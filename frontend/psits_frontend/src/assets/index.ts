@@ -31,11 +31,10 @@ import irep from "./officers/Chenzy.jpg";
 import iirep from "./officers/Princess.jpg";
 import iiirep from "./officers/Pia.jpg";
 import ivrep from "./officers/Lars.jpg";
-import kean from "./devs/lilbeast.png";
+import kean from "./devs/kean.jpeg";
 import darelle from "./devs/cursezuc.jpg";
 import jay from "./devs/Jay.jpg";
 import pia from "./devs/Pia.jpg";
-import fire from "./devs/giphy.gif";
 import underconstruct from "./under-construct.svg";
 import amores from "./faculty/amores.png";
 import barral from "./faculty/barral.jpg";
@@ -87,7 +86,6 @@ export {
   darelle,
   jay,
   pia,
-  fire,
   underconstruct,
   amores,
   barral,

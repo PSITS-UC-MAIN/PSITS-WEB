@@ -22,7 +22,6 @@ const Developers = () => {
                 <div className="p-2 flex flex-col gap-4">
                   <div className="border-2 rounded h-[300px]">
                     <img src={dev.image} className="h-full w-full object-cover" />
-                    <img src={dev.gif} className="relative -top-[500px] -z-10 h-[300px]" />
                   </div>
                   <h1 className="text-xl font-semibold">{dev.name}</h1>
                 </div>
