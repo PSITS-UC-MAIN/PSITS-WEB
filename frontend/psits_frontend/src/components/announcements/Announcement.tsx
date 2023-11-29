@@ -30,8 +30,8 @@ interface Announcement {
 }
 
 const AnnouncementSchema = z.object({
-  title: z.string().min(4),
-  content: z.string().min(4),
+  title: z.string().min(4).max(50),
+  content: z.string().min(4).max(1000),
   images: z.any(),
 });
 
