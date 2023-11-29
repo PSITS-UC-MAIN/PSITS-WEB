@@ -42,14 +42,14 @@ const Profile = ({ className }: { className?: string }) => {
     <div className={className}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Avatar className="h-[40px] w-[40px] sm:h-[50px] sm:w-[50px]">
+          <Avatar className="">
             <AvatarImage
               src={store.authUser?.avatar}
               alt="profile-avatar"
-              className=" rounded-full h-full w-full object-contain hover:border-2 transition"
+              className="rounded-full h-[40px] w-[40px] sm:h-[50px] sm:w-[50px] object-contain hover:border-2 transition"
             />
             <AvatarFallback>
-              <User />
+              <User className="rounded-full text-white"/>
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
