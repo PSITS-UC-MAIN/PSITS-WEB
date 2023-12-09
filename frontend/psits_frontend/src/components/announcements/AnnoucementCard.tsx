@@ -126,7 +126,7 @@ const AnnoucementCard = ({ id, title, author, content, creationDate, images, aut
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Avatar>
-              <AvatarImage src={authorImage} className="rounded-full w-[50px]" />
+              <AvatarImage src={authorImage} className="rounded-full object-cover w-[50px] h-[50px]" />
               <AvatarFallback>
                 <User />
               </AvatarFallback>

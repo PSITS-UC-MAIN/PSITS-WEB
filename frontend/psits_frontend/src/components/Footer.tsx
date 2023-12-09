@@ -1,9 +1,25 @@
+import { Link, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+
 import { footer_about_us, footer_announcement, footer_collaborate, footer_help } from "@/assets";
 import { Separator } from "./ui/separator";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+
+const ROUTE = [
+  "/admin",
+  "/admin/accounts",
+  "/admin/events",
+  "/admin/merchandise",
+  "/admin/orders",
+  "/admin/announcements",
+  "/admin/routes",
+];
 
 const Footer = () => {
+
+  const { pathname } = useLocation();
+    // hides the footer in admin pages
+    if (ROUTE.includes(pathname)) return;
+
   return (
     <footer className="bg-[#074873] text-white pb-4 py-[100px]">
       <div className="flex justify-center items-center gap-20 flex-wrap">

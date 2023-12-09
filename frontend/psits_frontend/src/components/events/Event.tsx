@@ -30,8 +30,8 @@ interface Event {
 }
 
 const EventSchema = z.object({
-  title: z.string().min(4),
-  content: z.string().min(4),
+  title: z.string().min(4).max(50),
+  content: z.string().min(4).max(500),
   eventDate: z.date(),
 });
 
@@ -160,7 +160,7 @@ const Event = ({ events, isLoading, isError }: { events: Event[]; isLoading: boo
               className="w-full mb-4 border rounded shadow p-6 cursor-pointer flex items-center gap-4"
             >
               <Avatar>
-                <AvatarImage src={store.authUser.avatar} />
+                <AvatarImage src={store.authUser.avatar} className="object-cover"/>
                 <AvatarFallback>
                   <User />
                 </AvatarFallback>
