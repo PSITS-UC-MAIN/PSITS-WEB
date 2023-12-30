@@ -5,6 +5,7 @@ import { AlertCircle, Loader2Icon } from "lucide-react";
 import { Select, SelectContent, SelectGroup, SelectLabel, SelectTrigger, SelectValue, SelectItem } from "../ui/select";
 import useStore from "@/store";
 import { toast } from "react-toastify";
+import { Button } from "../ui/button";
 
 const OrdersTable = () => {
   const store = useStore();
@@ -44,6 +45,7 @@ const OrdersTable = () => {
             <TableHead>Order Status</TableHead>
             <TableHead>Order Date</TableHead>
             <TableHead>Additional Info</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         {isLoading ? (
@@ -87,6 +89,9 @@ const OrdersTable = () => {
                   </TableCell>
                   <TableCell>{item.orderDate}</TableCell>
                   <TableCell>{item.additionalInfo == "" ? "No remark" : item.additionalInfo}</TableCell>
+                  <TableCell>
+                    <Button>View Order</Button>
+                  </TableCell>
                 </TableRow>
               );
             })}

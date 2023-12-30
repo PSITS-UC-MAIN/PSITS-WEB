@@ -24,6 +24,7 @@ const AccountsTable = () => {
             <TableHead>Email</TableHead>
             <TableHead>Course</TableHead>
             <TableHead>Year</TableHead>
+            <TableHead>Role</TableHead>
           </TableRow>
         </TableHeader>
         {isLoading ? (
@@ -37,20 +38,24 @@ const AccountsTable = () => {
           </div>
         ) : (
           <TableBody>
-            {data?.map((user: any) => (
-              <TableRow key={user._id}>
-                <TableCell>
-                  <img src={user.avatar} className="w-[50px] h-[50px] object-cover rounded-full" />
-                </TableCell>
-                <TableCell>{user.userId}</TableCell>
-                <TableCell>{user.rfid}</TableCell>
-                <TableCell>{user.firstname}</TableCell>
-                <TableCell>{user.lastname}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.course}</TableCell>
-                <TableCell>{user.year}</TableCell>
-              </TableRow>
-            ))}
+            {data?.map((user: any) => {
+              const role = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+              return (
+                <TableRow key={user._id}>
+                  <TableCell>
+                    <img src={user.avatar} className="w-[50px] h-[50px] object-cover rounded-full" />
+                  </TableCell>
+                  <TableCell>{user.userId}</TableCell>
+                  <TableCell>{user.rfid}</TableCell>
+                  <TableCell>{user.firstname}</TableCell>
+                  <TableCell>{user.lastname}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.course}</TableCell>
+                  <TableCell>{user.year}</TableCell>
+                  <TableCell>{role}</TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         )}
       </Table>

@@ -38,29 +38,35 @@ const Orders = () => {
   };
 
   return (
-    <Wrapper title="PSITS | My Orders" className="my-20 sm:mx-[20%] mx-5" noMargin>
+    <Wrapper title="PSITS | My Orders" className="my-20 sm:mx-[25%] mx-5" noMargin>
       {orderData?.userOrders?.length > 0 ? (
         orderData?.userOrders?.map((order: any) => (
-          <div className="flex flex-col gap-y-5 shadow-lg border-2 p-5 mb-10" key={order._id}>
-            <div className="flex flex-row items-center gap-x-3">
+          <div className="flex flex-col shadow border rounded p-4 mb-10" key={order._id}>
+            <div className="flex items-center gap-x-2">
               <span className="font-medium text-xs sm:text-2xl">Order ID:</span>
               <span className="font-medium text-base sm:text-2xl">{order._id}</span>
-              <span className="text-gray-500 font-light text-[70%] sm:text-lg">{order.orderStatus}</span>
+              <span
+                className={`${
+                  order.orderStatus == "CANCELLED" ? "text-red-500" : "text-gray-500"
+                } font-light text-[70%] sm:text-lg`}
+              >
+                {order.orderStatus}
+              </span>
             </div>
             <div className="flex flex-row items-center gap-x-3 text-[#58A536]">
               <CalendarPlus color="#58A536" strokeWidth={2} />
               <span className="font-medium text-xs sm:text-xl">Order Date:</span>
               <span className="font-medium text-base sm:text-xl">{handleDateFormat(order.orderDate, 0)}</span>
             </div>
-            <Separator />
+            <Separator className="my-4" />
             {order?.cartItems?.map((item: any) => (
               <div className="flex flex-col" key={item._id}>
-                <div className="flex flex-row items-center justify-between gap-x-5">
-                  <div className="flex flex-row items-center gap-x-5">
+                <div className="flex flex-row items-center justify-between gap-x-4">
+                  <div className="flex flex-row items-center gap-x-4">
                     <img
                       src={item.image}
                       alt="Product Image"
-                      className="h-[100px] sm:h-[150px] w-[100px] sm:w-[150px] rounded-lg p-3 bg-[#fafafa] border-2 border-gray-150"
+                      className="h-[100px] sm:h-[120px] w-[100px] sm:w-[120px] rounded-lg p-3 bg-[#fafafa] border-2 border-gray-150"
                     />
                     <div className="flex flex-col gap-y-3">
                       <span className="text-sm sm:text-lg">{item.name}</span>
@@ -81,30 +87,30 @@ const Orders = () => {
                 </div>
               </div>
             ))}
-            <Separator />
-            <div className="flex flex-row justify-end">
-              <span className="text-base sm:text-2xl font-semibold">ORDER SUMMARY</span>
+            <Separator className="my-4" />
+            <div className="flex justify-end">
+              <span className="text-base sm:text-xl font-semibold mb-2">ORDER SUMMARY</span>
             </div>
-            <div className="flex flex-row items-center justify-end gap-x-10">
-              <span className="text-xs sm:text-xl">Subtotal</span>
-              <span className="text-xs sm:text-xl">
+            <div className="flex items-center justify-end gap-x-5">
+              <span className="text-xs sm:text-lg">Subtotal</span>
+              <span className="text-xs sm:text-lg">
                 &#8369;&nbsp;
                 {order?.cartItems?.reduce((total: any, item: any) => {
                   return total + item.price * item.quantity;
                 }, 0)}
               </span>
             </div>
-            <div className="flex flex-row items-center justify-end gap-x-10">
-              <span className="text-xs sm:text-xl">Total</span>
-              <span className="text-xs sm:text-xl">
+            <div className="flex items-center justify-end gap-x-5">
+              <span className="text-xs sm:text-lg">Total</span>
+              <span className="text-xs sm:text-lg">
                 &#8369;&nbsp;
                 {order?.cartItems?.reduce((total: any, item: any) => {
                   return total + item.price * item.quantity;
                 }, 0)}
               </span>
             </div>
-            <Separator />
-            <div className="flex">
+            <Separator className="my-4" />
+            <div className="flex mb-4">
               <span className="text-[60%] sm:text-xs text-gray-500 font-light">
                 {order.additionalInfo == "" && "You may disregard this remark"}
               </span>
@@ -115,7 +121,7 @@ const Orders = () => {
               disabled={
                 order.orderStatus == "CANCELLED" ||
                 order.orderStatus == "CLAIMED" ||
-                (order.orderStatus == "PENDING" && true)
+                (order.orderStatus == "ORDERDED")
               }
             >
               CANCEL
