@@ -21,10 +21,10 @@ const CartSchema = new mongoose.Schema({
   },
   color: String,
   image: String,
-  name: String
-})
+  name: String,
+});
 
-export { CartSchema }
+export { CartSchema };
 
 const UserSchema = new mongoose.Schema({
   avatar: {
@@ -77,6 +77,11 @@ const UserSchema = new mongoose.Schema({
   isAdmin: {
     type: Boolean,
     default: false,
+  },
+  role: {
+    type: String,
+    enum: ["user", "admin", "dev"],
+    default: "user",
   },
   showPublic: {
     type: Boolean,

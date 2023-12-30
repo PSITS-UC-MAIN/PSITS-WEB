@@ -10,18 +10,18 @@ const OrderModel = new mongoose.Schema({
   },
   orderDate: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   cartItems: [CartSchema],
   orderStatus: {
     type: String,
     enum: ["ORDERED", "PENDING", "CLAIMED", "CANCELLED"],
-    default: "ORDERED",
+    default: "PENDING",
   },
   additionalInfo: {
     type: String,
-    default: ""
-  }
+    default: "",
+  },
 });
 
 export default mongoose.model("Order", OrderModel);

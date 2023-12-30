@@ -24,6 +24,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Separator } from "../ui/separator";
 
 const Cart = () => {
   const store = useStore();
@@ -143,155 +144,150 @@ const Cart = () => {
           <span
             className={
               cart?.length > 0 && cart[0].cart.length < 1
-                ? "absolute top-[-5px] end-[-5px] bg-red-600 text-white font-bold rounded-full p-1 text-[15px] px-3 hidden"
-                : "absolute top-[-5px] end-[-5px] bg-red-600 text-white font-bold rounded-full p-1 text-[15px] px-3"
+                ? "hidden"
+                : "relative top-[-20px] right-[-2px] bg-red-500 text-white font-bold rounded-full sm:py-[1.5px] px-1 py-[0.5px] sm:text-sm text-xs sm:px-2"
             }
           >
-            {cart?.length > 0 && cart[0].cart.length}
+            {cart?.length > 0 ? cart[0].cart.length : ""}
           </span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[95%] sm:max-w-[80%] min-h-[80%] max-h-[95%] bg-[#fff] text-sm">
-        <div className="flex flex-col mt-10">
-          <ScrollArea className="max-h-[55%] sm:max-h-[75%] h-[800px] w-full rounded-md">
-            {cart?.length > 0 && cart[0]?.cart?.length > 0 ? (
-              cart?.map(
-                (cart: any) =>
-                  cart?.cart?.map((item: any) => (
-                    <div className="flex flex-col mb-10 shadow-lg border-2 py-5 rounded-lg" key={item._id}>
-                      <div className="grid grid-cols-1 sm:grid-cols-6 flex-wrap justify-items-center gap-y-10 my-5 mx-5">
-                        <div className="flex flex-col items-center w-full sm:w-[200px]">
-                          <img
-                            src={item.image}
-                            alt="Product Image"
-                            className="w-[150px] h-[150px] rounded-lg p-3 border-2"
-                          />
-                          <span>{item.name}</span>
-                        </div>
-                        <div className="flex items-center justify-center">
-                          {item.size != "" && (
-                            <Select>
-                              <SelectTrigger className="w-[260px] sm:w-[150px]">
-                                <SelectValue placeholder={item.size.charAt(0).toUpperCase() + item.size.slice(1)} />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectGroup>
-                                  <SelectLabel>Sizes</SelectLabel>
-                                  {merch?.merchandise?.map(
-                                    (merchItem: any) =>
-                                      merchItem._id === item.merchId &&
-                                      merchItem.size.split(",").map((item: any) => (
-                                        <SelectItem
-                                          key={Date.now() + merchItem._id + item}
-                                          value={item}
-                                          onMouseDown={() => handleSizeSelect(item, merchItem)}
-                                        >
-                                          {item.charAt(0).toUpperCase() + item.slice(1)}
-                                        </SelectItem>
-                                      )),
-                                  )}
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
-                          )}
-                        </div>
-                        <div className="flex items-center justify-center">
-                          {item.color != "" && (
-                            <Select>
-                              <SelectTrigger className="w-[260px] sm:w-[150px]">
-                                <SelectValue placeholder={item.color.charAt(0).toUpperCase() + item.color.slice(1)} />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectGroup>
-                                  <SelectLabel>Colors</SelectLabel>
-                                  {merch?.merchandise?.map(
-                                    (merchItem: any) =>
-                                      merchItem._id === item.merchId &&
-                                      merchItem.color.split(",").map((item: any) => (
-                                        <SelectItem
-                                          key={Date.now() + item}
-                                          value={item}
-                                          onMouseDown={() => handleColorSelect(item, merchItem)}
-                                        >
-                                          {item.charAt(0).toUpperCase() + item.slice(1)}
-                                        </SelectItem>
-                                      )),
-                                  )}
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
-                          )}
-                        </div>
-                        <div className="flex flex-row gap-x-20 sm:gap-x-5 items-center justify-center">
-                          <Button onClick={() => handleOnClickDecrement(item.merchId)}>
-                            <Minus size={15} />
-                          </Button>
-                          <span>{item.quantity}</span>
-                          <Button onClick={() => handleOnClickIncrement(item.merchId)}>
-                            <Plus size={15} />
-                          </Button>
-                        </div>
-                        <div className="flex items-center">
-                          <span className="text-center">&#8369;{item.price}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Button
-                            className="bg-red-600 w-[260px] sm:w-[100%]"
-                            onClick={() => handleRemoveFromCart(item.merchId)}
-                          >
-                            <Trash size={20} />
-                          </Button>
-                        </div>
+      <DialogContent className="max-w-[90%] max-h-[90%] md:h-[700px] md:w-[70%] flex flex-col bg-white text-sm justify-between">
+        <ScrollArea className="mt-4 w-full rounded-md">
+          {cart?.length > 0 && cart[0]?.cart?.length > 0 ? (
+            cart?.map(
+              (cart: any) =>
+                cart?.cart?.map((item: any) => (
+                  <div className="flex flex-col mb-4 border py-4 rounded" key={item._id}>
+                    <div className="grid grid-cols-1 sm:grid-cols-6 flex-wrap justify-items-center gap-y-4">
+                      <div className="flex flex-col gap-2 items-center w-full sm:w-[200px]">
+                        <img
+                          src={item.image}
+                          alt="Product Image"
+                          className="w-[100px] h-[100px] rounded-lg p-3 border-2"
+                        />
+                        <span>{item.name}</span>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        {item.size != "" && (
+                          <Select>
+                            <SelectTrigger className="w-[260px] sm:w-[150px]">
+                              <SelectValue placeholder={item.size.charAt(0).toUpperCase() + item.size.slice(1)} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectLabel>Sizes</SelectLabel>
+                                {merch?.merchandise?.map(
+                                  (merchItem: any) =>
+                                    merchItem._id === item.merchId &&
+                                    merchItem.size.split(",").map((item: any) => (
+                                      <SelectItem
+                                        key={Date.now() + merchItem._id + item}
+                                        value={item}
+                                        onMouseDown={() => handleSizeSelect(item, merchItem)}
+                                      >
+                                        {item.charAt(0).toUpperCase() + item.slice(1)}
+                                      </SelectItem>
+                                    )),
+                                )}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        )}
+                      </div>
+                      <div className="flex items-center justify-center">
+                        {item.color != "" && (
+                          <Select>
+                            <SelectTrigger className="w-[260px] sm:w-[150px]">
+                              <SelectValue placeholder={item.color.charAt(0).toUpperCase() + item.color.slice(1)} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectLabel>Colors</SelectLabel>
+                                {merch?.merchandise?.map(
+                                  (merchItem: any) =>
+                                    merchItem._id === item.merchId &&
+                                    merchItem.color.split(",").map((item: any) => (
+                                      <SelectItem
+                                        key={Date.now() + item}
+                                        value={item}
+                                        onMouseDown={() => handleColorSelect(item, merchItem)}
+                                      >
+                                        {item.charAt(0).toUpperCase() + item.slice(1)}
+                                      </SelectItem>
+                                    )),
+                                )}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        )}
+                      </div>
+                      <div className="flex flex-row gap-x-20 sm:gap-x-5 items-center justify-center">
+                        <Button onClick={() => handleOnClickDecrement(item.merchId)}>
+                          <Minus size={15} />
+                        </Button>
+                        <span>{item.quantity}</span>
+                        <Button onClick={() => handleOnClickIncrement(item.merchId)}>
+                          <Plus size={15} />
+                        </Button>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-center">&#8369;{item.price}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Button
+                          className="bg-red-600 w-[260px] sm:w-[100%]"
+                          onClick={() => handleRemoveFromCart(item.merchId)}
+                        >
+                          <Trash size={20} />
+                        </Button>
                       </div>
                     </div>
-                  )),
-              )
-            ) : (
-              <div className="flex flex-col items-center justify-center text-center">
-                <img
-                  className="md:max-w-[600px] sm:max-w-[400px] block mb-8"
-                  src={emptycart}
-                  alt="under-construction"
-                />
-                <h3 className="text-xl md:text-3xl font-bold mb-4">Looks like your cart is empty!</h3>
-              </div>
-            )}
-          </ScrollArea>
-          <form className="flex flex-col mt-10 gap-y-5 text-base sm:h-0 h-[200px]">
-            <div className="flex justify-end">
-              <span className="font-semibold">PRICE SUMMARY</span>
+                  </div>
+                )),
+            )
+          ) : (
+            <div className="flex flex-col items-center justify-center text-center">
+              <img className="md:max-w-[400px] block mb-8" src={emptycart} alt="under-construction" />
+              <h3 className="text-xl md:text-3xl font-bold mb-4">Looks like your cart is empty!</h3>
             </div>
-            <div className="flex flex-row justify-end gap-x-5">
-              <span>Cart Total:</span>
-              <span>&#8369;&nbsp;{totalPrice}</span>
-            </div>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  type="button"
-                  className="bg-[#268EA7] hover:bg-[#3da7c2] w-full mt-5"
-                  disabled={cart && cart.length > 0 && cart[0].cart.length > 0 ? false : true}
-                >
-                  {isLoading ? <Loader2 className=" animate-spin" /> : "CONFIRM ORDER"}
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Confirm your order?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action will create an order and redirect you to your orders directly.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleConfirmOrder} className="bg-[#074873] hover:bg-[#2d7db3]">
-                    Continue
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </form>
-        </div>
+          )}
+        </ScrollArea>
+        <form className="flex flex-col gap-y-4 text-base">
+          <Separator className="" />
+          <div className="flex justify-end">
+            <span className="font-semibold">PRICE SUMMARY</span>
+          </div>
+          <div className="flex flex-row justify-end gap-x-2">
+            <span>Cart Total:</span>
+            <span>&#8369;&nbsp;{totalPrice}</span>
+          </div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                type="button"
+                className="bg-[#268EA7] hover:bg-[#3da7c2] w-full mt-5"
+                disabled={cart && cart.length > 0 && cart[0].cart.length > 0 ? false : true}
+              >
+                {isLoading ? <Loader2 className=" animate-spin" /> : "CONFIRM ORDER"}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Confirm your order?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action will create an order and redirect you to your orders directly.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleConfirmOrder} className="bg-[#074873] hover:bg-[#2d7db3]">
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </form>
       </DialogContent>
     </Dialog>
   );
