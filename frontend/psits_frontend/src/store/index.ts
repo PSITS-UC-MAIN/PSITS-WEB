@@ -12,6 +12,7 @@ interface Register {
   isAdmin: string;
   course: string;
   year: string;
+  role: string;
 }
 type Store = {
   authUser: Register | null;

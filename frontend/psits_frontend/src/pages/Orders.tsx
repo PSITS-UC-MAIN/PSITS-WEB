@@ -115,17 +115,17 @@ const Orders = () => {
                 {order.additionalInfo == "" && "You may disregard this remark"}
               </span>
             </div>
-            <Button
-              className="bg-red-600 hover:bg-red-500"
-              onClick={() => handleUpdateStatus(order._id)}
-              disabled={
-                order.orderStatus == "CANCELLED" ||
-                order.orderStatus == "CLAIMED" ||
-                (order.orderStatus == "ORDERDED")
-              }
-            >
-              CANCEL
-            </Button>
+            {order.orderStatus == "PENDING" && (
+              <Button
+                className="bg-red-600 hover:bg-red-500"
+                onClick={() => handleUpdateStatus(order._id)}
+                disabled={
+                  order.orderStatus == "CANCELLED" || order.orderStatus == "CLAIMED" || order.orderStatus == "ORDERDED"
+                }
+              >
+                CANCEL
+              </Button>
+            )}
           </div>
         ))
       ) : (

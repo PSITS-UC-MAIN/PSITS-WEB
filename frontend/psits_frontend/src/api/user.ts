@@ -10,8 +10,13 @@ export async function updateCurrentUser(data: any) {
   return response.data;
 }
 
-export async function getAllUser() {
-  const response = await axios.get(`user`);
+export async function getAllUser(search: string, page: number) {
+  const response = await axios.get(`user?page=${page}&search=${search}`);
+  return response.data;
+}
+
+export async function getAllUserPublic() {
+  const response = await axios.get(`user/public`);
   return response.data.users;
 }
 

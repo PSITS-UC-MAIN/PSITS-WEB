@@ -4,10 +4,13 @@ import {
   getCurrentUser,
   updateCurrentUser,
   getAllUser,
+  getAllUserPublic,
   getUserbyId,
   updateUserbyId,
   deleteUserbyId,
 } from "../controllers/userController.js";
+
+import { authenticateUser } from "../middlewares/authMiddleware.js";
 import {
   validateUserBodyPatch,
   validateUserParam,
@@ -16,15 +19,21 @@ import upload from "../middlewares/multerMiddleware.js";
 
 router
   .route("/current-user")
-  .get(getCurrentUser)
+  .get(authenticateUser, getCurrentUser)
   .patch(upload.single("avatar"), updateCurrentUser);
 
-router.route("/").get(getAllUser);
+router.route("/").get(authenticateUser, getAllUser);
+router.route("/public").get(getAllUserPublic);
 
 router
   .route("/:userId")
-  .get(validateUserParam, getUserbyId)
-  .patch(validateUserParam, validateUserBodyPatch, updateUserbyId)
-  .delete(validateUserParam, deleteUserbyId);
+  .get(authenticateUser, validateUserParam, getUserbyId)
+  .patch(
+    authenticateUser,
+    validateUserParam,
+    validateUserBodyPatch,
+    updateUserbyId
+  )
+  .delete(authenticateUser, validateUserParam, deleteUserbyId);
 
 export default router;

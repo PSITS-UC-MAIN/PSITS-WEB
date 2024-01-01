@@ -12,7 +12,7 @@ const AdminLayout = () => {
   const store = useStore();
 
   useEffect(() => {
-    if (!store.authUser?.isAdmin) {
+    if (!store.authUser?.isAdmin || store.authUser?.role === "user") {
       toast.error("You are not authorize to access that site.");
       navigate("/");
       return;

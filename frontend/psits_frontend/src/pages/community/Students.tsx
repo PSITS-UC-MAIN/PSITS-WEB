@@ -1,7 +1,7 @@
 import Wrapper from "@/components/Wrapper";
 import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { getAllUser } from "@/api/user";
+import { getAllUserPublic } from "@/api/user";
 import { motion } from "framer-motion";
 import { AlertCircle, Loader2Icon } from "lucide-react";
 
@@ -10,10 +10,9 @@ const Students = () => {
     data: students,
     isLoading,
     isError,
-  } = useQuery(["users"], getAllUser, {
+  } = useQuery(["users"], getAllUserPublic, {
     select(studentsData) {
-      const filteredStudents = studentsData.filter((student: any) => student.showPublic === true);
-      return filteredStudents;
+      return studentsData;
     },
   });
 

@@ -38,8 +38,44 @@ export const updateCurrentUser = async (req, res) => {
 
 export const getAllUser = async (req, res) => {
   if (!req.user.isAdmin) throw new UnauthorizedError("Unauthorized!");
+  const page = parseInt(req.query.page) - 1 || 0;
+  const limit = parseInt(req.query.limit) || 15;
+  const search = req.query.search || "";
 
-  const users = await User.find({}, "-password"); // hide password
+  const users = await User.find(
+    {
+      $or: [
+        { firstname: { $regex: search } },
+        { lastname: { $regex: search } },
+        { email: { $regex: search } },
+        { role: { $regex: search } },
+      ],
+    },
+    "-password" // hide password
+  )
+    .skip(page * limit)
+    .limit(limit);
+
+  const total = await User.countDocuments({
+    firstname: { $regex: search },
+    lastname: { $regex: search },
+    email: { $regex: search },
+    role: { $regex: search },
+  });
+
+  const response = {
+    error: false,
+    total,
+    page: page + 1,
+    limit,
+    users,
+  };
+
+  res.status(StatusCodes.OK).json(response);
+};
+
+export const getAllUserPublic = async (req, res) => {
+  const users = await User.find({ showPublic: true }, "-password"); // hide password
 
   res.status(StatusCodes.OK).json({ users });
 };

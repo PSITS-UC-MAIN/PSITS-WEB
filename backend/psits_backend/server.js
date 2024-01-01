@@ -41,8 +41,6 @@ cloudinary.config({
 
 let PORT = config.PORT;
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 // middlewares
 app.use(
   cors({
@@ -58,7 +56,7 @@ app.use(compression()); // compresses all routes
 // routes
 app.use("/", homeRouter);
 app.use("/api/v2/auth", v2AuthRouter);
-app.use("/api/v2/user", authenticateUser, v2UserRouter);
+app.use("/api/v2/user", v2UserRouter);
 app.use("/api/v2/announcement", v2AnnouncementRouter);
 app.use("/api/v2/event", v2EventRouter);
 app.use("/api/v2/merch", v2MerchandiseRouter);
