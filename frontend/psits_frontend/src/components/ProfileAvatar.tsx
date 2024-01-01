@@ -49,19 +49,24 @@ const Profile = ({ className }: { className?: string }) => {
               className="rounded-full h-[40px] w-[40px] sm:h-[50px] sm:w-[50px] object-cover hover:border-2 transition"
             />
             <AvatarFallback>
-              <User className="rounded-full text-white"/>
+              <User className="rounded-full text-white" />
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-40">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Link to="/admin" className="flex items-center">
-              <ShieldAlert className="mr-4 h-6 w-4" />
-              <span className="text-red-400">Admin</span>
-            </Link>
-          </DropdownMenuItem>
+          {store.authUser?.role === "admin" ||
+            (store.authUser?.role === "dev" && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Link to="/admin" className="flex items-center">
+                    <ShieldAlert className="mr-4 h-6 w-4" />
+                    <span className="text-red-400">Admin</span>
+                  </Link>
+                </DropdownMenuItem>
+              </>
+            ))}
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link to="/profile" className="flex items-center">
