@@ -8,6 +8,10 @@ const OrderModel = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  orderId: {
+    type: String,
+    required: true,
+  },
   orderDate: {
     type: Date,
     default: Date.now,
