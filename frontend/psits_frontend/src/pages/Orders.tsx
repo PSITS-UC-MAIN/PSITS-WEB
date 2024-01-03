@@ -1,13 +1,14 @@
+import { toast } from "react-toastify";
+import { CalendarPlus } from "lucide-react";
+import { format, parseISO, addDays } from "date-fns";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { getCurrentUserOrders, updateOrder } from "@/api/order";
 import { emptyorders } from "@/assets";
 import Wrapper from "@/components/Wrapper";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useStore from "@/store";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { format, parseISO, addDays } from "date-fns";
-import { CalendarPlus } from "lucide-react";
-import { toast } from "react-toastify";
 
 const Orders = () => {
   const store = useStore();
@@ -42,21 +43,29 @@ const Orders = () => {
       {orderData?.userOrders?.length > 0 ? (
         orderData?.userOrders?.map((order: any) => (
           <div className="flex flex-col shadow border rounded p-4 mb-10" key={order._id}>
-            <div className="flex items-center gap-x-2">
-              <span className="font-medium text-xs sm:text-2xl">Order ID:</span>
-              <span className="font-medium text-base sm:text-2xl">{order._id}</span>
-              <span
-                className={`${
-                  order.orderStatus == "CANCELLED" ? "text-red-500" : "text-gray-500"
-                } font-light text-[70%] sm:text-lg`}
-              >
-                {order.orderStatus}
-              </span>
+            <div className="flex items-center justify-between gap-x-2">
+              <div>
+                <span className="font-medium text-xs sm:text-2xl">Order ID:</span>
+                <span className="font-medium text-base sm:text-2xl">{order.orderId}</span>
+              </div>
+              <div>
+                <span
+                  className={`${
+                    order.orderStatus == "CANCELLED"
+                      ? "text-red-500"
+                      : order.orderStatus === "CLAIMED"
+                      ? "text-green-500"
+                      : "text-yellow-500"
+                  } font-medium text-[70%] sm:text-lg`}
+                >
+                  {order.orderStatus}
+                </span>
+              </div>
             </div>
-            <div className="flex flex-row items-center gap-x-3 text-[#58A536]">
-              <CalendarPlus color="#58A536" strokeWidth={2} />
-              <span className="font-medium text-xs sm:text-xl">Order Date:</span>
-              <span className="font-medium text-base sm:text-xl">{handleDateFormat(order.orderDate, 0)}</span>
+            <div className="flex flex-row items-center gap-x-3">
+              <CalendarPlus strokeWidth={2} />
+              <span className="text-xs sm:text-lg">Order Date:</span>
+              <span className="text-base sm:text-lg">{handleDateFormat(order.orderDate, 0)}</span>
             </div>
             <Separator className="my-4" />
             {order?.cartItems?.map((item: any) => (
@@ -66,7 +75,7 @@ const Orders = () => {
                     <img
                       src={item.image}
                       alt="Product Image"
-                      className="h-[100px] sm:h-[120px] w-[100px] sm:w-[120px] rounded-lg p-3 bg-[#fafafa] border-2 border-gray-150"
+                      className="h-[100px] sm:h-[120px] w-[100px] sm:w-[120px] object-contain rounded-lg p-3 bg-[#fafafa] border-2 border-gray-150"
                     />
                     <div className="flex flex-col gap-y-3">
                       <span className="text-sm sm:text-lg">{item.name}</span>
