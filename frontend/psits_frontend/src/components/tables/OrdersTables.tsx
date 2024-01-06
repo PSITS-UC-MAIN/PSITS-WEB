@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertCircle, Loader2Icon } from "lucide-react";
+import { AlertCircle, CalendarPlus, Loader2Icon, View } from "lucide-react";
 import { format, parseISO, addDays } from "date-fns";
 import { useState } from "react";
 
@@ -10,33 +10,44 @@ import { Select, SelectContent, SelectGroup, SelectLabel, SelectTrigger, SelectV
 import useStore from "@/store";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "../ui/pagination";
+import { Dialog, DialogHeader, DialogTrigger } from "../ui/dialog";
+import ViewOrderModal from "../order/ViewOrderModal";
 
 const OrdersTable = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [orderId, setOrderId] = useState("");
   const store = useStore();
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["order", search, page],
     queryFn: () => getAllOrders(search, page),
-  }); 
+  });
 
   const searchOnChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearch(value)
-  }
+    setSearch(value);
+  };
 
   let totalPages = Math.ceil(data?.total / data?.limit);
 
   const handlePrevPage = () => {
-    if (page > 1) setPage(page => page - 1);
-  }
+    if (page > 1) setPage((page) => page - 1);
+  };
 
   const handleNextPage = () => {
-    if (page < totalPages) setPage(page => page + 1);
-  }
+    if (page < totalPages) setPage((page) => page + 1);
+  };
 
   const { mutate: updateMutate } = useMutation({
     mutationFn: updateOrder,
@@ -60,7 +71,12 @@ const OrdersTable = () => {
 
   return (
     <>
-      <Input value={search} className="w-[300px] mb-4" placeholder="Search any order by id..." onChange={searchOnChangeHandler}/>
+      <Input
+        value={search}
+        className="w-[300px] mb-4"
+        placeholder="Search any order by id or status..."
+        onChange={searchOnChangeHandler}
+      />
       <Table className="rounded-md border">
         <TableCaption>A list of orders.</TableCaption>
         <TableHeader>
@@ -116,7 +132,16 @@ const OrdersTable = () => {
                   <TableCell>{formattedOrderDate}</TableCell>
                   <TableCell>{item.additionalInfo == "" ? "No remark" : item.additionalInfo}</TableCell>
                   <TableCell>
-                    <Button>View Order</Button>
+                    <Dialog open={open} onOpenChange={setOpen}>
+                      <DialogHeader>
+                        <DialogTrigger asChild>
+                          <Button onClick={() => setOrderId(item.orderId)} className="bg-[#268EA7] hover:bg-[#3da7c2]">
+                            View Order
+                          </Button>
+                        </DialogTrigger>
+                      </DialogHeader>
+                      {open && <ViewOrderModal orderId={orderId} />}
+                    </Dialog>
                   </TableCell>
                 </TableRow>
               );
@@ -124,18 +149,19 @@ const OrdersTable = () => {
           </TableBody>
         )}
       </Table>
-      <Pagination className="my-5" >
+      <Pagination className="my-5">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious onClick={handlePrevPage} />
           </PaginationItem>
-          {
-            totalPages > 0 && [...Array(totalPages)].map((val, index) => (
+          {totalPages > 0 &&
+            [...Array(totalPages)].map((val, index) => (
               <PaginationItem key={index}>
-              <PaginationLink onClick={() => setPage(index + 1)} isActive={page === index + 1}>{index + 1}</PaginationLink>
-            </PaginationItem>
-            )) 
-          }
+                <PaginationLink onClick={() => setPage(index + 1)} isActive={page === index + 1}>
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
           <PaginationItem>
             <PaginationNext onClick={handleNextPage} />
           </PaginationItem>

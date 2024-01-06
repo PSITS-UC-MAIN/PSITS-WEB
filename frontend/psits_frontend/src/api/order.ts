@@ -5,6 +5,11 @@ export async function getAllOrders(search: string, page: number) {
   return response.data;
 }
 
+export async function getOrderById(orderId: string) {
+  const response = await axios.get(`order/single/${orderId}`);
+  return response.data.order
+}
+
 export async function getCurrentUserOrders(userId: string) {
   const response = await axios.get(`order/${userId}`);
   return response.data;
