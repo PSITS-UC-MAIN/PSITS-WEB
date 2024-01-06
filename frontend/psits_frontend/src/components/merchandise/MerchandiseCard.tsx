@@ -179,21 +179,21 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
 
   return (
     <motion.div whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-      <Card className="w-[350px]">
+      <Card className="w-[320px]">
         <div className="relative">
           {item?.images.length > 1 ? (
             <Slide indicators>
               {item?.images.map((slideImage) => (
                 <div
                   key={slideImage.imagePublicId}
-                  className="flex items-center justify-center rounded-t h-[400px] bg-contain bg-no-repeat bg-center"
+                  className="flex items-center justify-center rounded-t h-[350px] bg-contain bg-no-repeat bg-center"
                   style={{ backgroundImage: `url(${slideImage.image})` }}
                 />
               ))}
             </Slide>
           ) : (
             <Link to={`/merchandise/${item._id}`}>
-              <img src={item.images[0].image} alt="Product Image" className="rounded-t h-[400px] object-cover" />
+              <img src={item.images[0].image} alt="Product Image" className="rounded-t h-[350px] object-contain" />
             </Link>
           )}
           {store.authUser?.isAdmin && (

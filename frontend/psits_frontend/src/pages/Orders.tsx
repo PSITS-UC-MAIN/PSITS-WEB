@@ -14,7 +14,7 @@ const Orders = () => {
   const store = useStore();
   const queryClient = useQueryClient();
 
-  const { data: orderData } = useQuery({
+  const { data: orderData, isLoading } = useQuery({
     queryKey: ["order"],
     queryFn: () => getCurrentUserOrders(store.authUser?._id || ""),
   });
@@ -45,8 +45,8 @@ const Orders = () => {
           <div className="flex flex-col shadow border rounded p-4 mb-10" key={order._id}>
             <div className="flex items-center justify-between gap-x-2">
               <div>
-                <span className="font-medium text-xs sm:text-2xl">Order ID:</span>
-                <span className="font-medium text-base sm:text-2xl">{order.orderId}</span>
+                <span className="font-medium text-xs sm:text-2xl mr-2">Order ID:</span>
+                <span className="font-medium text-base text-[#074873] sm:text-2xl">{order.orderId}</span>
               </div>
               <div>
                 <span
@@ -69,9 +69,9 @@ const Orders = () => {
             </div>
             <Separator className="my-4" />
             {order?.cartItems?.map((item: any) => (
-              <div className="flex flex-col" key={item._id}>
-                <div className="flex flex-row items-center justify-between gap-x-4">
-                  <div className="flex flex-row items-center gap-x-4">
+              <div className="mb-2" key={item._id}>
+                <div className="flex items-center justify-between gap-x-4">
+                  <div className="flex items-center gap-x-4">
                     <img
                       src={item.image}
                       alt="Product Image"
@@ -96,7 +96,7 @@ const Orders = () => {
                 </div>
               </div>
             ))}
-            <Separator className="my-4" />
+            <Separator className="my-2" />
             <div className="flex justify-end">
               <span className="text-base sm:text-xl font-semibold mb-2">ORDER SUMMARY</span>
             </div>
