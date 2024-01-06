@@ -1,6 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { CartSchema } from "./UserModel.js";
-const Schema = mongoose.Schema;
 
 const OrderModel = new mongoose.Schema({
   userId: {
