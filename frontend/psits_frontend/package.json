@@ -37,6 +37,7 @@
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.2",
+    "html5-qrcode": "^2.3.8",
     "lucide-react": "^0.268.0",
     "react": "^18.2.0",
     "react-cropper": "^2.3.3",
