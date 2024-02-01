@@ -193,7 +193,7 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
             </Slide>
           ) : (
             <Link to={`/merchandise/${item._id}`}>
-              <img src={item.images[0].image} alt="Product Image" className="rounded-t h-[400px] object-cover" />
+              <img src={item.images[0].image} alt="Product Image" className="rounded-t h-[400px] min-w-[100%] object-cover" />
             </Link>
           )}
           {store.authUser?.isAdmin && (
