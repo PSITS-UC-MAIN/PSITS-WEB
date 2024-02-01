@@ -121,6 +121,7 @@ const Cart = () => {
     mutationFn: createOrder,
     onSuccess: (order) => {
       queryClient.invalidateQueries(["order"]);
+      queryClient.invalidateQueries(["cart"])
       toast.success(`${order.msg}`, { position: "bottom-right" });
       setOpen(false);
       navigate("/orders");
