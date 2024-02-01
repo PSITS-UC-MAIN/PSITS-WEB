@@ -8,6 +8,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format, parseISO, addDays } from "date-fns";
 import { CalendarPlus } from "lucide-react";
 import { toast } from "react-toastify";
+import QRCode from "react-qr-code"
+
+export const handleDateFormat = (date: string, days: number) => format(addDays(parseISO(date), days), "MMM d, yyyy hh:mm a");
 
 const Orders = () => {
   const store = useStore();
@@ -29,8 +32,6 @@ const Orders = () => {
     },
   });
 
-  const handleDateFormat = (date: string, days: number) => format(addDays(parseISO(date), days), "PP");
-
   const handleUpdateStatus = (orderId: any) => {
     const userId = store.authUser?._id || "";
     const data = { orderStatus: "CANCELLED", orderId: orderId };
@@ -44,23 +45,23 @@ const Orders = () => {
           <div className="flex flex-col shadow border rounded p-4 mb-10" key={order._id}>
             <div className="flex items-center gap-x-2">
               <span className="font-medium text-xs sm:text-2xl">Order ID:</span>
-              <span className="font-medium text-base sm:text-2xl">{order._id}</span>
+              <span className="font-medium text-xs sm:text-2xl">{order._id}</span>
               <span
                 className={`${
                   order.orderStatus == "CANCELLED" ? "text-red-500" : "text-gray-500"
-                } font-light text-[70%] sm:text-lg`}
+                } font-light text-[60%] sm:text-lg`}
               >
                 {order.orderStatus}
               </span>
             </div>
             <div className="flex flex-row items-center gap-x-3 text-[#58A536]">
-              <CalendarPlus color="#58A536" strokeWidth={2} />
+              <CalendarPlus color="#58A536" strokeWidth={2} size={window.innerWidth < 768 ? 15 : 25} />
               <span className="font-medium text-xs sm:text-xl">Order Date:</span>
-              <span className="font-medium text-base sm:text-xl">{handleDateFormat(order.orderDate, 0)}</span>
+              <span className="font-medium text-xs sm:text-xl">{handleDateFormat(order.orderDate, 0)}</span>
             </div>
             <Separator className="my-4" />
             {order?.cartItems?.map((item: any) => (
-              <div className="flex flex-col" key={item._id}>
+              <div className="flex flex-col my-3" key={item._id}>
                 <div className="flex flex-row items-center justify-between gap-x-4">
                   <div className="flex flex-row items-center gap-x-4">
                     <img
@@ -71,10 +72,10 @@ const Orders = () => {
                     <div className="flex flex-col gap-y-3">
                       <span className="text-sm sm:text-lg">{item.name}</span>
                       <div className="flex flex-row flex-wrap">
-                        <span className="text-xs sm:text-sm text-gray-500">
+                        <span className="text-[60%] sm:text-sm text-gray-500">
                           Color:&emsp;{item.color ? item.color : "N/A"}&emsp;|&emsp;
                         </span>
-                        <span className="text-xs sm:text-sm text-gray-500">
+                        <span className="text-[60%] sm:text-sm text-gray-500">
                           Size:&emsp;{item.size ? item.size : "N/A"}
                         </span>
                       </div>
@@ -88,36 +89,39 @@ const Orders = () => {
               </div>
             ))}
             <Separator className="my-4" />
-            <div className="flex justify-end">
-              <span className="text-base sm:text-xl font-semibold mb-2">ORDER SUMMARY</span>
-            </div>
-            <div className="flex items-center justify-end gap-x-5">
-              <span className="text-xs sm:text-lg">Subtotal</span>
-              <span className="text-xs sm:text-lg">
-                &#8369;&nbsp;
-                {order?.cartItems?.reduce((total: any, item: any) => {
-                  return total + item.price * item.quantity;
-                }, 0)}
-              </span>
-            </div>
-            <div className="flex items-center justify-end gap-x-5">
-              <span className="text-xs sm:text-lg">Total</span>
-              <span className="text-xs sm:text-lg">
-                &#8369;&nbsp;
-                {order?.cartItems?.reduce((total: any, item: any) => {
-                  return total + item.price * item.quantity;
-                }, 0)}
-              </span>
+            <div className="flex flex-row justify-between">
+              <QRCode value={order._id} size={100} />
+              <div className="flex flex-col">
+                <span className="text-sm sm:text-xl font-semibold mb-2">ORDER SUMMARY</span>
+                <div className="flex items-center justify-end gap-x-5">
+                  <span className="text-[60%] sm:text-lg">Subtotal</span>
+                  <span className="text-[60%] sm:text-lg">
+                    &#8369;&nbsp;
+                    {order?.cartItems?.reduce((total: any, item: any) => {
+                      return total + item.price * item.quantity;
+                    }, 0)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-end gap-x-5">
+                  <span className="text-[60%] sm:text-lg">Total</span>
+                  <span className="text-[60%] sm:text-lg">
+                    &#8369;&nbsp;
+                    {order?.cartItems?.reduce((total: any, item: any) => {
+                      return total + item.price * item.quantity;
+                    }, 0)}
+                  </span>
+                </div>
+              </div>
             </div>
             <Separator className="my-4" />
             <div className="flex mb-4">
               <span className="text-[60%] sm:text-xs text-gray-500 font-light">
-                {order.additionalInfo == "" && "You may disregard this remark"}
+                {order.additionalInfo == "" ? "You may disregard this remark": order.additionalInfo}
               </span>
             </div>
-            {order.orderStatus == "PENDING" && (
+            {order.orderStatus == "ORDERED" && (
               <Button
-                className="bg-red-600 hover:bg-red-500"
+                className="bg-red-600 hover:bg-red-500 text-[60%] sm:text-sm"
                 onClick={() => handleUpdateStatus(order._id)}
                 disabled={
                   order.orderStatus == "CANCELLED" || order.orderStatus == "CLAIMED" || order.orderStatus == "ORDERDED"
