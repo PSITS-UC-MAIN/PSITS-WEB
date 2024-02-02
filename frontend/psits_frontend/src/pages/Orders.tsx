@@ -9,6 +9,7 @@ import { format, parseISO, addDays } from "date-fns";
 import { CalendarPlus } from "lucide-react";
 import { toast } from "react-toastify";
 import QRCode from "react-qr-code"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 export const handleDateFormat = (date: string, days: number) => format(addDays(parseISO(date), days), "MMM d, yyyy hh:mm a");
 
@@ -120,15 +121,35 @@ const Orders = () => {
               </span>
             </div>
             {order.orderStatus == "ORDERED" && (
-              <Button
-                className="bg-red-600 hover:bg-red-500 text-[60%] sm:text-sm"
-                onClick={() => handleUpdateStatus(order._id)}
-                disabled={
-                  order.orderStatus == "CANCELLED" || order.orderStatus == "CLAIMED" || order.orderStatus == "ORDERDED"
-                }
-              >
-                CANCEL
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    className="bg-red-600 hover:bg-red-500 text-[60%] sm:text-sm"
+                    disabled={
+                      order.orderStatus == "CANCELLED" || order.orderStatus == "CLAIMED" || order.orderStatus == "ORDERDED"
+                    }
+                  >
+                    CANCEL
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will cancel your order.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-red-600 hover:bg-red-500 text-[60%] sm:text-sm"
+                      onClick={() => handleUpdateStatus(order._id)}
+                    >
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             )}
           </div>
         ))
