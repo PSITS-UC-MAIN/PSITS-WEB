@@ -48,7 +48,6 @@ const Header = () => {
   // hides the header in admin pages
   if (ROUTE.includes(pathname)) return;
 
-
   return (
     <>
       <div className="w-full h-[40px] mx-auto overflow-hidden flex justify-start bg-[#1A1A1A]">
