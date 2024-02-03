@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, PackagePlus, Plus } from "lucide-react";
 import { z } from "zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -14,7 +14,7 @@ import MerchandiseTable from "@/components/tables/MerchandiseTable";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { createMerchandiseItem, getAllMerchandise } from "@/api/merchandise";
+import { createMerchandiseItem } from "@/api/merchandise";
 
 const MerchandiseSchema = z.object({
   name: z.string().nonempty("This field is required."),
@@ -81,8 +81,8 @@ const AdminMerchandise = () => {
     <Wrapper title="PSITS Admin | Merchandise" noMargin>
       <Dialog>
         <DialogTrigger asChild>
-          <Button type="submit" className="mb-6 bg-[#268EA7] hover:bg-[#3da7c2]">
-            Create Merchandise
+          <Button className="mb-6" variant="ghost">
+            <PackagePlus />&emsp;Create Merchandise Item
           </Button>
         </DialogTrigger>
         <DialogContent className="h-[85%] min-w-[700px] bg-white">
