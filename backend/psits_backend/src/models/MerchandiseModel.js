@@ -1,5 +1,17 @@
 import mongoose from "mongoose";
 
+const StockSchema = new mongoose.Schema({
+  size: {
+    type: String,
+    enum: ["XS", "SM", "MD", "LG", "XL", "XXL"],
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    default: 0,
+  },
+});
+
 const ImageSchema = new mongoose.Schema({
   image: {
     type: String,
@@ -28,12 +40,8 @@ const MerchandiseModel = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  stocks: {
-    type: Number,
-    default: 0,
-  },
+  stocks: [StockSchema],
   images: [ImageSchema],
-  size: String,
   color: String,
   ratings: {
     type: Number,

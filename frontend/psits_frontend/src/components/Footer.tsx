@@ -15,10 +15,9 @@ const ROUTE = [
 ];
 
 const Footer = () => {
-
   const { pathname } = useLocation();
-    // hides the footer in admin pages
-    if (ROUTE.includes(pathname)) return;
+  // hides the footer in admin pages
+  if (ROUTE.includes(pathname)) return;
 
   return (
     <footer className="bg-[#074873] text-white pb-4 py-[100px]">

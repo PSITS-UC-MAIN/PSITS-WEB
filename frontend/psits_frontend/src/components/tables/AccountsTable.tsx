@@ -49,7 +49,7 @@ const AccountsTable = () => {
 
   const { mutate: updateMutate } = useMutation({
     mutationFn: updateUserbyId,
-    onSuccess: (cart) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["users"]);
     },
     onError(error: any) {

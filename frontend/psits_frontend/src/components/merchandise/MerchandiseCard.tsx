@@ -75,14 +75,14 @@ const MerchandiseCard = ({ item }: MerchandiseCardProps) => {
               {item?.images.map((slideImage) => (
                 <div
                   key={slideImage.imagePublicId}
-                  className="flex items-center justify-center rounded-t h-[400px] bg-contain bg-no-repeat bg-center"
+                  className="flex items-center justify-center rounded-t h-[350px] bg-contain bg-no-repeat bg-center"
                   style={{ backgroundImage: `url(${slideImage.image})` }}
                 />
               ))}
             </Slide>
           ) : (
             <Link to={`/merchandise/${item._id}`}>
-              <img src={item.images[0].image} alt="Product Image" className="rounded-t h-[400px] min-w-[100%] object-cover" />
+              <img src={item.images[0].image} alt="Product Image" className="rounded-t h-[400px] object-cover" />
             </Link>
           )}
         </div>

@@ -1,8 +1,13 @@
 import axios from "axios";
 
-export async function getAllOrders(data: any) {
-  const response = await axios.get(`order/`, data);
+export async function getAllOrders(search: string, page: number) {
+  const response = await axios.get(`order?page=${page}&search=${search}`);
   return response.data;
+}
+
+export async function getOrderById(orderId: string) {
+  const response = await axios.get(`order/single/${orderId}`);
+  return response.data.order
 }
 
 export async function getCurrentUserOrders(userId: string) {

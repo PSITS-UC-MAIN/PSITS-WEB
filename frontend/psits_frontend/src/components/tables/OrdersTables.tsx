@@ -1,33 +1,66 @@
+import { toast } from "react-toastify";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AlertCircle, Loader2Icon} from "lucide-react";
 import { getAllOrders, updateOrder } from "@/api/order";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertCircle, Loader2Icon, QrCodeIcon } from "lucide-react";
+import { QrCodeIcon } from "lucide-react";
 import useStore from "@/store";
-import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { handleDateFormat } from "@/pages/Orders";
 import { ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Html5QrcodePlugin from "@/components/plugins/Html5QrcodePlugin";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectGroup, SelectLabel, SelectTrigger, SelectValue, SelectItem } from "@/components/ui/select";
 import { ChangeEvent } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Input } from "../ui/input";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "../ui/pagination";
+import ViewOrderModal from "../order/ViewOrderModal";
 
 interface RemarksState {
   [itemId: string]: string | undefined;
 }
 
 const OrdersTable = () => {
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [orderId, setOrderId] = useState("");
+  const store = useStore();
+  const queryClient = useQueryClient();
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["order"],
-    queryFn: getAllOrders,
+    queryKey: ["order", search, page],
+    queryFn: () => getAllOrders(search, page),
   });
+
+  const searchOnChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+  };
+
+  let totalPages = Math.ceil(data?.total / data?.limit);
+
+  const handlePrevPage = () => {
+    if (page > 1) setPage((page) => page - 1);
+  };
+
+  const handleNextPage = () => {
+    if (page < totalPages) setPage((page) => page + 1);
+  };
 
   const { mutate: updateMutate } = useMutation({
     mutationFn: updateOrder,
-    onSuccess: (cart) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["cart"]);
       queryClient.invalidateQueries(["order"]);
     },
@@ -36,9 +69,6 @@ const OrdersTable = () => {
     },
   });
   
-  const store = useStore();
-  const queryClient = useQueryClient();
-  const [open, setOpen] = useState(false)
   const [remarks, setRemarks] = useState<RemarksState>({});
   const [orders, setOrders] = useState(data?.orders)
 
@@ -111,6 +141,12 @@ const OrdersTable = () => {
         <Button variant="ghost" onClick={() => setOrders(data?.orders)}>
           <ScrollText />&emsp;All Orders
         </Button>
+        <Input
+          value={search}
+          className="w-[300px] mb-4"
+          placeholder="Search any order by id or status..."
+          onChange={searchOnChangeHandler}
+        />
       </div>
       {
         isLoading ? (
@@ -128,6 +164,8 @@ const OrdersTable = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Order ID</TableHead>
+                  <TableHead>User ID</TableHead>
+                  <TableHead>Name</TableHead>
                   <TableHead>Order Status</TableHead>
                   <TableHead>Order Date</TableHead>
                   <TableHead>Items</TableHead>
@@ -141,6 +179,8 @@ const OrdersTable = () => {
                   return (
                     <TableRow key={item._id}>
                       <TableCell>{item._id}</TableCell>
+                      <TableCell>{item.userId.userId}</TableCell>
+                      <TableCell>{item.userId.firstname + " " + item.userId.lastname}</TableCell>
                       <TableCell>
                         <Select>
                           <SelectTrigger className="w-[260px] sm:w-[150px]" disabled={item.orderStatus === "CLAIMED" || item.orderStatus === "CANCELLED"}>
@@ -200,6 +240,24 @@ const OrdersTable = () => {
             </Table>
           </ScrollArea>
       )}
+      <Pagination className="my-5">
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious onClick={handlePrevPage} />
+          </PaginationItem>
+          {totalPages > 0 &&
+            [...Array(totalPages)].map((val, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink onClick={() => setPage(index + 1)} isActive={page === index + 1}>
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+          <PaginationItem>
+            <PaginationNext onClick={handleNextPage} />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 };

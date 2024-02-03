@@ -45,94 +45,94 @@ const AdminDashboard = () => {
         ) : (
           <div className="flex items-center gap-4">
             <Card className="max-w-[250px] bg-gradient-to-r from-blue-400 to-cyan-400">
-              <CardHeader>
+              <CardHeader className="p-4">
                 <CardTitle>
                   <div className="flex items-center gap-2 text-white">
                     <Banknote strokeWidth={3} />
-                    <span className="text-xl text-white">Total Earnings</span>
+                    <span className="text-lg text-white">Total Earnings</span>
                   </div>
                   <Separator className="my-2" />
                 </CardTitle>
                 <div className="flex text-white items-center gap-2 justify-start">
-                  <h1 className="text-3xl text-white font-semibold">₱6969.00</h1>
+                  <h1 className="text-2xl text-white font-semibold">₱{serverStats.totalEarnings.toFixed(2)}</h1>
                 </div>
               </CardHeader>
             </Card>
             <Card className="max-w-[250px] bg-gradient-to-r from-orange-400 to-red-400">
-              <CardHeader>
+              <CardHeader className="p-4">
                 <CardTitle>
                   <div className="flex items-center gap-2 text-white">
                     <User strokeWidth={3} />
-                    <span className="text-xl text-white">Total Students</span>
+                    <span className="text-lg text-white">Students</span>
                   </div>
                   <Separator className="my-2" />
                 </CardTitle>
                 <div className="flex text-white items-center gap-2 justify-start">
-                  <h1 className="text-3xl text-white font-semibold">{serverStats.users}</h1>
+                  <h1 className="text-2xl text-white font-semibold">{serverStats.users}</h1>
                 </div>
               </CardHeader>
             </Card>
             <Card className="max-w-[250px] bg-gradient-to-r from-purple-400 to-pink-400">
-              <CardHeader>
+              <CardHeader className="p-4">
                 <CardTitle>
                   <div className="flex items-center gap-2 text-white">
                     <ShoppingBag strokeWidth={3} />
-                    <span className="text-xl text-white">Total Orders</span>
+                    <span className="text-lg text-white">Orders</span>
                   </div>
                   <Separator className="my-2" />
                 </CardTitle>
                 <div className="flex text-white items-center gap-2 justify-start">
-                  <h1 className="text-3xl text-white font-semibold">{serverStats.orders}</h1>
+                  <h1 className="text-2xl text-white font-semibold">{serverStats.orders}</h1>
                 </div>
               </CardHeader>
             </Card>
             <Card className="max-w-[250px] bg-gradient-to-r from-[#ee2a7b] to-[#ff00d4]">
-              <CardHeader>
+              <CardHeader className="p-4">
                 <CardTitle>
                   <div className="flex items-center gap-2 text-white">
                     <Shirt strokeWidth={3} />
-                    <span className="text-xl text-white">Merchandise</span>
+                    <span className="text-lg text-white">Merchandise</span>
                   </div>
                   <Separator className="my-2" />
                 </CardTitle>
                 <div className="flex text-white items-center gap-2 justify-start">
-                  <h1 className="text-3xl text-white font-semibold">{serverStats.merchandise}</h1>
+                  <h1 className="text-2xl text-white font-semibold">{serverStats.merchandise}</h1>
                 </div>
               </CardHeader>
             </Card>
             <Card className="max-w-[400px] bg-gradient-to-r from-[#00a1ff] to-[#00ff8f]">
-              <CardHeader>
+              <CardHeader className="p-4">
                 <CardTitle>
                   <div className="flex items-center gap-2 text-white">
                     <Bell strokeWidth={3} />
-                    <span className="text-xl text-white">Announcements</span>
+                    <span className="text-lg text-white">Announcements</span>
                   </div>
                   <Separator className="my-2" />
                 </CardTitle>
                 <div className="flex text-white items-center gap-2 justify-start">
-                  <h1 className="text-3xl text-white font-semibold">{serverStats.announcements}</h1>
+                  <h1 className="text-2xl text-white font-semibold">{serverStats.announcements}</h1>
                 </div>
               </CardHeader>
             </Card>
             <Card className="max-w-[400px] bg-gradient-to-r from-[#7f00ff] to-[#e100ff]">
-              <CardHeader>
+              <CardHeader className="p-4">
                 <CardTitle>
                   <div className="flex items-center gap-2 text-white">
                     <CalendarCheck strokeWidth={3} />
-                    <span className="text-xl text-white">Events</span>
+                    <span className="text-lg text-white">Events</span>
                   </div>
                   <Separator className="my-2" />
                 </CardTitle>
                 <div className="flex text-white items-center gap-2 justify-start">
-                  <h1 className="text-3xl text-white font-semibold">{serverStats.events}</h1>
+                  <h1 className="text-2xl text-white font-semibold">{serverStats.events}</h1>
                 </div>
               </CardHeader>
             </Card>
           </div>
         )}
         <Card>
-          <CardContent>
-            <h1 className="mt-4 mb-2 text-2xl font-semibold text-">Monthly Revenue</h1>
+          <CardContent className="p-4">
+            <h1 className="mb-2 text-xl font-semibold text-">Monthly Revenue</h1>
             <Separator />
             <ResponsiveContainer width="100%" height={300}>
               <AreaChart margin={{ top: 20 }} data={data}>

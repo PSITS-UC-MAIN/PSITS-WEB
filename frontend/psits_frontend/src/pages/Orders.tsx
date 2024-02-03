@@ -17,7 +17,7 @@ const Orders = () => {
   const store = useStore();
   const queryClient = useQueryClient();
 
-  const { data: orderData } = useQuery({
+  const { data: orderData, isLoading } = useQuery({
     queryKey: ["order"],
     queryFn: () => getCurrentUserOrders(store.authUser?._id || ""),
   });
@@ -68,7 +68,7 @@ const Orders = () => {
                     <img
                       src={item.image}
                       alt="Product Image"
-                      className="h-[100px] sm:h-[120px] w-[100px] sm:w-[120px] rounded-lg p-3 bg-[#fafafa] border-2 border-gray-150"
+                      className="h-[100px] sm:h-[120px] w-[100px] sm:w-[120px] object-contain rounded-lg p-3 bg-[#fafafa] border-2 border-gray-150"
                     />
                     <div className="flex flex-col gap-y-3">
                       <span className="text-sm sm:text-lg">{item.name}</span>
