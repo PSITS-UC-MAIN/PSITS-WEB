@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { FileEdit, Loader2, Plus } from "lucide-react";
+import { Loader2, Pencil, Plus } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -117,7 +117,7 @@ const MerchandiseUpdateCard = ({ item }: MerchandiseUpdateCardProps) => {
       <DialogHeader>
         <DialogTrigger asChild>
           <Button className="bg-[#268EA7] hover:bg-[#3da7c2] py-[7.5%] rounded-md">
-            <FileEdit size={20} />
+            <Pencil size={20} />
           </Button>
         </DialogTrigger>
       </DialogHeader>
