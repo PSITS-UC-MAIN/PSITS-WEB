@@ -4,22 +4,23 @@ import { useEffect } from 'react';
 
 const qrcodeRegionId = "html5qr-code-full-region";
 
+interface Config {
+  fps: number,
+  qrbox: number,
+  aspectRatio: number,
+  disableFlip: boolean,
+}
+
 // Creates the configuration object for Html5QrcodeScanner.
-const createConfig = (props: any) => {
-    let config = {};
-    if (props.fps) {
-        config.fps = props.fps;
-    }
-    if (props.qrbox) {
-        config.qrbox = props.qrbox;
-    }
-    if (props.aspectRatio) {
-        config.aspectRatio = props.aspectRatio;
-    }
-    if (props.disableFlip !== undefined) {
-        config.disableFlip = props.disableFlip;
-    }
-    return config;
+const createConfig = (props: Config) => {
+  let config: Config = {
+    fps: props.fps,
+    qrbox: props.qrbox,
+    aspectRatio: props.aspectRatio,
+    disableFlip: props.disableFlip,
+  };
+
+  return config;
 };
 
 const Html5QrcodePlugin = (props: any) => {
