@@ -4,7 +4,7 @@ import { AlertCircle, Loader2Icon } from "lucide-react";
 import { toast } from "react-toastify";
 
 import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { getAllUser, updateUserbyId } from "@/api/user";
 import useStore from "@/store";
 
@@ -80,7 +80,6 @@ const AccountsTable = () => {
         </div>
       ) : (
         <Table>
-          <TableCaption>A list of student accounts.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Avatar</TableHead>

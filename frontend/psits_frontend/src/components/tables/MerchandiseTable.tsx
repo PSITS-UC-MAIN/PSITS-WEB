@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { deleteMerchandiseItem, getAllMerchandise } from "@/api/merchandise";
 import { AlertCircle, Loader2Icon, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
@@ -51,7 +51,6 @@ const MerchandiseTable = () => {
         </div>
       ) : (
         <Table className="rounded-md border">
-          <TableCaption>A list of merchandise.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead></TableHead>
@@ -59,8 +58,8 @@ const MerchandiseTable = () => {
               <TableHead>Description</TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Sizes</TableHead>
-              <TableHead>Stock</TableHead>
               <TableHead>Color</TableHead>
+              <TableHead>Stock</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
