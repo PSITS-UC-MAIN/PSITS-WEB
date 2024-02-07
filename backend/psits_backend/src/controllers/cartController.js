@@ -11,10 +11,8 @@ export const getAllCartItems = async (req, res) => {
 };
 
 export const createCartItem = async (req, res) => {
-  const test = new mongoose.Types.ObjectId(req.params.userId);
-  let newBody = { ...req.body };
-  // check if the user exists
   const user = await User.findOne({ _id: req.params.userId })
+  const newBody = {...req.body}
 
   if (!user) throw new NotFoundError("User does not exist")
 
@@ -22,7 +20,7 @@ export const createCartItem = async (req, res) => {
 
   if (itemIndex === -1) {
     // this adds the object to the existing user's cart array
-    user.cart.push(newBody)
+    user.cart.push(req.body)
   } else user.cart[itemIndex].quantity += 1
 
   // this saves the changes
@@ -39,7 +37,7 @@ export const updateCartItem = async (req, res) => {
   
   if (!user) throw new NotFoundError("User does not exist")
 
-  // get the index of the cart item based on parameter - merchId
+  // // get the index of the cart item based on parameter - merchId
   const itemIndex = user.cart.findIndex(item => item.merchId.toString() === merchId.toString())
 
   if (itemIndex === -1) return res.status(StatusCodes.BAD_REQUEST).json({ message: "Cart Item not found!" })
@@ -50,7 +48,16 @@ export const updateCartItem = async (req, res) => {
       user.cart.splice(itemIndex,1)
     else user.cart[itemIndex].quantity += quantity
   }
-  if (size) user.cart[itemIndex].size = size
+  // if (size) user.cart[itemIndex].size = size
+  if (size) {
+    const sortedSizes = user.cart[itemIndex].stocks.slice().sort((a,b) => {
+      if (a.size === size) return -1;
+      if (b.size === size) return 1;
+      return 0
+    });
+
+    user.cart[itemIndex].stocks = sortedSizes
+  }
   if (color) user.cart[itemIndex].color = color
 
   // save changes
