@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, PackagePlus, Plus } from "lucide-react";
 import { z } from "zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -104,8 +104,8 @@ const AdminMerchandise = () => {
     <Wrapper title="PSITS Admin | Merchandise" noMargin>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="mb-6 bg-[#268EA7] hover:bg-[#3da7c2]">
-            Create Merchandise
+          <Button className="mb-6" variant="ghost">
+            <PackagePlus />&emsp;Create Merchandise Item
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-[95%] sm:max-w-[60%]">
