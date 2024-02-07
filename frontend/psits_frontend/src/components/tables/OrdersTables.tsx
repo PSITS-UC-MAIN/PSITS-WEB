@@ -32,9 +32,9 @@ interface RemarksState {
 
 const OrdersTable = () => {
   const [search, setSearch] = useState("");
+  const [temp, setTemp] = useState("");
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
-  const [orderId, setOrderId] = useState("");
   const store = useStore();
   const queryClient = useQueryClient();
 
@@ -45,8 +45,12 @@ const OrdersTable = () => {
 
   const searchOnChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearch(value);
+    setTemp(value)
   };
+
+  const searchOnKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === "Enter") setSearch(temp)
+  }
 
   let totalPages = Math.ceil(data?.total / data?.limit);
 
@@ -83,6 +87,8 @@ const OrdersTable = () => {
   };
 
   const onNewScanResult = (decodedText: any) => {
+    setSearch(decodedText)
+
     const order = data?.orders.find((order: any) => order._id === decodedText);
     
     if (order) setOrders([order])
@@ -120,7 +126,7 @@ const OrdersTable = () => {
 
   return (
     <div>
-      <div className="flex mb-5">
+      <div className="flex flex-row gap-x-5 mb-5">
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant="ghost">
@@ -138,15 +144,13 @@ const OrdersTable = () => {
             />
           </DialogContent>
         </Dialog>
-        <Button variant="ghost" onClick={() => setOrders(data?.orders)}>
-          <ScrollText />&emsp;All Orders
-        </Button>
-        {/* <Input
-          value={search}
+        <Input
+          value={temp}
           className="w-[300px] mb-4"
           placeholder="Search any order by id or status..."
+          onKeyDown={searchOnKeyDownHandler}
           onChange={searchOnChangeHandler}
-        /> */}
+        />
       </div>
       {
         isLoading ? (
@@ -240,24 +244,26 @@ const OrdersTable = () => {
             </Table>
           </ScrollArea>
       )}
-      {/* <Pagination className="my-5">
+      <Pagination className="my-5">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious onClick={handlePrevPage} />
           </PaginationItem>
-          {totalPages > 0 &&
+          {
+            totalPages > 0 &&
             [...Array(totalPages)].map((val, index) => (
               <PaginationItem key={index}>
                 <PaginationLink onClick={() => setPage(index + 1)} isActive={page === index + 1}>
                   {index + 1}
                 </PaginationLink>
               </PaginationItem>
-            ))}
+            ))
+          }
           <PaginationItem>
             <PaginationNext onClick={handleNextPage} />
           </PaginationItem>
         </PaginationContent>
-      </Pagination> */}
+      </Pagination>
     </div>
   );
 };

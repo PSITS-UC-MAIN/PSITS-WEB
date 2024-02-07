@@ -3,27 +3,33 @@ import Order from "../models/OrderModel.js";
 import User from "../models/UserModel.js";
 import Merchandise from "../models/MerchandiseModel.js";
 import { nanoid } from "nanoid";
+import mongoose from "mongoose";
 
 export const getAllOrders = async (req, res) => {
   const page = parseInt(req.query.page) - 1 || 0;
   const limit = parseInt(req.query.limit) || 15;
   const search = req.query.search || "";
 
-  const orders = await Order.find({
+  let orders = await Order.find({
     $or: [
       { orderId: { $regex: search, $options: "i" } },
       { orderStatus: { $regex: search, $options: "i" } },
     ],
   })
-    .skip(page * limit)
-    .limit(limit)
-    .populate("userId")
-    .sort({ orderDate: "desc" });
+  .skip(page * limit)
+  .limit(limit)
+  .populate("userId")
+  .sort({ orderDate: "desc" });
 
-  const total = await User.countDocuments({
+  let total = await Order.countDocuments({
     orderId: { $regex: search, $options: "i" },
     orderStatus: { $regex: search, $options: "i" },
   });
+
+  if(search.length === 24) {
+    orders = [await Order.findById(new mongoose.Types.ObjectId(search)).populate("userId")]
+    total = 1
+  }
 
   const response = {
     error: false,
