@@ -1,6 +1,18 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
+const StockSchema = new mongoose.Schema({
+  size: {
+    type: String,
+    enum: ["XS", "SM", "MD", "LG", "XL", "XXL"],
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    default: 0,
+  },
+});
+
 const CartSchema = new mongoose.Schema({
   merchId: {
     type: Schema.Types.ObjectId,
@@ -15,13 +27,10 @@ const CartSchema = new mongoose.Schema({
     type: Number,
     require: true,
   },
-  size: {
-    type: String,
-    require: true,
-  },
   color: String,
   image: String,
   name: String,
+  stocks: [StockSchema]
 });
 
 export { CartSchema };
