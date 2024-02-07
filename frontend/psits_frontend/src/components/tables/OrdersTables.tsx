@@ -240,7 +240,7 @@ const OrdersTable = () => {
             </Table>
           </ScrollArea>
       )}
-      <Pagination className="my-5">
+      {/* <Pagination className="my-5">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious onClick={handlePrevPage} />
@@ -257,7 +257,7 @@ const OrdersTable = () => {
             <PaginationNext onClick={handleNextPage} />
           </PaginationItem>
         </PaginationContent>
-      </Pagination>
+      </Pagination> */}
     </div>
   );
 };
