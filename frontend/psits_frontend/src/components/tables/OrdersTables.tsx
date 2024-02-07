@@ -121,8 +121,6 @@ const OrdersTable = () => {
   }
 
   useEffect(() => {
-    console.log(data);
-    
     setOrders(data?.orders)
   }, [data])
 

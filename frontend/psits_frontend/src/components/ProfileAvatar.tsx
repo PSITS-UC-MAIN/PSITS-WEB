@@ -55,20 +55,17 @@ const Profile = ({ className }: { className?: string }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-40">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          {/* {store.authUser?.role === "admin" ||
-             (store.authUser?.role === "dev" && ( */}
-             { store.authUser?.role === "dev" || store.authUser?.isAdmin &&
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link to="/admin" className="flex items-center">
-                    <ShieldAlert className="mr-4 h-6 w-4" />
-                    <span className="text-red-400">Admin</span>
-                  </Link>
-                </DropdownMenuItem>
-              </>
-             }
-            {/* ))} */}
+          {store.authUser?.role === "admin" &&
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link to="/admin" className="flex items-center">
+                  <ShieldAlert className="mr-4 h-6 w-4" />
+                  <span className="text-red-400">Admin</span>
+                </Link>
+              </DropdownMenuItem>
+            </>
+          }
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link to="/profile" className="flex items-center">
