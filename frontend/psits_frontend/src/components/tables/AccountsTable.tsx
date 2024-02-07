@@ -4,7 +4,7 @@ import { AlertCircle, Loader2Icon } from "lucide-react";
 import { toast } from "react-toastify";
 
 import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { getAllUser, updateUserbyId } from "@/api/user";
 import useStore from "@/store";
 
@@ -69,73 +69,72 @@ const AccountsTable = () => {
     <>
     <Input value={search} className="w-[300px] mb-4" placeholder="Search any user here..." onChange={searchOnChangeHandler}/>
     <div className="rounded-md border">
-      <Table>
-        <TableCaption>A list of student accounts.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Avatar</TableHead>
-            <TableHead>UserId</TableHead>
-            <TableHead>RFID</TableHead>
-            <TableHead>Firstname</TableHead>
-            <TableHead>Lastname</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Course</TableHead>
-            <TableHead>Year</TableHead>
-            <TableHead>Role</TableHead>
-          </TableRow>
-        </TableHeader>
-        {isLoading ? (
-          <span className="text-center flex justify-center">
-            <Loader2Icon className="animate-spin" />
-          </span>
-        ) : isError ? (
-          <div className="flex items-center gap-2 text-red-500  justify-center">
-            <AlertCircle />
-            <p>Something went wrong!</p>
-          </div>
-        ) : (
-          <TableBody>
-            {data.users?.map((user: any) => {
-              const role = user.role.charAt(0).toUpperCase() + user.role.slice(1);
-              return (
-                <TableRow key={user._id}>
-                  <TableCell>
-                    <img src={user.avatar} className="w-[50px] h-[50px] object-cover rounded-full" />
-                  </TableCell>
-                  <TableCell>{user.userId}</TableCell>
-                  <TableCell>{user.rfid}</TableCell>
-                  <TableCell>{user.firstname}</TableCell>
-                  <TableCell>{user.lastname}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.course}</TableCell>
-                  <TableCell>{user.year}</TableCell>
-                  <TableCell>
-                    {authUser?.role == "dev" ? (<Select>
-                      <SelectTrigger className="">
-                        <SelectValue defaultValue={user.role} placeholder={role} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Status</SelectLabel>
-                          <SelectItem onMouseDown={() => handleRoleSelect("dev", user.userId)} value="dev">
-                            Dev
-                          </SelectItem>
-                          <SelectItem onMouseDown={() => handleRoleSelect("admin", user.userId)} value="admin">
-                            Admin
-                          </SelectItem>
-                          <SelectItem onMouseDown={() => handleRoleSelect("user", user.userId)} value="user">
-                            User
-                          </SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>) : role}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        )}
-      </Table>
+      {isLoading ? (
+        <span className="text-center flex justify-center">
+          <Loader2Icon className="animate-spin" />
+        </span>
+      ) : isError ? (
+        <div className="flex items-center gap-2 text-red-500  justify-center">
+          <AlertCircle />
+          <p>Something went wrong!</p>
+        </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Avatar</TableHead>
+              <TableHead>UserId</TableHead>
+              <TableHead>RFID</TableHead>
+              <TableHead>Firstname</TableHead>
+              <TableHead>Lastname</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Course</TableHead>
+              <TableHead>Year</TableHead>
+              <TableHead>Role</TableHead>
+            </TableRow>
+          </TableHeader>
+            <TableBody>
+              {data.users?.map((user: any) => {
+                const role = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+                return (
+                  <TableRow key={user._id}>
+                    <TableCell>
+                      <img src={user.avatar} className="w-[50px] h-[50px] object-cover rounded-full" />
+                    </TableCell>
+                    <TableCell>{user.userId}</TableCell>
+                    <TableCell>{user.rfid}</TableCell>
+                    <TableCell>{user.firstname}</TableCell>
+                    <TableCell>{user.lastname}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.course}</TableCell>
+                    <TableCell>{user.year}</TableCell>
+                    <TableCell>
+                      {authUser?.role == "dev" ? (<Select>
+                        <SelectTrigger className="">
+                          <SelectValue defaultValue={user.role} placeholder={role} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Status</SelectLabel>
+                            <SelectItem onMouseDown={() => handleRoleSelect("dev", user.userId)} value="dev">
+                              Dev
+                            </SelectItem>
+                            <SelectItem onMouseDown={() => handleRoleSelect("admin", user.userId)} value="admin">
+                              Admin
+                            </SelectItem>
+                            <SelectItem onMouseDown={() => handleRoleSelect("user", user.userId)} value="user">
+                              User
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>) : role}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+        </Table>
+      )}
     </div>
     <Pagination className="my-5" >
       <PaginationContent>

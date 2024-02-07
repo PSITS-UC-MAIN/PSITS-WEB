@@ -3,27 +3,33 @@ import Order from "../models/OrderModel.js";
 import User from "../models/UserModel.js";
 import Merchandise from "../models/MerchandiseModel.js";
 import { nanoid } from "nanoid";
+import mongoose from "mongoose";
 
 export const getAllOrders = async (req, res) => {
   const page = parseInt(req.query.page) - 1 || 0;
   const limit = parseInt(req.query.limit) || 15;
   const search = req.query.search || "";
 
-  const orders = await Order.find({
+  let orders = await Order.find({
     $or: [
       { orderId: { $regex: search, $options: "i" } },
       { orderStatus: { $regex: search, $options: "i" } },
     ],
   })
-    .skip(page * limit)
-    .limit(limit)
-    .populate("userId")
-    .sort({ orderDate: "desc" });
+  .skip(page * limit)
+  .limit(limit)
+  .populate("userId")
+  .sort({ orderDate: "desc" });
 
-  const total = await User.countDocuments({
+  let total = await Order.countDocuments({
     orderId: { $regex: search, $options: "i" },
     orderStatus: { $regex: search, $options: "i" },
   });
+
+  if(search.length === 24) {
+    orders = [await Order.findById(new mongoose.Types.ObjectId(search)).populate("userId")]
+    total = 1
+  }
 
   const response = {
     error: false,
@@ -54,6 +60,11 @@ export const getCurrentUserOrders = async (req, res) => {
 
 export const createOrder = async (req, res) => {
   let newBody = { ...req.body };
+
+  newBody.cartItems.forEach((item, index) => {
+    item.stocks = item.stocks.filter((a,b) => b === 0);
+  })
+
   const userId = req.params.userId;
   const randomID = nanoid(5);
   const user = await User.findOne({ _id: req.params.userId });
@@ -66,22 +77,38 @@ export const createOrder = async (req, res) => {
   newBody.orderId = randomID;
 
   await Order.create(newBody);
+
+  newBody.cartItems.forEach(async (item) => {
+    let merch = null
+
+    merch = await Merchandise.findOne({ _id: item.merchId });
+
+    const filteredSize = merch.stocks.filter((i) => i.size === item.stocks[0].size);
+    filteredSize[0].quantity = filteredSize[0].quantity - item.quantity
+    
+    await merch.save();
+  });
+
   res.status(StatusCodes.OK).json({ msg: "Order created!" });
 };
 
 export const updateOrder = async (req, res) => {
   const { orderStatus, additionalInfo, orderId } = req.body;
-
+  
   const updatedOrder = await Order.findOne({ _id: orderId });
-
+  
   if (orderStatus) updatedOrder.orderStatus = orderStatus;
   if (additionalInfo) updatedOrder.additionalInfo = additionalInfo;
 
-  if (updatedOrder.orderStatus == "CLAIMED") {
-    let merch = null;
+  if (updatedOrder.orderStatus == "CANCELLED") {
+    let merch = null
+
     updatedOrder.cartItems.forEach(async (item) => {
       merch = await Merchandise.findOne({ _id: item.merchId });
-      merch.stocks = merch.stocks - 1;
+
+      let temp = merch.stocks.filter((stock) => stock.size === item.stocks[0].size)
+      temp.forEach((stock) => stock.quantity += item.quantity)
+
       await merch.save();
     });
   }

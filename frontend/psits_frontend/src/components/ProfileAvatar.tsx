@@ -55,8 +55,9 @@ const Profile = ({ className }: { className?: string }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-40">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          {store.authUser?.role === "admin" ||
-            (store.authUser?.role === "dev" && (
+          {/* {store.authUser?.role === "admin" ||
+             (store.authUser?.role === "dev" && ( */}
+             { store.authUser?.role === "dev" || store.authUser?.isAdmin &&
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
@@ -66,7 +67,8 @@ const Profile = ({ className }: { className?: string }) => {
                   </Link>
                 </DropdownMenuItem>
               </>
-            ))}
+             }
+            {/* ))} */}
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link to="/profile" className="flex items-center">

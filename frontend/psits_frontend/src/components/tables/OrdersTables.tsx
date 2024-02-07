@@ -1,14 +1,20 @@
 import { toast } from "react-toastify";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertCircle, CalendarPlus, Loader2Icon, View } from "lucide-react";
-import { format, parseISO, addDays } from "date-fns";
-import { useState } from "react";
-
+import { AlertCircle, Loader2Icon} from "lucide-react";
 import { getAllOrders, updateOrder } from "@/api/order";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
-import { Select, SelectContent, SelectGroup, SelectLabel, SelectTrigger, SelectValue, SelectItem } from "../ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { QrCodeIcon } from "lucide-react";
 import useStore from "@/store";
-import { Button } from "../ui/button";
+import { useEffect, useState } from "react";
+import { handleDateFormat } from "@/pages/Orders";
+import { ScrollText } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import Html5QrcodePlugin from "@/components/plugins/Html5QrcodePlugin";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectGroup, SelectLabel, SelectTrigger, SelectValue, SelectItem } from "@/components/ui/select";
+import { ChangeEvent } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { Input } from "../ui/input";
 import {
   Pagination,
@@ -18,14 +24,17 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../ui/pagination";
-import { Dialog, DialogHeader, DialogTrigger } from "../ui/dialog";
 import ViewOrderModal from "../order/ViewOrderModal";
+
+interface RemarksState {
+  [itemId: string]: string | undefined;
+}
 
 const OrdersTable = () => {
   const [search, setSearch] = useState("");
+  const [temp, setTemp] = useState("");
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
-  const [orderId, setOrderId] = useState("");
   const store = useStore();
   const queryClient = useQueryClient();
 
@@ -36,8 +45,12 @@ const OrdersTable = () => {
 
   const searchOnChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearch(value);
+    setTemp(value)
   };
+
+  const searchOnKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === "Enter") setSearch(temp)
+  }
 
   let totalPages = Math.ceil(data?.total / data?.limit);
 
@@ -53,11 +66,15 @@ const OrdersTable = () => {
     mutationFn: updateOrder,
     onSuccess: () => {
       queryClient.invalidateQueries(["cart"]);
+      queryClient.invalidateQueries(["order"]);
     },
     onError(error: any) {
       toast.error(error.response.cart.message || error.message, { position: "bottom-right" });
     },
   });
+  
+  const [remarks, setRemarks] = useState<RemarksState>({});
+  const [orders, setOrders] = useState(data?.orders)
 
   const handleStatusSelect = (item: string, merchId: string) => {
     const userId = store.authUser?.userId || "";
@@ -69,105 +86,187 @@ const OrdersTable = () => {
     updateMutate({ userId, data });
   };
 
+  const onNewScanResult = (decodedText: any) => {
+    setSearch(decodedText)
+
+    const order = data?.orders.find((order: any) => order._id === decodedText);
+    
+    if (order) setOrders([order])
+
+    setOpen(false)
+  };
+
+  const handleOrderTotal = (cartItems: any) => {
+    return cartItems.reduce((accumulator: number, item: any) => {
+      return accumulator + (parseInt(item.price) * item.quantity)
+    }, 0)
+  }
+  
+  const handleRemark = (itemId: string) => (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setRemarks((prevRemarks) => ({
+      ...prevRemarks,
+      [itemId]: value === "" ? undefined : value,
+    }));
+  };
+
+  const handleUpdateRemark = (itemId: string, remark: string | undefined) => {
+    const userId = store.authUser?.userId || "";
+    const data = {
+      orderId: itemId,
+      additionalInfo: remark || "",
+    };
+
+    updateMutate({ userId, data });
+  }
+
+  useEffect(() => {
+    console.log(data);
+    
+    setOrders(data?.orders)
+  }, [data])
+
   return (
-    <>
-      <Input
-        value={search}
-        className="w-[300px] mb-4"
-        placeholder="Search any order by id or status..."
-        onChange={searchOnChangeHandler}
-      />
-      <Table className="rounded-md border">
-        <TableCaption>A list of orders.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Order ID</TableHead>
-            <TableHead>User ID</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Order Status</TableHead>
-            <TableHead>Order Date</TableHead>
-            <TableHead>Additional Info</TableHead>
-            <TableHead>Action</TableHead>
-          </TableRow>
-        </TableHeader>
-        {isLoading ? (
-          <p className="text-center flex justify-center">
+    <div>
+      <div className="flex flex-row gap-x-5 mb-5">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button variant="ghost">
+              <QrCodeIcon />&emsp;Scan QR Code
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <Html5QrcodePlugin
+              className="mt-5"
+              fps={30}
+              qrbox={250}
+              disableFlip={false}
+              aspectRatio={1.0}
+              qrCodeSuccessCallback={onNewScanResult}
+            />
+          </DialogContent>
+        </Dialog>
+        <Input
+          value={temp}
+          className="w-[300px] mb-4"
+          placeholder="Search any order by id or status..."
+          onKeyDown={searchOnKeyDownHandler}
+          onChange={searchOnChangeHandler}
+        />
+      </div>
+      {
+        isLoading ? (
+          <span className="text-center flex justify-center">
             <Loader2Icon className="animate-spin" />
-          </p>
+          </span>
         ) : isError ? (
           <div className="flex items-center gap-2 text-red-500  justify-center">
             <AlertCircle />
             <p>Something went wrong!</p>
           </div>
         ) : (
-          <TableBody>
-            {data?.orders?.map((item: any) => {
-              const formattedOrderDate = format(addDays(parseISO(item.orderDate), 0), "PP");
-              return (
-                <TableRow key={item._id}>
-                  <TableCell>{item.orderId}</TableCell>
-                  <TableCell>{item.userId.userId}</TableCell>
-                  <TableCell>{item.userId.firstname + " " + item.userId.lastname}</TableCell>
-                  <TableCell>
-                    <Select>
-                      <SelectTrigger className="w-[260px] sm:w-[150px]">
-                        <SelectValue defaultValue={item.orderStatus} placeholder={item.orderStatus} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Status</SelectLabel>
-                          <SelectItem onMouseDown={() => handleStatusSelect("PENDING", item._id)} value="PENDING">
-                            PENDING
-                          </SelectItem>
-                          <SelectItem onMouseDown={() => handleStatusSelect("CLAIMED", item._id)} value="CLAIMED">
-                            CLAIMED
-                          </SelectItem>
-                          <SelectItem onMouseDown={() => handleStatusSelect("CANCELLED", item._id)} value="CANCELLED">
-                            CANCELLED
-                          </SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>{formattedOrderDate}</TableCell>
-                  <TableCell>{item.additionalInfo == "" ? "No remark" : item.additionalInfo}</TableCell>
-                  <TableCell>
-                    <Dialog open={open} onOpenChange={setOpen}>
-                      <DialogHeader>
-                        <DialogTrigger asChild>
-                          <Button onClick={() => setOrderId(item.orderId)} className="bg-[#268EA7] hover:bg-[#3da7c2]">
-                            View Order
-                          </Button>
-                        </DialogTrigger>
-                      </DialogHeader>
-                      {open && <ViewOrderModal orderId={orderId} />}
-                    </Dialog>
-                  </TableCell>
+          <ScrollArea className="h-[60vh] w-full">
+            <Table className="rounded-md border">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Order ID</TableHead>
+                  <TableHead>User ID</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Order Status</TableHead>
+                  <TableHead>Order Date</TableHead>
+                  <TableHead>Items</TableHead>
+                  <TableHead>Specification</TableHead>
+                  <TableHead>Total</TableHead>
+                  <TableHead>Remark</TableHead>
                 </TableRow>
-              );
-            })}
-          </TableBody>
-        )}
-      </Table>
+              </TableHeader>
+              <TableBody>
+                {orders?.map((item: any) => {
+                  return (
+                    <TableRow key={item._id}>
+                      <TableCell>{item._id}</TableCell>
+                      <TableCell>{item.userId.userId}</TableCell>
+                      <TableCell>{item.userId.firstname + " " + item.userId.lastname}</TableCell>
+                      <TableCell>
+                        <Select>
+                          <SelectTrigger className="w-[260px] sm:w-[150px]" disabled={item.orderStatus === "CLAIMED" || item.orderStatus === "CANCELLED"}>
+                            <SelectValue defaultValue="ORDERED" placeholder={item.orderStatus} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Status</SelectLabel>
+                              <SelectItem onMouseDown={() => handleStatusSelect("ORDERED", item._id)} value="ORDERED">
+                                ORDERED
+                              </SelectItem>
+                              <SelectItem onMouseDown={() => handleStatusSelect("PENDING", item._id)} value="PENDING">
+                                PENDING
+                              </SelectItem>
+                              <SelectItem onMouseDown={() => handleStatusSelect("CLAIMED", item._id)} value="CLAIMED">
+                                CLAIMED
+                              </SelectItem>
+                              <SelectItem onMouseDown={() => handleStatusSelect("CANCELLED", item._id)} value="CANCELLED">
+                                CANCELLED
+                              </SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </TableCell>
+                      <TableCell>{handleDateFormat(item.orderDate, 0)}</TableCell>
+                      <TableCell>
+                        <ScrollArea>
+                          { item?.cartItems?.map((cartItem: any) => <h1 key={cartItem._id}>{cartItem.quantity}x {cartItem.name}</h1>) }
+                        </ScrollArea>
+                      </TableCell>
+                      <TableCell>
+                        <ScrollArea>
+                          { item?.cartItems?.map((cartItem: any) => <h1 key={cartItem._id}>{cartItem.color} | {cartItem.stocks[0].size}</h1>)}
+                        </ScrollArea>
+                      </TableCell>
+                      <TableCell>
+                        <ScrollArea>
+                          &#8369; { handleOrderTotal(item?.cartItems) }
+                        </ScrollArea>
+                      </TableCell>
+                      <TableCell>
+                        <Textarea
+                          key={item._id}
+                          value={remarks[item._id] || item.additionalInfo}
+                          onChange={handleRemark(item._id)}
+                          onBlur={() => handleUpdateRemark(item._id, remarks[item._id])}
+                          className="resize-none"
+                          rows={3}
+                          cols={10}
+                          disabled={item.orderStatus === "CLAIMED" || item.orderStatus === "CANCELLED"}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+      )}
       <Pagination className="my-5">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious onClick={handlePrevPage} />
           </PaginationItem>
-          {totalPages > 0 &&
+          {
+            totalPages > 0 &&
             [...Array(totalPages)].map((val, index) => (
               <PaginationItem key={index}>
                 <PaginationLink onClick={() => setPage(index + 1)} isActive={page === index + 1}>
                   {index + 1}
                 </PaginationLink>
               </PaginationItem>
-            ))}
+            ))
+          }
           <PaginationItem>
             <PaginationNext onClick={handleNextPage} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-    </>
+    </div>
   );
 };
 
