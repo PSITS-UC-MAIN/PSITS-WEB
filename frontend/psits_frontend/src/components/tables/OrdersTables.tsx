@@ -121,6 +121,8 @@ const OrdersTable = () => {
   }
 
   useEffect(() => {
+    console.log(data);
+    
     setOrders(data?.orders)
   }, [data])
 
@@ -217,7 +219,7 @@ const OrdersTable = () => {
                       </TableCell>
                       <TableCell>
                         <ScrollArea>
-                          { item?.cartItems?.map((cartItem: any) => <h1 key={cartItem._id}>{cartItem.color} | {cartItem.size}</h1>)}
+                          { item?.cartItems?.map((cartItem: any) => <h1 key={cartItem._id}>{cartItem.color} | {cartItem.stocks[0].size}</h1>)}
                         </ScrollArea>
                       </TableCell>
                       <TableCell>
