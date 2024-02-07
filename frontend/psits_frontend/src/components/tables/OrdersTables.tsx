@@ -141,12 +141,12 @@ const OrdersTable = () => {
         <Button variant="ghost" onClick={() => setOrders(data?.orders)}>
           <ScrollText />&emsp;All Orders
         </Button>
-        <Input
+        {/* <Input
           value={search}
           className="w-[300px] mb-4"
           placeholder="Search any order by id or status..."
           onChange={searchOnChangeHandler}
-        />
+        /> */}
       </div>
       {
         isLoading ? (

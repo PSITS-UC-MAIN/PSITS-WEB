@@ -16,9 +16,11 @@ import {
   AlertDialogTrigger
 } from "../ui/alert-dialog";
 import MerchandiseUpdateCard from "../merchandise/MerchandiseUpdateCard";
+import { useEffect, useState } from "react";
 
 const MerchandiseTable = () => {
   const queryClient = useQueryClient()
+  const [toDelete, setToDelete] = useState("")
 
   const { data, isLoading, isError } = useQuery(["merch"], getAllMerchandise, {
     select(merchData) {
@@ -37,6 +39,11 @@ const MerchandiseTable = () => {
       toast.error(error.response.merch.message || error.message, { position: "bottom-right" })
     }
   })
+
+  const handleDeleteMerchandiseItem = (merchID: string) => {
+    setToDelete(merchID)
+    deleteMutate(merchID)
+  }
 
   return (
     <div>
@@ -57,8 +64,8 @@ const MerchandiseTable = () => {
               <TableHead>Name</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Price</TableHead>
+              <TableHead>Colors</TableHead>
               <TableHead>Sizes</TableHead>
-              <TableHead>Color</TableHead>
               <TableHead>Stock</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
@@ -73,9 +80,13 @@ const MerchandiseTable = () => {
                     <TableCell>{merch.name}</TableCell>
                     <TableCell>{merch.description}</TableCell>
                     <TableCell>&#8369; {merch.price}</TableCell>
-                    <TableCell>{merch.size}</TableCell>
                     <TableCell>{merch.color}</TableCell>
-                    <TableCell>{merch.stocks}</TableCell>
+                    <TableCell>
+                      {merch?.stocks?.map((item: any) => <h1 key={item._id}>{item.size}</h1>)}
+                    </TableCell>
+                    <TableCell>
+                      {merch?.stocks?.map((item: any) => <h1 key={item._id}>{item.quantity}</h1>)}
+                    </TableCell>
                     <TableCell>
                       <div className="flex flex-row gap-x-2">
                         <MerchandiseUpdateCard key={merch._id.toString()} item={merch} />
@@ -83,7 +94,7 @@ const MerchandiseTable = () => {
                           <AlertDialogTrigger asChild>
                             <Button
                               variant="destructive"
-                              disabled={deleteIsLoading}
+                              disabled={merch._id === toDelete && deleteIsLoading}
                             >
                               <Trash2 size={20} />
                             </Button>
@@ -99,7 +110,7 @@ const MerchandiseTable = () => {
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
-                                onClick={() => deleteMutate(merch._id)}
+                                onClick={() => handleDeleteMerchandiseItem(merch._id)}
                                 className="bg-[#D44848] hover:bg-[#7F2B2B]"
                               >
                                 Continue

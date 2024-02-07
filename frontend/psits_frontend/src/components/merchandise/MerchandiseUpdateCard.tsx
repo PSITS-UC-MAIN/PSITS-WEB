@@ -11,7 +11,9 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Stock } from "@/pages/admin/AdminMerchandise";
+import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 
 interface MerchandiseUpdateCardProps {
   item: {
@@ -20,27 +22,35 @@ interface MerchandiseUpdateCardProps {
     description: string;
     price: number;
     discount: number;
-    stocks: number;
+    stocks: [
+      {
+        size: string,
+        quantity: number
+      }
+    ];
     images: [
       {
         image: string;
         imagePublicId: string;
       },
     ];
-    size: string;
     color: string;
   };
 }
+
+const ItemStocksSchema = z.object({
+  size: z.string(),
+  quantity: z.number()
+})
 
 const MerchandiseSchema = z.object({
   name: z.string().nonempty("This field is required."),
   description: z.string().nonempty("This field is required."),
   price: z.number(),
-  discount: z.number(),
+  // discount: z.number(),
   images: z.any(),
   color: z.string(),
-  size: z.string(),
-  stocks: z.number(),
+  stocks: ItemStocksSchema.array(),
 });
 
 type MerchandiseSchema = z.infer<typeof MerchandiseSchema>;
@@ -49,21 +59,16 @@ const MerchandiseUpdateCard = ({ item }: MerchandiseUpdateCardProps) => {
   const queryClient = useQueryClient();
   const [file, setFile] = useState("");
   const [open, setOpen] = useState(false);
+  const [sizes, setSizes] = useState<string[]>([]);
+  const [stocks, setStocks] = useState<Stock[]>([])
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<MerchandiseSchema>({
     resolver: zodResolver(MerchandiseSchema),
-    defaultValues: {
-      name: item.name,
-      price: item.price,
-      discount: item.discount,
-      color: item.color,
-      description: item.description,
-      stocks: item.stocks,
-    },
   });
 
   const {
@@ -112,144 +117,189 @@ const MerchandiseUpdateCard = ({ item }: MerchandiseUpdateCardProps) => {
     }
   };
 
+  const handleSetStocks = (event: any, data: Stock) => {
+    const existingStockIndex = stocks.findIndex(stock => stock.size === data.size);
+    const updatedStocks = [...stocks];
+
+    if (existingStockIndex !== -1) {
+        updatedStocks[existingStockIndex] = data;
+        setStocks(updatedStocks.filter(stock => sizes.includes(stock.size)));
+        setValue("stocks", updatedStocks.filter(stock => sizes.includes(stock.size)))
+  } else {
+        setStocks(prevStocks => [...prevStocks, data]);
+      }
+  }
+
+  useEffect(() => {
+    if(item.stocks && item.stocks.length > 0) {
+      setSizes(item.stocks.map((stock) => stock.size))
+      setStocks(item.stocks)
+    }
+    
+  }, [item])
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogHeader>
         <DialogTrigger asChild>
-          <Button className="bg-[#268EA7] hover:bg-[#3da7c2] py-[7.5%] rounded-md">
+          <Button className="mb-6 bg-[#268EA7] hover:bg-[#3da7c2]">
             <Pencil size={20} />
           </Button>
         </DialogTrigger>
-      </DialogHeader>
-      <DialogContent className="h-[85%] w-[1000px] bg-white mx-10">
-        <ScrollArea>
+        <DialogContent className="max-w-[95%] sm:max-w-[60%]">
           <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-            <div className="flex flex-col mt-10 gap-y-10 items-center mx-5">
-              <div className="max-h-[300px] max-w-[50%] border-black relative col-span-2">
-                <img
-                  src={file !== "" ? file : item.images[0].image}
-                  alt=""
-                  className="h-[300px] shadow-lg rounded-lg"
-                />
-                <Label htmlFor="img">
-                  <Plus
-                    className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-3 end-3 p-2"
-                    color="#fff"
-                    size={40}
-                  />
-                </Label>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  id="img"
-                  multiple
-                  {...register("images", {
-                    onChange: (event) => {
-                      const fileURL = URL.createObjectURL(event.target.files[0]);
-                      setFile(() => fileURL);
-                    },
-                  })}
-                />
-              </div>
-              <div className="flex flex-row gap-x-5">
-                <div className="flex flex-col gap-y-3">
-                  <Label className="text-gray-500" htmlFor="itemName">
-                    Item Name
+            <div className="flex flex-col sm:flex-row gap-x-10 my-5 mx-5 items-center">
+              <div className="flex flex-col justify-center w-[50%]">
+                <div className="flex justify-center relative">
+                  <div className="border rounded-md flex justify-center p-2">
+                    <img
+                      src={file !== "" ? file : item.images[0].image}
+                      className="object-contain"
+                    />
+                  </div>
+                  <Label htmlFor="img">
+                    <Plus
+                      className="bg-[#000] bg-opacity-100 hover:bg-[#353535] w-[40px] h-[40px] rounded-full absolute bottom-[-3%] end-[-4%] p-2"
+                      color="#fff"
+                      size={40}
+                    />
                   </Label>
                   <Input
-                    autoComplete="off"
-                    id="itemName"
-                    placeholder="Enter item name"
-                    className="w-full"
-                    defaultValue={item.name}
-                    {...register("name")}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    id="img"
+                    multiple
+                    {...register("images", {
+                      onChange: (event) => {
+                        const fileURL = URL.createObjectURL(event.target.files[0]);
+                        setFile(() => fileURL);
+                      },
+                    })}
                   />
-                  {errors.name && <p className="text-red-400 text-sm font-light">{errors.name.message}</p>}
-                </div>
-                <div className="flex flex-col gap-y-3">
-                  <Label className="text-gray-500" htmlFor="itemPrice">
-                    Item Price
-                  </Label>
-                  <Input
-                    autoComplete="off"
-                    id="itemPrice"
-                    placeholder="Enter item price"
-                    type="number"
-                    defaultValue={item.price}
-                    {...register("price", { valueAsNumber: true })}
-                  />
-                  {errors.price && <p className="text-red-400 text-sm font-light">{errors.price.message}</p>}
                 </div>
               </div>
-              <div className="flex flex-row gap-x-5">
-                <div className="flex flex-col gap-y-3">
-                  <Label className="text-gray-500" htmlFor="itemSize">
-                    Item Size
-                  </Label>
-                  <Input
-                    autoComplete="off"
-                    id="itemSize"
-                    placeholder="Enter item size"
-                    defaultValue={item.size}
-                    {...register("size")}
-                  />
-                  {errors.size && <p className="text-red-400 text-sm font-light">{errors.size.message}</p>}
+              <div className="flex flex-col gap-y-5 w-full sm:w-[50%]">
+                <div className="flex flex-col gap-x-5 gap-y-5">
+                  <div className="flex flex-col gap-2 mt-5 sm:mt-0">
+                    <Label className="text-gray-500" htmlFor="itemName">
+                      Item Name
+                    </Label>
+                    <Input
+                      autoComplete="off"
+                      id="itemName"
+                      placeholder="Enter item name"
+                      {...register("name")}
+                      defaultValue={item.name}
+                    />
+                    {errors.name && <p className="text-red-400 text-sm font-light">{errors.name.message}</p>}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label className="text-gray-500" htmlFor="itemPrice">
+                      Item Price
+                    </Label>
+                    <Input
+                      autoComplete="off"
+                      id="itemPrice"
+                      placeholder="Enter item price"
+                      className="w-full"
+                      type="number"
+                      {...register("price", { valueAsNumber: true })}
+                      defaultValue={item.price}
+                    />
+                    {errors.price && <p className="text-red-400 text-sm font-light">{errors.price.message}</p>}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label className="text-gray-500" htmlFor="itemColors">
+                      Item Colors
+                    </Label>
+                    <Input
+                      autoComplete="off"
+                      id="itemColors"
+                      placeholder="Enter item colors (White,Black,Red)"
+                      className="w-full"
+                      {...register("color")}
+                      defaultValue={item.color}
+                    />
+                    {errors.name && <p className="text-red-400 text-sm font-light">{errors.name.message}</p>}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label className="text-gray-500">
+                      Item Sizes
+                    </Label>
+                    <ToggleGroup
+                      value={sizes}
+                      onValueChange={(value) => setSizes(value)}
+                      type="multiple"
+                      className="justify-start gap-2"
+                    >
+                      <ToggleGroupItem value="XS" aria-label="Toggle XS">
+                        <h1>XS</h1>
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="SM" aria-label="Toggle SM">
+                        <h1>SM</h1>
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="MD" aria-label="Toggle MD">
+                        <h1>MD</h1>
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="LG" aria-label="Toggle LG">
+                        <h1>LG</h1>
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="XL" aria-label="Toggle XL">
+                        <h1>XL</h1>
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="XXL" aria-label="Toggle XXL">
+                        <h1>XXL</h1>
+                      </ToggleGroupItem>
+                    </ToggleGroup>
+                    <div className="flex flex-wrap gap-2">
+                      {
+                        sizes.map((size) => {
+                          const stockItem = item.stocks.find((stock) => stock.size === size) || { quantity: "" };
+
+                          return (
+                            <div key={size}>
+                              <Label className="text-gray-500" htmlFor={`itemSize_${size}`}>
+                                Stock for {size}
+                              </Label>
+                              <Input
+                                autoComplete="off"
+                                id={`itemSize_${size}`}
+                                placeholder={`Quantity for ${size}`}
+                                type="number"
+                                className="w-[150px]"
+                                onChange={(event) => handleSetStocks(event, { size: size, quantity: parseInt(event?.target.value) })}
+                                defaultValue={stockItem.quantity}
+                              />
+                            </div>
+                          )
+                        })
+                      }
+                    </div>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-y-3">
-                  <Label className="text-gray-500" htmlFor="itemColor">
-                    Item Color
-                  </Label>
-                  <Input
-                    autoComplete="off"
-                    id="itemColor"
-                    placeholder="Enter item color"
-                    defaultValue={item.color}
-                    {...register("color")}
-                  />
-                  {errors.color && <p className="text-red-400 text-sm font-light">{errors.color.message}</p>}
-                </div>
-              </div>
-              <div className="flex flex-row items-center gap-x-5">
-                <div className="flex flex-col gap-y-3">
-                  <Label className="text-gray-500" htmlFor="itemStock">
-                    Stock
-                  </Label>
-                  <Input
-                    autoComplete="off"
-                    id="itemStock"
-                    placeholder="Enter stock"
-                    type="number"
-                    defaultValue={item.stocks}
-                    {...register("stocks", { valueAsNumber: true })}
-                  />
-                  {errors.stocks && (
-                    <p className="text-red-400 text-sm font-light">{errors.stocks.message}</p>
-                  )}
-                </div>
-                <div className="flex flex-col gap-y-3">
-                  <Label className="text-gray-500" htmlFor="itemDesc">
+                <div className="flex flex-col gap-2">
+                  <Label className="text-gray-500" htmlFor="itemDescription">
                     Item Description
                   </Label>
                   <Textarea
-                    className="w-full"
-                    id="itemDesc"
-                    defaultValue={item.description}
+                    autoComplete="off"
+                    id="itemDescription"
+                    placeholder="Enter item description"
+                    className="w-full resize-none"
+                    rows={3}
                     {...register("description")}
+                    defaultValue={item.description}
                   />
-                  {errors.description && (
-                    <p className="text-red-400 text-sm font-light">{errors.description.message}</p>
-                  )}
+                  {errors.description && <p className="text-red-400 text-sm font-light">{errors.description.message}</p>}
                 </div>
+                <Button type="submit" disabled={updateIsLoading}>
+                  {updateIsLoading ? <Loader2 className=" animate-spin" /> : "Update"}
+                </Button>
               </div>
-              <Button type="submit" className="w-full" disabled={updateIsLoading}>
-                {updateIsLoading ? <Loader2 className=" animate-spin" /> : "Update"}
-              </Button>
             </div>
           </form>
-        </ScrollArea>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
   );
 };
 
