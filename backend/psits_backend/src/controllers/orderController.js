@@ -54,6 +54,11 @@ export const getCurrentUserOrders = async (req, res) => {
 
 export const createOrder = async (req, res) => {
   let newBody = { ...req.body };
+
+  newBody.cartItems.forEach((item, index) => {
+    item.stocks = item.stocks.filter((a,b) => b === 0);
+  })
+
   const userId = req.params.userId;
   const randomID = nanoid(5);
   const user = await User.findOne({ _id: req.params.userId });
@@ -66,22 +71,38 @@ export const createOrder = async (req, res) => {
   newBody.orderId = randomID;
 
   await Order.create(newBody);
+
+  newBody.cartItems.forEach(async (item) => {
+    let merch = null
+
+    merch = await Merchandise.findOne({ _id: item.merchId });
+
+    const filteredSize = merch.stocks.filter((i) => i.size === item.stocks[0].size);
+    filteredSize[0].quantity = filteredSize[0].quantity - item.quantity
+    
+    await merch.save();
+  });
+
   res.status(StatusCodes.OK).json({ msg: "Order created!" });
 };
 
 export const updateOrder = async (req, res) => {
   const { orderStatus, additionalInfo, orderId } = req.body;
-
+  
   const updatedOrder = await Order.findOne({ _id: orderId });
-
+  
   if (orderStatus) updatedOrder.orderStatus = orderStatus;
   if (additionalInfo) updatedOrder.additionalInfo = additionalInfo;
 
-  if (updatedOrder.orderStatus == "CLAIMED") {
-    let merch = null;
+  if (updatedOrder.orderStatus == "CANCELLED") {
+    let merch = null
+
     updatedOrder.cartItems.forEach(async (item) => {
       merch = await Merchandise.findOne({ _id: item.merchId });
-      merch.stocks = merch.stocks - 1;
+
+      let temp = merch.stocks.filter((stock) => stock.size === item.stocks[0].size)
+      temp.forEach((stock) => stock.quantity += item.quantity)
+
       await merch.save();
     });
   }
